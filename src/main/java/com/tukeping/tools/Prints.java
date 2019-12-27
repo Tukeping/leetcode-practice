@@ -28,6 +28,6 @@ public final class Prints {
     }
 
     public static String timeLimit(long cost, long millisLimit) {
-        return "TimeLimit(" + millisLimit + "ms): " + Boolean.valueOf(cost > millisLimit).toString();
+        return (cost > millisLimit) ? "OverTimeLimit(" + millisLimit + "ms)" : null;
     }
 }

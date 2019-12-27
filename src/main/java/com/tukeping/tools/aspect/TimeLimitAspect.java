@@ -19,7 +19,11 @@ public class TimeLimitAspect {
         long start = System.currentTimeMillis();
         Object result = joinPoint.proceed();
         long cost = (System.currentTimeMillis() - start);
-        System.out.println(Prints.prettyPrint(cost) + ", " + Prints.timeLimit(cost, MILLIS_LIMIT));
+        String timeLimitPrint = Prints.timeLimit(cost, MILLIS_LIMIT);
+        System.out.print(Prints.prettyPrint(cost));
+        if (null != timeLimitPrint) {
+            System.out.println(", " + timeLimitPrint);
+        }
         return result;
     }
 }
