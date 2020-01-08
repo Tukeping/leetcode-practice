@@ -1,4 +1,4 @@
-package com.tukeping.cs.algorithms.sorting;
+package com.tukeping.cs.algorithms.sorting.simple;
 
 import org.junit.Test;
 
@@ -9,7 +9,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 /**
- * 冒泡算法
+ * 冒泡排序
+ *
+ * 最好时间复杂度, 平均时间复杂度, 最坏时间复杂度, 额外空间复杂度,  稳定性,       是否基于比较
+ * O(n),        O(n^2),      O(n^2),      O(1),          稳定,         是
  *
  * 算法思路:
  * 1. 比较相邻的元素。如果前一个比后一个大，则交换它们。
@@ -22,8 +25,25 @@ import static org.hamcrest.core.Is.is;
  **/
 public class BubbleSort {
 
+    /** time: O(n^2) space: O(n) + O(1) **/
+    public int[] sort(int[] arr) {
+        int len = arr.length;
+        for (int pairCount = 0; pairCount < len - 1; pairCount++) {
+            // 对比次数逐渐减少, (len-1) - pairCount
+            for (int compareIndex = 0; compareIndex < len - 1 - pairCount; compareIndex++) {
+                // 比较相邻的元素。如果前一个比后一个大，则交换它们。
+                if (arr[compareIndex] > arr[compareIndex + 1]) {
+                    int tmp = arr[compareIndex];
+                    arr[compareIndex] = arr[compareIndex + 1];
+                    arr[compareIndex + 1] = tmp;
+                }
+            }
+        }
+        return arr;
+    }
+
     @Test
-    public void test() {
+    public void test1() {
         int[] arr = sort(new int[]{9, 8, 7, 6, 5, 4, 3, 2, 1});
         assertThat(arr, is(new int[]{1, 2, 3, 4, 5, 6, 7, 8, 9}));
     }
@@ -40,8 +60,8 @@ public class BubbleSort {
      * MEM: 16 GB (DDR3 / 1600 MHz)
      * OS: macOS Catalina 10.15.2
      *
-     * 耗时测试:
-     * bubbleSort cost: 14781ms.
+     * 耗时:
+     * BubbleSort cost: 14781ms.
      * TimeSort cost: 16ms.
      */
     @Test
@@ -63,7 +83,7 @@ public class BubbleSort {
         // 第一份数组使用自己写的冒泡算法排序
         long start = System.currentTimeMillis();
         sort(arr1);
-        System.out.println("bubbleSort cost: " + (System.currentTimeMillis() - start) + "ms.");
+        System.out.println("BubbleSort cost: " + (System.currentTimeMillis() - start) + "ms.");
 
         // 第二份数组使用JDK自带的Tim排序算法
         start = System.currentTimeMillis();
@@ -82,22 +102,5 @@ public class BubbleSort {
         // 设置断言
         // assert arr1 is the same as arr2
         assertThat(arr1, is(arr2));
-    }
-
-    /** time: O(n^2) space: O(n) + O(1) **/
-    public int[] sort(int[] arr) {
-        int len = arr.length;
-        for (int pairCount = 0; pairCount < len - 1; pairCount++) {
-            // 对比次数逐渐减少, (len-1) - pairCount
-            for (int compareIndex = 0; compareIndex < len - 1 - pairCount; compareIndex++) {
-                // 比较相邻的元素。如果前一个比后一个大，则交换它们。
-                if (arr[compareIndex] > arr[compareIndex + 1]) {
-                    int tmp = arr[compareIndex];
-                    arr[compareIndex] = arr[compareIndex + 1];
-                    arr[compareIndex + 1] = tmp;
-                }
-            }
-        }
-        return arr;
     }
 }
