@@ -1,6 +1,6 @@
 package com.tukeping.cs.algorithms.sorting;
 
-/**
+/*
  * 快速排序 又称 分区交换排序
  *
  * 最好时间复杂度, 平均时间复杂度, 最坏时间复杂度, 额外空间复杂度,  稳定性,       是否基于比较
