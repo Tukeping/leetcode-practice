@@ -1,7 +1,12 @@
 package com.tukeping.cs.algorithms.sorting;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static org.junit.Assert.assertArrayEquals;
 
 /**
  * 基数排序（英语：Radix sort）是一种非比较型整数排序算法，其原理是将整数按位数切割成不同的数字，然后按每个位数分别比较。
@@ -16,23 +21,41 @@ import java.util.List;
  **/
 public class RadixSort {
 
-    private int[] sort(int[] arr) {
+    private void sort(int[] arr) {
+        int radix = 10;
+        List<List<Integer>> bucket = new ArrayList<>(radix);
+
         // 1. find max number and calc 'k'
-        int k = (int) Math.ceil(Math.log(max(arr) + 1));
+        int k = (int) Math.ceil(Math.log10(max(arr) + 1));
 
         // 2. put value to each 'bucket'
         // 取余 % 是舍去高位 ; 除法 / 是舍去低位
         // (val % (radix ^ i)) / (radix ^ (i-1))
-        for (int i = 1; i < k+1; i++) {
-            List<List<Integer>> bucket = new ArrayList<>();
+        for (int i = 1; i < k + 1; i++) {
+            // init bucket
+            for (int j = 0; j < radix; j++) {
+                if (bucket.size() == radix) {
+                    bucket.get(j).clear();
+                } else {
+                    bucket.add(new ArrayList<>());
+                }
+            }
+            // put bucket
+            for (int value : arr) {
+                int bucketIndex = (int) Math.floor(value % Math.pow(radix, i) / Math.pow(radix, i - 1));
+                bucket.get(bucketIndex).add(value);
+            }
 
-
+            // 3. reason of Non-In-Place sort, cover to origin array
+            int arrayIndex = 0;
+            for (List<Integer> subBucket : bucket) {
+                if (!subBucket.isEmpty()) {
+                    int[] sub = subBucket.stream().mapToInt(Integer::valueOf).toArray();
+                    System.arraycopy(sub, 0, arr, arrayIndex, sub.length);
+                    arrayIndex += sub.length;
+                }
+            }
         }
-
-
-        // 3. reason of Non-In-Place sort, cover to origin array
-
-        return arr;
     }
 
     private int max(int[] arr) {
@@ -40,5 +63,16 @@ public class RadixSort {
         for (int i = 1; i < arr.length; i++)
             if (arr[i] > max) max = arr[i];
         return max;
+    }
+
+    @Test
+    public void test() {
+        int[] arr = new int[]{710, 3, 784, 882, 254, 588, 606, 5, 345, 5005};
+
+        int[] arr1 = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(arr1);
+        sort(arr);
+
+        assertArrayEquals(arr, arr1);
     }
 }
