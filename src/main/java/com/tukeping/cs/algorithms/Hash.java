@@ -1,10 +1,10 @@
 package com.tukeping.cs.algorithms;
 
 /**
- * 搜索
+ * 哈希算法
  *
  * @author tukeping
  * @date 2020/1/7
  **/
-public class SearchPractice {
+public class Hash {
 }

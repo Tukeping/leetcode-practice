@@ -8,5 +8,5 @@ package com.tukeping.cs.algorithms;
  * @author tukeping
  * @date 2020/1/7
  **/
-public class DivideAndConquerPractice {
+public class DivideAndConquer {
 }
