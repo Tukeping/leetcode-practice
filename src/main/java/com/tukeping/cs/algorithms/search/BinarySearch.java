@@ -1,4 +1,4 @@
-package com.tukeping.cs.algorithms;
+package com.tukeping.cs.algorithms.search;
 
 import org.junit.Test;
 
@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  * @author tukeping
  * @date 2020/1/2
  **/
-public class BinarySearchPractice {
+public class BinarySearch {
 
     public static void main(String[] args) throws IOException {
         List<Integer> list = readNumbersFromLocalDisk("integer.txt");
