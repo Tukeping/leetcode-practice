@@ -37,6 +37,7 @@ public class NQueuePuzzle {
 
     private boolean check(int row, int col, int[] grid) {
         for (int k = 0; k < row; k++) {
+            // 重点判断斜线!!! 由于斜线判断原理是"镜像" 所以 行等差等于列等差 row - row' = |col - col'|
             if (grid[k] == col || grid[k] - col == k - row || grid[k] - col == row - k) {
                 return false;
             }
