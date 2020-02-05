@@ -139,8 +139,64 @@ public class RegularExpression {
         }
     }
 
+    /** 使用回溯思想 不改变原有输入字符串和正则字符串 编写正则表达式匹配算法 **/
+    public boolean isMatchLeetCode(String s, String p) {
+        // 正则表达式串如果匹配完了，查看字符串如果也匹配完了则表示 这是一个正确的匹配
+        if (p.isEmpty()) return s.isEmpty();
+
+        boolean firstMatch = !s.isEmpty() &&
+                (p.charAt(0) == s.charAt(0) || p.charAt(0) == '.');
+
+        if (p.length() >= 2 && p.charAt(1) == '*') {
+            return isMatchLeetCode(s, p.substring(2)) ||
+                    (firstMatch && isMatchLeetCode(s.substring(1), p));
+        } else {
+            return firstMatch && isMatchLeetCode(s.substring(1), p.substring(1));
+        }
+    }
+
+    private boolean[][] memo;
+
+    public boolean isMatchDp(String s, String p) {
+        if (s.isEmpty() || p.isEmpty()) return false;
+
+        memo = new boolean[s.length() + 1][p.length() + 1];
+
+        return dp(0, 0, s, p);
+    }
+
+    private boolean dp(int sIndex, int pIndex, String s, String p) {
+        if (memo[sIndex][pIndex]) return true;
+
+        boolean ans;
+
+        // 当正则表达式的指针到达最末尾后 判断字符串的指针是否也在末尾，如果是末尾则表示匹配正确，否则未匹配成功
+        if (pIndex == p.length()) {
+            ans = (sIndex == s.length());
+        } else {
+            boolean match = sIndex < s.length() &&
+                    (p.charAt(pIndex) == s.charAt(sIndex) || p.charAt(pIndex) == '.');
+
+            // 判断正则字符串中当前指针的下一个指针的字符是*号时需要特殊处理
+            if (p.length() > pIndex + 1 && p.charAt(pIndex + 1) == '*') {
+                ans = dp(sIndex, pIndex + 2, s, p) ||
+                        (match && dp(sIndex + 1, pIndex, s, p));
+            } else {
+                ans = match && dp(sIndex + 1, pIndex + 1, s, p);
+            }
+        }
+
+        memo[sIndex][pIndex] = ans;
+
+        return ans;
+    }
+
+    public boolean isMatch(String s, String p) {
+        return isMatchDp(s, p);
+    }
+
     @Test
-    public void testBackTracking() {
+    public void test() {
         boolean b;
 
         /*
@@ -151,7 +207,7 @@ public class RegularExpression {
          * 输出: false
          * 解释: "a" 无法匹配 "aa" 整个字符串。
          */
-        b = isMatchByBackTracking("aa", "a");
+        b = isMatch("aa", "a");
         assertFalse(b);
 
         /*
@@ -162,7 +218,7 @@ public class RegularExpression {
          * 输出: true
          * 解释: 因为 '*' 代表可以匹配零个或多个前面的那一个元素, 在这里前面的元素就是 'a'。因此，字符串 "aa" 可被视为 'a' 重复了一次。
          */
-        b = isMatchByBackTracking("aa", "a*");
+        b = isMatch("aa", "a*");
         assertTrue(b);
 
         /*
@@ -173,7 +229,7 @@ public class RegularExpression {
          * 输出: true
          * 解释: ".*" 表示可匹配零个或多个（'*'）任意字符（'.'）。
          */
-        b = isMatchByBackTracking("ab", ".*");
+        b = isMatch("ab", ".*");
         assertTrue(b);
 
         /*
@@ -184,7 +240,7 @@ public class RegularExpression {
          * 输出: true
          * 解释: 因为 '*' 表示零个或多个，这里 'c' 为 0 个, 'a' 被重复一次。因此可以匹配字符串 "aab"。
          */
-        b = isMatchByBackTracking("aab", "c*a*b*");
+        b = isMatch("aab", "c*a*b*");
         assertTrue(b);
 
         /*
@@ -194,126 +250,7 @@ public class RegularExpression {
          * p = "mis*is*p*."
          * 输出: false
          */
-        b = isMatchByBackTracking("mississippi", "mis*is*p*.");
-        assertFalse(b);
-    }
-
-    private boolean matched = false;
-    private char[] pattern;
-    private int plen;
-
-    public boolean match(String origin, String matcher) {
-        char[] text = origin.toCharArray();
-        int tlen = text.length;
-
-        pattern = matcher.toCharArray();
-        plen = pattern.length;
-
-        matched = false;
-
-        rmatch(0, 0, text, tlen);
-
-        return matched;
-    }
-
-    private void rmatch(int ti, int pj, char[] text, int tlen) {
-        if (matched) return; // 如果已经匹配了，就不要继续递归了
-        if (pj == plen) { // 正则表达式到结尾了
-            if (ti == tlen) matched = true; // 文本串也到结尾了
-            return;
-        }
-
-        if (pattern[pj] == '*') { // *号 匹配任意个字符 重复零次或更多次
-            for (int k = 0; k <= tlen - ti; k++) {
-                rmatch(ti + k, pj + 1, text, tlen);
-            }
-        } else if (pattern[pj] == '.') { // .号 匹配除换行符以外的任意字符
-
-        } else if (pattern[pj] == '?') { // ?号 匹配0个或者1个字符 重复零次或一次
-            rmatch(ti, pj + 1, text, tlen);
-            rmatch(ti + 1, pj + 1, text, tlen);
-        } else if (ti < tlen && pattern[pj] == text[ti]) { // 纯字符匹配
-            rmatch(ti + 1, pj + 1, text, tlen);
-        }
-    }
-
-    @Test
-    public void test1() {
-        String s = "aa";
-        String p = "a";
-        boolean b = match(s, p);
-        assertFalse(b);
-    }
-
-    @Test
-    public void test1_1() {
-        String s = "aa";
-        String p = "aa";
-        boolean b = match(s, p);
-        assertTrue(b);
-    }
-
-    @Test
-    public void test2() {
-        String s = "aa";
-        String p = "a*";
-        boolean b = match(s, p);
-        assertTrue(b);
-    }
-
-    @Test
-    public void test3() {
-        String s = "ab";
-        String p = "?*";
-        boolean b = match(s, p);
-        assertTrue(b);
-    }
-
-    @Test
-    public void test4() {
-        String s = "aab";
-        String p = "c*a*b";
-        boolean b = match(s, p);
-        assertTrue(b);
-    }
-
-    @Test
-    public void test5() {
-        String s = "mississippi";
-        String p = "mis*is*p*?";
-        boolean b = match(s, p);
-        assertFalse(b);
-    }
-
-    @Test
-    public void test6() {
-        String s = "b";
-        String p = "a*b";
-        boolean b = match(s, p);
-        assertTrue(b);
-    }
-
-    @Test
-    public void test7() {
-        String s = "ab";
-        String p = "a*b";
-        boolean b = match(s, p);
-        assertTrue(b);
-    }
-
-    @Test
-    public void test8() {
-        String s = "aab";
-        String p = "a*b";
-        boolean b = match(s, p);
-        assertTrue(b);
-    }
-
-    @Test
-    public void test9() {
-        String s = "aa";
-        String p = "a*b";
-        boolean b = match(s, p);
+        b = isMatch("mississippi", "mis*is*p*.");
         assertFalse(b);
     }
 }
