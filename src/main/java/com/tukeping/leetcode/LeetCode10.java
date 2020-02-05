@@ -87,8 +87,60 @@ import static org.junit.Assert.assertTrue;
 public class LeetCode10 {
 
     public boolean isMatch(String s, String p) {
+        return isMatchB(s, p);
+    }
 
-        return false;
+    /** 使用回溯思想 不改变原有输入字符串和正则字符串 编写正则表达式匹配算法 **/
+    public boolean isMatchB(String s, String p) {
+        return isMatchBackTracking(0, 0, s, p);
+    }
+
+    public boolean isMatchBackTracking(int sIndex, int pIndex, String s, String p) {
+        // 正则表达式串如果匹配完了，查看字符串如果也匹配完了则表示 这是一个正确的匹配
+        if (pIndex == p.length()) return sIndex == s.length();
+
+        boolean firstMatch = sIndex < s.length() &&
+                (p.charAt(pIndex) == s.charAt(sIndex) || p.charAt(pIndex) == '.');
+
+        if (p.length() > pIndex + 1 && p.charAt(pIndex + 1) == '*') {
+            return isMatchBackTracking(sIndex, pIndex + 2, s, p) ||
+                    (firstMatch && isMatchBackTracking(sIndex + 1, pIndex, s, p));
+        } else {
+            return firstMatch && isMatchBackTracking(sIndex + 1, pIndex + 1, s, p);
+        }
+    }
+
+    private boolean[][] memo;
+
+    public boolean isMatchD(String s, String p) {
+        memo = new boolean[s.length() + 1][p.length() + 1];
+        return dp(0, 0, s, p);
+    }
+
+    private boolean dp(int sIndex, int pIndex, String s, String p) {
+        if (memo[sIndex][pIndex]) return true;
+
+        boolean ans;
+
+        // 当正则表达式的指针到达最末尾后 判断字符串的指针是否也在末尾，如果是末尾则表示匹配正确，否则未匹配成功
+        if (pIndex == p.length()) {
+            ans = (sIndex == s.length());
+        } else {
+            boolean match = sIndex < s.length() &&
+                    (p.charAt(pIndex) == s.charAt(sIndex) || p.charAt(pIndex) == '.');
+
+            // 判断正则字符串中当前指针的下一个指针的字符是*号时需要特殊处理
+            if (p.length() > pIndex + 1 && p.charAt(pIndex + 1) == '*') {
+                ans = dp(sIndex, pIndex + 2, s, p) ||
+                        (match && dp(sIndex + 1, pIndex, s, p));
+            } else {
+                ans = match && dp(sIndex + 1, pIndex + 1, s, p);
+            }
+        }
+
+        memo[sIndex][pIndex] = ans;
+
+        return ans;
     }
 
     @Test
@@ -129,5 +181,13 @@ public class LeetCode10 {
         String p = "mis*is*p*.";
         boolean b = isMatch(s, p);
         assertFalse(b);
+    }
+
+    @Test
+    public void test6() {
+        String s = "";
+        String p = ".*";
+        boolean b = isMatch(s, p);
+        assertTrue(b);
     }
 }

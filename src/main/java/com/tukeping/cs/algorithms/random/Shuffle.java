@@ -1,4 +1,4 @@
-package com.tukeping.cs.algorithms;
+package com.tukeping.cs.algorithms.random;
 
 import com.tukeping.tools.Arrays;
 import com.tukeping.tools.Strings;
