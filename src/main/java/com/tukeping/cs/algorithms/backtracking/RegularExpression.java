@@ -158,10 +158,7 @@ public class RegularExpression {
     private boolean[][] memo;
 
     public boolean isMatchDp(String s, String p) {
-        if (s.isEmpty() || p.isEmpty()) return false;
-
         memo = new boolean[s.length() + 1][p.length() + 1];
-
         return dp(0, 0, s, p);
     }
 
@@ -252,5 +249,8 @@ public class RegularExpression {
          */
         b = isMatch("mississippi", "mis*is*p*.");
         assertFalse(b);
+
+        b = isMatch("", ".*");
+        assertTrue(b);
     }
 }
