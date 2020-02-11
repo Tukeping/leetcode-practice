@@ -66,8 +66,42 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode1103 {
 
+    /**
+     * 27/27 cases passed (1 ms)
+     * Your runtime beats 93.08 % of java submissions
+     * Your memory usage beats 8.85 % of java submissions (34.1 MB)
+     */
     public int[] distributeCandies(int candies, int num_people) {
-        return null;
+        int[] arr = new int[num_people];
+
+        int give = 1, index = 0;
+
+        // 如果剩下的糖果数量 大于0 则可以继续分糖果
+        while (candies > 0) {
+            // 如果要给的糖果数大于了手里的糖果数, 则把手里的糖果全部给予最后一个小朋友
+            if (candies - give < 0) {
+                give = candies;
+            }
+
+            // 小朋友拿到give个糖果
+            arr[index] += give;
+
+            // 手里的糖果 减去 给出去的糖果 就是剩下的糖果数量
+            candies -= give;
+
+            // 每次循环 则要对下一位小朋友的给予糖果数 +1
+            give++;
+
+            // 切换到下一个小朋友
+            index++;
+
+            // 小朋友是围成一个小圆圈的 所以 所有小朋友都拿到糖果后就从第一个小朋友再开始拿
+            if (index == num_people) {
+                index = 0;
+            }
+        }
+
+        return arr;
     }
 
     /**

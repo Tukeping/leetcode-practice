@@ -23,13 +23,11 @@ package com.tukeping.leetcode;
  * 输出: 3
  * 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
  *
- *
  * 示例 2:
  *
  * 输入: "bbbbb"
  * 输出: 1
  * 解释: 因为无重复字符的最长子串是 "b"，所以其长度为 1。
- *
  *
  * 示例 3:
  *
@@ -37,10 +35,9 @@ package com.tukeping.leetcode;
  * 输出: 3
  * 解释: 因为无重复字符的最长子串是 "wke"，所以其长度为 3。
  * 请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
- *
- *
  */
 
+import com.tukeping.tools.annotation.Cost;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -50,15 +47,41 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
+ * hash-table | two-pointers | string | sliding-window
+ *
+ * adobe | amazon | bloomberg | yelp
+ *
  * @author tukeping
  * @date 2020/1/9
  **/
 public class LeetCode3 {
 
     public int lengthOfLongestSubstring(String s) {
-        return bruteForce(s);
+        return slidingWindow(s);
     }
 
+    @Cost
+    private int slidingWindow(String s) {
+        int windowSize = 1;
+        int len = s.length();
+        int max = Integer.MIN_VALUE;
+
+        while (windowSize <= len - 1) {
+            for (int p1 = 0, p2 = p1 + windowSize; p1 < len - 1 && p2 <= len - 1; p1++, p2++) {
+                if (unique(s, p1, p2)) {
+                    max = Math.max(max, p2 - p1);
+                }
+                if (max == (p2 - p1)) {
+                    break;
+                }
+            }
+            windowSize++;
+        }
+
+        return max;
+    }
+
+    @Cost
     private int bruteForce(String s) {
         int max = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -69,6 +92,7 @@ public class LeetCode3 {
         return max;
     }
 
+    @Cost
     private boolean unique(String s, int start, int end) {
         Set<Character> set = new HashSet<>();
         for (int i = start; i < end; i++) {

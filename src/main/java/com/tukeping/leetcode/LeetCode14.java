@@ -42,6 +42,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
+ * string
+ *
+ * yelp
+ *
  * @author tukeping
  * @since 2018/12/15
  **/
@@ -60,7 +64,7 @@ public class LeetCode14 {
         boolean isBreak = false;
 
         for (i = 0; i < chars.length; i++) {
-            prefix = prefix + String.valueOf(chars[i]);
+            prefix = prefix + chars[i];
             for (String str : strs) {
                 if (!str.startsWith(prefix)) {
                     isBreak = true;
