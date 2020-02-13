@@ -1,6 +1,7 @@
 package com.tukeping.tools;
 
 import java.util.Arrays;
+import java.util.function.IntPredicate;
 import java.util.stream.Collectors;
 
 /**
@@ -14,6 +15,10 @@ public final class Strings {
     }
 
     public static String arrayToString(int[] arr, int exclude) {
-        return Arrays.stream(arr).filter(n -> n != exclude).boxed().map(String::valueOf).collect(Collectors.joining(","));
+        return arrayToString(arr, (n) -> n != exclude);
+    }
+
+    public static String arrayToString(int[] arr, IntPredicate fn) {
+        return Arrays.stream(arr).filter(fn).boxed().map(String::valueOf).collect(Collectors.joining(","));
     }
 }

@@ -16,13 +16,30 @@ import java.util.stream.Stream;
 /**
  * 二分查找
  * ------
- * [] 实现一个有序数组的二分查找算法
- * [] 实现模糊二分查找算法（比如大于等于给定值的第一个元素）
+ * 实现一个有序数组的二分查找算法
+ * 实现模糊二分查找算法（比如大于等于给定值的第一个元素）
  *
  * @author tukeping
  * @date 2020/1/2
  **/
 public class BinarySearch {
+
+    private static int bsearch(int[] a, int n, int value) {
+        int low = 0, high = n - 1;
+
+        while (low <= high) {
+            int mid = (low + high) >>> 1; // (low + high) / 2
+            if (a[mid] == value) { // value found
+                return mid;
+            } else if (a[mid] > value) {
+                high = mid - 1;
+            } else { // a[mid] <= value
+                low = mid + 1;
+            }
+        }
+
+        return -1; // value not found
+    }
 
     public static void main(String[] args) throws IOException {
         List<Integer> list = readNumbersFromLocalDisk("integer.txt");
@@ -58,26 +75,6 @@ public class BinarySearch {
         } else { // a[mid] >= value
             return bsearchRecursion0(a, low, mid - 1, value);
         }
-    }
-
-    private static int bsearch(int[] a, int n, int value) {
-        int low = 0;
-        int high = n - 1;
-
-        while (low <= high) {
-            int mid = (low + high) >>> 1;
-            if (a[mid] == value) {
-                // value found
-                return mid;
-            } else if (a[mid] > value) {
-                high = mid - 1;
-            } else { // a[mid] <= value
-                low = mid + 1;
-            }
-        }
-
-        // value not found
-        return -1;
     }
 
     private static void sortNumber(List<Integer> list) {

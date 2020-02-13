@@ -37,7 +37,6 @@ package com.tukeping.leetcode;
  * 请注意，你的答案必须是 子串 的长度，"pwke" 是一个子序列，不是子串。
  */
 
-import com.tukeping.tools.annotation.Cost;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -57,10 +56,29 @@ import static org.junit.Assert.assertThat;
 public class LeetCode3 {
 
     public int lengthOfLongestSubstring(String s) {
-        return slidingWindow(s);
+        return bruteForce(s);
     }
 
-    @Cost
+    private int bruteForce(String s) {
+        int max = 0;
+        for (int i = 0; i < s.length(); i++) {
+            for (int j = i + 1; j <= s.length(); j++) {
+                if (unique(s, i, j)) max = Math.max(max, j - i);
+            }
+        }
+        return max;
+    }
+
+    private boolean unique(String s, int start, int end) {
+        Set<Character> set = new HashSet<>();
+        for (int i = start; i < end; i++) {
+            Character c = s.charAt(i);
+            if (set.contains(c)) return false;
+            set.add(c);
+        }
+        return true;
+    }
+
     private int slidingWindow(String s) {
         int windowSize = 1;
         int len = s.length();
@@ -79,28 +97,6 @@ public class LeetCode3 {
         }
 
         return max;
-    }
-
-    @Cost
-    private int bruteForce(String s) {
-        int max = 0;
-        for (int i = 0; i < s.length(); i++) {
-            for (int j = i + 1; j <= s.length(); j++) {
-                if (unique(s, i, j)) max = Math.max(max, j - i);
-            }
-        }
-        return max;
-    }
-
-    @Cost
-    private boolean unique(String s, int start, int end) {
-        Set<Character> set = new HashSet<>();
-        for (int i = start; i < end; i++) {
-            Character c = s.charAt(i);
-            if (set.contains(c)) return false;
-            set.add(c);
-        }
-        return true;
     }
 
     /**

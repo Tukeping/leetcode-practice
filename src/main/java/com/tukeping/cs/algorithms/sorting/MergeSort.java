@@ -3,6 +3,9 @@ package com.tukeping.cs.algorithms.sorting;
 import com.tukeping.tools.Strings;
 import org.junit.Test;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 /**
  * 归并排序（英语：Merge sort，或mergesort）
  * 是创建在归并操作上的一种有效的排序算法，效率为 O(n log n)（大O符号）。
@@ -30,21 +33,19 @@ import org.junit.Test;
  **/
 public class MergeSort {
 
-    private int[] sort(int[] arr) {
+    /** time: O(n log n) space: O(n) **/
+    private void sort(int[] arr) {
         int[] sortedArr = new int[arr.length];
         mergeSort(arr, 0, arr.length - 1, sortedArr);
-        return arr;
     }
 
     private void mergeSort(int[] arr, int left, int right, int[] sortedArr) {
-        if (left >= right) {
-            return;
-        }
+        if (left >= right) return;
 
         // 1. split array
         int mid = (left + right) / 2;
 
-        // 2. sort left and right array Divide and Conquer
+        // 2. sort left and right array => Divide and Conquer
         mergeSort(arr, left, mid, sortedArr);
         mergeSort(arr, mid + 1, right, sortedArr);
 
@@ -53,38 +54,29 @@ public class MergeSort {
     }
 
     private void mergeArray(int[] arr, int left, int mid, int right, int[] sortedArr) {
-        // two points
-        int p1 = left;
-        int p2 = mid + 1;
-
-        // current sorted array index
-        int curSortedArrIndex = 0;
+        int p1 = left, p2 = mid + 1; // two points
+        int idx = 0; // current sorted array index
 
         // move points
         while (p1 <= mid && p2 <= right) {
             if (arr[p1] <= arr[p2]) { // asc
-                sortedArr[curSortedArrIndex] = arr[p1];
+                sortedArr[idx] = arr[p1];
                 p1++;
             } else {
-                sortedArr[curSortedArrIndex] = arr[p2];
+                sortedArr[idx] = arr[p2];
                 p2++;
             }
-            curSortedArrIndex++;
+            idx++;
         }
 
         // get rest leftArray to sortedArray
-        while (p1 <= mid) {
-            sortedArr[curSortedArrIndex++] = arr[p1++];
-        }
+        while (p1 <= mid) sortedArr[idx++] = arr[p1++];
 
         // get rest rightArray to sortedArray
-        while (p2 <= mid) {
-            sortedArr[curSortedArrIndex++] = arr[p2++];
-        }
+        while (p2 <= mid) sortedArr[idx++] = arr[p2++];
 
         // put back to origin array
-        if (curSortedArrIndex >= 0)
-            System.arraycopy(sortedArr, 0, arr, left, curSortedArrIndex);
+        if (idx >= 0) System.arraycopy(sortedArr, 0, arr, left, idx);
     }
 
     @Test
@@ -92,7 +84,9 @@ public class MergeSort {
         int[] arr = new int[]{6, 5, 3, 1, 8, 7, 2, 4};
         System.out.println("origin: " + Strings.arrayToString(arr));
 
-        int[] ret = sort(arr);
-        System.out.println("ordered: " + Strings.arrayToString(ret));
+        sort(arr);
+        System.out.println("ordered: " + Strings.arrayToString(arr));
+
+        assertThat(arr, is(new int[]{1, 2, 3, 4, 5, 6, 7, 8}));
     }
 }

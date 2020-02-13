@@ -43,13 +43,13 @@ package com.tukeping.cs.algorithms.sorting;
  *          quicksort(a, pivotNewIndex+1, right)
  */
 
+import com.tukeping.tools.Strings;
 import org.junit.Test;
 
-import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.joining;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author tukeping
@@ -57,27 +57,99 @@ import static java.util.stream.Collectors.joining;
  */
 public class QuickSort {
 
-    public int[] sort(int[] arr) {
-        quickSort(arr, 0, arr.length - 1);
-        return arr;
+    private boolean enableDebug = false;
+
+    public void sort(int[] nums) {
+        qsort(nums, 0, nums.length - 1);
+    }
+
+    /**
+     * 快排的核心思路就是:
+     * 1. qsort用了递归手段, 需要先设置一个递归退出条件就是 low > high,
+     *    这个条件之所以成立是因为每次切分 数字堆的时候 low都是+1, high都是-1
+     *    所以不断递归下去终归 low会超过high
+     * 2. 选择一个pivot基准数字。ps: 内部选择pivot的算法可以是简单的比如取mid, 也可以是复杂的比如取首位和mid然后再取中位数
+     * 3. 开始基于 基准数字 进行`分区`。只要比基准数字小的都在 基准数字的左边, 比基准数字大的都是在基准数字的右边
+     * 4. 分区递归: 分成 low 到 pivot - 1 和 pivot + 1 到 high 两组数字堆 继续 递归迭代下去。轮回到步骤1。
+     *
+     * qsort in-place, time: O(nLog(n)) space: O(1)
+     */
+    private void qsort(int[] nums, int low, int high) {
+        if (low > high) return;
+
+        int pivot = pickPivot(low, high);
+
+        if (enableDebug) printPartition(low, high, pivot);
+
+        pivot = partition(nums, low, high, pivot);
+
+        qsort(nums, low, pivot - 1);
+        qsort(nums, pivot + 1, high);
+    }
+
+    /** simple version => pivot = (low + high) / 2 **/
+    private int pickPivot(int low, int high) {
+        return (low == high) ? low : (low + high) >>> 1;
+    }
+
+    /**
+     * 这个分区函数是快速排序算法的核心逻辑:
+     * 1. 由于是需要 原地算法 不使用额外的空间 则把 基准数跟最末尾的数 进行交换
+     * 2. 遍历 从low到high这一段的数字 判断遍历中的每一个数字 如果比基准数小则 进行交换 (这个是升序逻辑, 降序的话就是比基准数大则交换)
+     * 3. 把基准数从末尾再交换到分界线边，这个分界线就是 比基准数小的那一堆数字的最末尾
+     */
+    private int partition(int[] arr, int low, int high, int pivot) {
+        if (low == high) return low;
+
+        swap(arr, pivot, high); // put pivot to high place, in-place strategy
+        if (enableDebug) printArr(arr, pivot, pivot, high, true);
+
+        for (int i = low; i <= high - 1; i++) {
+            if (enableDebug) printCompare(arr, i, high);
+            if (arr[i] < arr[high]) { // currentValue < pivotValue => asc sort
+                // low++ 是为了提高分界线, low往左的数字都是比基准数字小的
+                // 或者这么理解, i可以理解为未被判断的数字 跟着循环遍历走
+                // 而low是已经跟基准数比较完后的 已排序完成后的数字堆分界线
+                swap(arr, low++, i);
+                if (enableDebug) printArr(arr, high, low - 1, i, false);
+            }
+        }
+
+        // 把基准数换到 已排序完的比基准数小的数字堆的 最右边, 分界线下标就是low
+        swap(arr, low, high); // put pivot back place from high
+        if (enableDebug) printArr(arr, low, low, high, true);
+
+        return low;
+    }
+
+    private void swap(int[] arr, int a, int b) {
+        int tmp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = tmp;
+    }
+
+    /** pivot, swap(a, b) **/
+    private void printArr(int[] arr, int pivot, int a, int b, boolean isSwapPivot) {
+        System.out.println(Strings.arrayToString(arr) + " [pivot=" + pivot +
+                ", low=" + a + ", high=" + b + " | " +
+                a + "<=>" + b + "]" + (isSwapPivot ? " swap pivot" : ""));
+    }
+
+    private void printCompare(int[] arr, int a, int b) {
+        System.out.println("arr[" + a + "] " + arr[a] +
+                " vs " + arr[b] + " arr[" + b + "]" +
+                ((arr[a] < arr[b]) ? ", a < b => swap(a, b)" : ", a >= b"));
     }
 
     private AtomicInteger count = new AtomicInteger(1);
 
-    private void quickSort(int[] arr, int left, int right) {
-        if (left > right) {
-            return;
-        }
-
-        int pivotIndex = pickPivotIndex(arr, left, right);
-        printPartitionInfo(arr, left, right, pivotIndex);
-        pivotIndex = partition(arr, left, right, pivotIndex);
-
-        quickSort(arr, left, pivotIndex - 1);
-        quickSort(arr, pivotIndex + 1, right);
+    private void printPartition(int left, int right, int pivotIndex) {
+        System.out.println("\n-------partition " + count.getAndIncrement() + ":" +
+                " low:" + left + " high:" + right +
+                " pickPivot:" + pivotIndex + "-------");
     }
 
-    private int pickPivotIndex(int[] arr, int left, int right) {
+    private int pickPivot0(int[] arr, int left, int right) {
         if (left == right) return left;
 
         int mid = (left + right) / 2;
@@ -96,72 +168,35 @@ public class QuickSort {
         return mid;
     }
 
-    private int partition(int[] arr, int left, int right, int pivot) {
-        if (left == right) return left;
-
-        swap(arr, pivot, right);
-        printArr(arr, pivot, left, right);
-
-        int pivotValue = arr[right];
-        int actualLeft = left;
-
-        for (int index = left; index <= right - 1; index++) {
-            int curValue = arr[index];
-            if (curValue < pivotValue) { // asc
-                swap(arr, actualLeft, index);
-                printArr(arr, right, actualLeft, index);
-                actualLeft++;
-            }
-        }
-
-        swap(arr, actualLeft, right);
-        printArr1(arr, actualLeft, actualLeft, right);
-
-        return actualLeft;
-    }
-
-    private void swap(int[] arr, int a, int b) {
-        if (a == b) return;
-        int tmp = arr[a];
-        arr[a] = arr[b];
-        arr[b] = tmp;
-    }
-
-    private void printArr(int[] arr, int pivot, int a, int b) {
-        String arrStr = Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(","));
-        int aValue = arr[a];
-        int bValue = arr[b];
-        System.out.println(arrStr
-                + " [pivot=" + pivot + "(" + arr[pivot] + ")" + ", left=" + a + ", right=" + b + "  "
-                + aValue + "<=>" + bValue + "]");
-    }
-
     private void printArr1(int[] arr, int pivot, int a, int b) {
-        String leftArr = Arrays.stream(arr).filter(n -> n < arr[pivot]).boxed().map(String::valueOf).collect(Collectors.joining(","));
-        String rightArr = Arrays.stream(arr).filter(n -> n >= arr[pivot]).boxed().map(String::valueOf).collect(Collectors.joining(","));
-        int aValue = arr[a];
-        int bValue = arr[b];
-        System.out.println(leftArr + " <" + arr[pivot] + "> " + rightArr
-                + " [pivot=" + pivot + "(" + arr[pivot] + ")" + ", left=" + a + ", right=" + b + "  "
-                + aValue + "<=>" + bValue + "]");
-    }
-
-    private void printPartitionInfo(int[] arr, int left, int right, int pivotIndex) {
-        System.out.println("\n-------partition:" + count.getAndIncrement() +
-                " left:" + left + " right:" + right +
-                " pivot:" + pivotIndex + "(" + arr[pivotIndex] + ")" +
-                "[" + arr[left] + "," + arr[(left + right) / 2] + "," + arr[right] + "]" +
-                "-------");
+        String leftArr = Strings.arrayToString(arr, n -> n < arr[pivot]);
+        String rightArr = Strings.arrayToString(arr, n -> n >= arr[pivot]);
+        System.out.println(leftArr + "," + rightArr +
+                " [pivot=" + pivot + ", low=" + a + ", high=" + b + " | " +
+                a + "<=>" + b + "]");
     }
 
     @Test
-    public void test() {
+    public void test1() {
         int[] arr = new int[]{3, 7, 8, 5, 2, 1, 9, 5, 4};
-        System.out.println("origin: " +
-                Arrays.stream(arr).boxed().map(String::valueOf).collect(joining(",")));
+        System.out.println("origin: " + Strings.arrayToString(arr));
 
-        int[] ret = sort(arr);
-        System.out.println("\nordered: " +
-                Arrays.stream(ret).boxed().map(String::valueOf).collect(Collectors.joining(",")));
+        enableDebug = true;
+        sort(arr);
+        System.out.println("ordered: " + Strings.arrayToString(arr));
+
+        assertThat(arr, is(new int[]{1, 2, 3, 4, 5, 5, 7, 8, 9}));
+    }
+
+    @Test
+    public void test2() {
+        int[] arr = new int[]{6, 5, 3, 1, 8, 7, 2, 4};
+        System.out.println("origin: " + Strings.arrayToString(arr));
+
+        enableDebug = true;
+        sort(arr);
+        System.out.println("ordered: " + Strings.arrayToString(arr));
+
+        assertThat(arr, is(new int[]{1, 2, 3, 4, 5, 6, 7, 8}));
     }
 }
