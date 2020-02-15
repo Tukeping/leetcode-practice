@@ -47,35 +47,64 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 /**
+ * dynamic-programming
+ *
+ * adobe | apple
+ *
  * @author tukeping
  * @date 2020/1/6
  **/
-public class LeetCode70W {
+public class LeetCode70 {
+
+    /** time: O(n) space:O(n) **/
+    public int climbStairs(int n) {
+        int[] f = new int[n <= 2 ? 3 : n + 1];
+        f[0] = 0;
+        f[1] = 1;
+        f[2] = 2;
+        if (n <= 2) return f[n];
+
+        int max = Integer.MIN_VALUE;
+
+        for (int x = 3; x <= n; x++) {
+            int cost = Integer.MIN_VALUE;
+            if (x - 1 >= 0) cost = f[x - 1];
+            if (x - 2 >= 0) cost += f[x - 2];
+            f[x] = cost;
+            System.out.println(String.format("f[%d] = %d", x, f[x]));
+            max = Math.max(max, f[x]);
+        }
+
+        return max;
+    }
+
+    @Test
+    public void test0() {
+        int n = climbStairs(1);
+        assertThat(n, is(1));
+    }
 
     @Test
     public void test1() {
-        int x = climbStairs(2);
-        assertThat(x, is(2));
+        int n = climbStairs(2);
+        assertThat(n, is(2));
     }
 
     @Test
     public void test2() {
-        int x = climbStairs(3);
-        assertThat(x, is(3));
+        int n = climbStairs(3);
+        assertThat(n, is(3));
     }
 
-    public int climbStairs(int n) {
-        return climbStairs0(0, n);
+    @Test
+    public void test3() {
+        int n = climbStairs(4);
+        assertThat(n, is(5));
     }
 
-    public int climbStairs0(int cur, int n) {
-        if (cur > n) {
-            return 0;
-        }
-        if (cur == n) {
-            return 1;
-        }
-
-        return climbStairs0(cur + 1, n) + climbStairs0(cur + 2, n);
+    @Test
+    public void test4() {
+        int n = climbStairs(5);
+        assertThat(n, is(8));
     }
 }

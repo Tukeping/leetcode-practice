@@ -36,58 +36,36 @@ package com.tukeping.leetcode;
 
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
+ * dynamic-programming
+ *
  * @author tukeping
  * @date 2020/2/9
  **/
 public class LeetCode322 {
 
-    /**
-     * 说明:
-     * 你可以认为每种硬币的数量是无限的。
-     */
     public int coinChange(int[] coins, int amount) {
-        if (coins == null || coins.length == 0) return -1;
-        if (amount == 0) return 0;
+        int[] f = new int[amount + 1];
+        int min = Integer.MAX_VALUE;
+        int cost, coinIndex, coin;
 
-        List<Integer> coins2 = Arrays.stream(coins)
-                .filter(coin -> coin <= amount)
-                .boxed()
-                .sorted(Comparator.reverseOrder())
-                .collect(Collectors.toList());
-
-        // 回溯 + 贪心
-        return backtrackingGreedy(coins2, amount, 0);
-    }
-
-    public int backtrackingGreedy(List<Integer> coins, int amount, int index) {
-        if (amount == 0) return 0;
-
-        if (index < coins.size() && amount > 0) {
-            int coin = coins.get(index);
-            index++;
-            if (amount >= coin) {
-                int count = amount / coin;
-                int rest = backtrackingGreedy(coins, amount % coin, index);
-                if (rest == -1) {
-                    return -1;
-                } else {
-                    return count + rest;
-                }
-            } else { // amount < coin
-                return backtrackingGreedy(coins, amount, index);
+        for (int x = 1; x <= amount; x++) {
+            cost = Integer.MAX_VALUE;
+            coinIndex = coins.length - 1;
+            while (coinIndex >= 0) {
+                coin = coins[coinIndex];
+                if (x - coin >= 0)
+                    cost = Math.min(cost, f[x - coin] == -1 ? Integer.MAX_VALUE : f[x - coin] + 1);
+                coinIndex--;
             }
+            f[x] = (cost == Integer.MAX_VALUE) ? -1 : cost;
+            min = Math.min(min, f[x]);
+//            System.out.println(String.format("f[%d] = %d", x, f[x]));
         }
-
-        return -1;
+        return f[amount];
     }
 
     /**

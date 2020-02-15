@@ -40,6 +40,8 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
+ * array | dynamic-programming
+ *
  * @author tukeping
  * @date 2020/2/5
  **/
