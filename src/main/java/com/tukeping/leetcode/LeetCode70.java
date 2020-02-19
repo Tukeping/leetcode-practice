@@ -37,8 +37,6 @@ package com.tukeping.leetcode;
  * 1.  1 阶 + 1 阶 + 1 阶
  * 2.  1 阶 + 2 阶
  * 3.  2 阶 + 1 阶
- *
- *
  */
 
 import org.junit.Test;
@@ -50,6 +48,8 @@ import static org.hamcrest.core.Is.is;
  * dynamic-programming
  *
  * adobe | apple
+ *
+ * frequency 5
  *
  * @author tukeping
  * @date 2020/1/6

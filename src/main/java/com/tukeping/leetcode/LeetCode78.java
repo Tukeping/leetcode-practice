@@ -52,6 +52,8 @@ import static org.hamcrest.Matchers.containsInAnyOrder;
  *
  * amazon | bloomberg | facebook | uber
  *
+ * frequency 4
+ *
  * subsets
  *
  * @author tukeping

@@ -63,6 +63,12 @@ import org.junit.Test;
 import java.util.Stack;
 
 /**
+ * string | stack
+ *
+ * airbnb | amazon | bloomberg | facebook | google | microsoft | twitter | zenefits
+ *
+ * frequency 5
+ *
  * @author tukeping
  * @since 2018/12/15
  **/

@@ -27,8 +27,6 @@ package com.tukeping.leetcode;
  * ⁠ [-1, 0, 1],
  * ⁠ [-1, -1, 2]
  * ]
- *
- *
  */
 
 import com.tukeping.tools.Prints;
@@ -46,6 +44,8 @@ import java.util.Set;
  * array | two-pointers
  *
  * adobe | amazon | bloomberg | facebook | microsoft
+ *
+ * frequency 5
  *
  * @author tukeping
  * @date 2019/12/23

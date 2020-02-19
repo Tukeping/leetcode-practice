@@ -25,7 +25,8 @@ package com.tukeping.leetcode;
  *
  */
 
-import org.junit.Assert;
+import com.tukeping.leetcode.structures.ListNode;
+import com.tukeping.tools.ListNodeHelper;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -33,44 +34,18 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * linked-list
+ *
+ * amazon | apple | linkedin | microsoft
+ *
+ * frequency 5
+ *
  * @author tukeping
  * @since 2019/12/27
  */
 public class LeetCode21 {
 
-    @Test
-    public void test() {
-        // 1->2->4, 1->3->4
-        ListNode n1 = new ListNode(1);
-        n1.next = new ListNode(2);
-        n1.next.next = new ListNode(4);
-
-        ListNode n2 = new ListNode(1);
-        n2.next = new ListNode(3);
-        n2.next.next = new ListNode(4);
-
-        ListNode ret = mergeTwoListsV1(n1, n2);
-
-        // 1->1->2->3->4->4
-
-        Assert.assertEquals(1, ret.val);
-        Assert.assertEquals(1, ret.next.val);
-        Assert.assertEquals(2, ret.next.next.val);
-        Assert.assertEquals(3, ret.next.next.next.val);
-        Assert.assertEquals(4, ret.next.next.next.next.val);
-        Assert.assertEquals(4, ret.next.next.next.next.next.val);
-    }
-
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-    }
-
-    public ListNode mergeTwoListsV1(ListNode l1, ListNode l2) {
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         ListNode preHead = new ListNode(-1);
 
         ListNode prev = preHead;
@@ -91,7 +66,7 @@ public class LeetCode21 {
         return preHead.next;
     }
 
-    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+    public ListNode mergeTwoListsV0(ListNode l1, ListNode l2) {
         List<Integer> list = new ArrayList<>();
 
         ListNode last1 = l1;
@@ -120,5 +95,15 @@ public class LeetCode21 {
         }
 
         return ret;
+    }
+
+    @Test
+    public void test() {
+        ListNode l1 = ListNodeHelper.build(new int[]{1, 2, 4}); // 1 -> 2 -> 4
+        ListNode l2 = ListNodeHelper.build(new int[]{1, 3, 4}); // 1 -> 3 -> 4
+        ListNode l3 = mergeTwoLists(l1, l2);
+
+        // 1 -> 1 -> 2 -> 3 -> 4 -> 4
+        ListNodeHelper.check(l3, new int[]{1, 1, 2, 3, 4, 4});
     }
 }

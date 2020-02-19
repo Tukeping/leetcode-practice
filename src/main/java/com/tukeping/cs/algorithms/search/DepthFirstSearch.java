@@ -1,8 +1,13 @@
 package com.tukeping.cs.algorithms.search;
 
+import com.tukeping.leetcode.structures.TreeNode;
+import com.tukeping.tools.TreeNodeHelper;
 import org.junit.Test;
 
 import java.util.LinkedList;
+import java.util.Stack;
+
+import static org.junit.Assert.assertFalse;
 
 /**
  * 深度搜索
@@ -31,6 +36,64 @@ import java.util.LinkedList;
  * @date 2020/1/17
  **/
 public class DepthFirstSearch {
+
+    /**
+     * 深度遍历 && 中序遍历: left -> root -> right
+     */
+
+    public boolean dfsLoop(TreeNode root) {
+        Stack<TreeNode> stack = new Stack<>();
+        long inorder = -Long.MAX_VALUE;
+
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            // If next element in inorder traversal
+            // is smaller than the previous one
+            // that's not BST.
+            if (root.val <= inorder) return false;
+            inorder = root.val;
+            root = root.right;
+        }
+
+        return true;
+    }
+
+    private long inorder = -Long.MAX_VALUE;
+
+    public boolean dfsRecursion(TreeNode root) {
+        if (root == null)
+            return true;
+
+        if (!dfsRecursion(root.left))
+            return false;
+
+        // If next element in inorder traversal
+        // is smaller than the previous one
+        // that's not BST.
+        if (root.val <= inorder)
+            return false;
+
+        inorder = root.val;
+        return dfsRecursion(root.right);
+    }
+
+    @Test
+    public void test7() {
+        TreeNode root = TreeNodeHelper.build(10, 5, 15, null, null, 6, 20);
+        boolean b = dfsLoop(root);
+        assertFalse(b);
+    }
+
+    @Test
+    public void test8() {
+        TreeNode root = TreeNodeHelper.build(3, null, 30, 10, null, null, 15, null, 45);
+        boolean b = dfsRecursion(root);
+        assertFalse(b);
+    }
 
     class Graph {
         private int nodeSize;

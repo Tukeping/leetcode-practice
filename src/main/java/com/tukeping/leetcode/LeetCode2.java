@@ -30,41 +30,22 @@ package com.tukeping.leetcode;
  *
  */
 
-// @lc code=start
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) { val = x; }
- * }
- */
-
+import com.tukeping.leetcode.structures.ListNode;
+import com.tukeping.tools.ListNodeHelper;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-
 /**
+ * linked-list | math
+ *
+ * adobe | airbnb | amazon | bloomberg | microsoft
+ *
+ * frequency 4
+ *
  * @author tukeping
  * @date 2020/1/9
  **/
 public class LeetCode2 {
 
-    public class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-        }
-    }
-
-    /**
-     * 1563/1563 cases passed (2 ms)
-     * Your runtime beats 99.96 % of java submissions
-     * Your memory usage beats 82.86 % of java submissions (44.9 MB)
-     */
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
         ListNode sentry = new ListNode(-1); // 哨兵
         ListNode pre = sentry; // 由于单向链表, 定义一个前节点指针
@@ -87,11 +68,6 @@ public class LeetCode2 {
         return sentry.next;
     }
 
-    /**
-     * 1563/1563 cases passed (2 ms)
-     * Your runtime beats 99.96 % of java submissions
-     * Your memory usage beats 87.31 % of java submissions (44.1 MB)
-     */
     public ListNode addTwoNumbersV2(ListNode l1, ListNode l2) {
         ListNode head = null;
         ListNode pre = null;
@@ -157,19 +133,10 @@ public class LeetCode2 {
      */
     @Test
     public void test() {
-        ListNode l1 = new ListNode(2);
-        l1.next = new ListNode(4);
-        l1.next.next = new ListNode(3);
-
-        ListNode l2 = new ListNode(5);
-        l2.next = new ListNode(6);
-        l2.next.next = new ListNode(4);
-
+        ListNode l1 = ListNodeHelper.build0(2, 4, 3);
+        ListNode l2 = ListNodeHelper.build0(5, 6, 4);
         ListNode l3 = addTwoNumbers(l1, l2);
-
-        assertThat(l3.val, is(7));
-        assertThat(l3.next.val, is(0));
-        assertThat(l3.next.next.val, is(8));
+        ListNodeHelper.check0(l3, 7, 0, 8);
     }
 
     /**
@@ -179,23 +146,10 @@ public class LeetCode2 {
      */
     @Test
     public void test2() {
-        ListNode l1 = new ListNode(2);
-        l1.next = new ListNode(4);
-        l1.next.next = new ListNode(3);
-
-        ListNode l2 = new ListNode(5);
-        l2.next = new ListNode(6);
-        l2.next.next = new ListNode(4);
-        l2.next.next.next = new ListNode(9);
-        l2.next.next.next.next = new ListNode(8);
-
+        ListNode l1 = ListNodeHelper.build0(2, 4, 3);
+        ListNode l2 = ListNodeHelper.build0(5, 6, 4, 9, 8);
         ListNode l3 = addTwoNumbers(l1, l2);
-
-        assertThat(l3.val, is(7));
-        assertThat(l3.next.val, is(0));
-        assertThat(l3.next.next.val, is(8));
-        assertThat(l3.next.next.next.val, is(9));
-        assertThat(l3.next.next.next.next.val, is(8));
+        ListNodeHelper.check0(l3, 7, 0, 8, 9, 8);
     }
 
     /**
@@ -205,34 +159,18 @@ public class LeetCode2 {
      */
     @Test
     public void test3() {
-        ListNode l1 = new ListNode(2);
-        l1.next = new ListNode(4);
-        l1.next.next = new ListNode(3);
-        l1.next.next.next = new ListNode(1);
-        l1.next.next.next.next = new ListNode(5);
-
-        ListNode l2 = new ListNode(5);
-        l2.next = new ListNode(6);
-        l2.next.next = new ListNode(4);
-
+        ListNode l1 = ListNodeHelper.build0(2, 4, 3, 1, 5);
+        ListNode l2 = ListNodeHelper.build0(5, 6, 4);
         ListNode l3 = addTwoNumbers(l1, l2);
-
-        assertThat(l3.val, is(7));
-        assertThat(l3.next.val, is(0));
-        assertThat(l3.next.next.val, is(8));
-        assertThat(l3.next.next.next.val, is(1));
-        assertThat(l3.next.next.next.next.val, is(5));
+        ListNodeHelper.check0(l3, 7, 0, 8, 1, 5);
     }
 
     @Test
     public void test4() {
-        ListNode l1 = new ListNode(5);
-        ListNode l2 = new ListNode(5);
-
+        ListNode l1 = ListNodeHelper.build0(5);
+        ListNode l2 = ListNodeHelper.build0(5);
         ListNode l3 = addTwoNumbers(l1, l2);
-
-        assertThat(l3.val, is(0));
-        assertThat(l3.next.val, is(1));
+        ListNodeHelper.check0(l3, 0, 1);
     }
 
     /**
@@ -241,15 +179,10 @@ public class LeetCode2 {
      */
     @Test
     public void test5() {
-        ListNode l1 = new ListNode(1);
-        ListNode l2 = new ListNode(9);
-        l2.next = new ListNode(9);
-
+        ListNode l1 = ListNodeHelper.build0(1);
+        ListNode l2 = ListNodeHelper.build0(9, 9);
         ListNode l3 = addTwoNumbers(l1, l2);
-
-        assertThat(l3.val, is(0));
-        assertThat(l3.next.val, is(0));
-        assertThat(l3.next.next.val, is(1));
+        ListNodeHelper.check0(l3, 0, 0, 1);
     }
 
     /**
@@ -258,16 +191,9 @@ public class LeetCode2 {
      */
     @Test
     public void test6() {
-        ListNode l1 = new ListNode(3);
-        l1.next = new ListNode(7);
-
-        ListNode l2 = new ListNode(9);
-        l2.next = new ListNode(2);
-
+        ListNode l1 = ListNodeHelper.build0(3, 7);
+        ListNode l2 = ListNodeHelper.build0(9, 2);
         ListNode l3 = addTwoNumbers(l1, l2);
-
-        assertThat(l3.val, is(2));
-        assertThat(l3.next.val, is(0));
-        assertThat(l3.next.next.val, is(1));
+        ListNodeHelper.check0(l3, 2, 0, 1);
     }
 }

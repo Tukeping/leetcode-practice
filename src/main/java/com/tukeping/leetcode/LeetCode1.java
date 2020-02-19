@@ -37,6 +37,12 @@ import java.util.Map;
 import static org.junit.Assert.assertEquals;
 
 /**
+ * array | hash-table
+ *
+ * adobe | airbnb | amazon | apple | bloomberg | dropbox | facebook | linkedin | microsoft | uber | yahoo | yelp
+ *
+ * frequency 5
+ *
  * @author tukeping
  * @since 2018/12/15
  **/

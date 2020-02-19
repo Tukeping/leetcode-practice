@@ -46,6 +46,8 @@ import static org.junit.Assert.assertThat;
  *
  * linkedin | microsoft
  *
+ * frequency 4
+ *
  * permutation
  *
  * @author tukeping

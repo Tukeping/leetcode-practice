@@ -1,4 +1,4 @@
-package com.tukeping.jdk;
+package com.tukeping.tools;
 
 import org.junit.Test;
 
@@ -11,7 +11,38 @@ import static org.junit.Assert.assertThat;
  * @author tukeping
  * @date 2020/2/11
  **/
-public class IntegerToBinary {
+public class Integers {
+
+    public static String toBinaryString(int n, int bitSize) {
+        char[] buf = new char[bitSize];
+        Arrays.fill(buf, '0');
+
+        if (n % 2 == 1) {
+            buf[0] = '1';
+            n--;
+        }
+
+        for (int k = 0; k < n / 2; k++)
+            fireCarry(buf, 1);
+
+        StringBuilder str = new StringBuilder(bitSize);
+
+        for (int i = bitSize - 1; i >= 0; i--)
+            str.append(buf[i]);
+
+        return str.toString();
+    }
+
+    private static void fireCarry(char[] buf, int start) {
+        for (int x = start; x <= 30; x++) {
+            if (buf[x] == '0') {
+                buf[x] = '1';
+                break;
+            } else {
+                buf[x] = '0';
+            }
+        }
+    }
 
     public String toBinaryString(int i) {
         char[] buf = new char[32];
@@ -62,17 +93,6 @@ public class IntegerToBinary {
         return 0;
     }
 
-    private void fireCarry(char[] buf, int start) {
-        for (int x = start; x <= 30; x++) {
-            if (buf[x] == '0') {
-                buf[x] = '1';
-                break;
-            } else {
-                buf[x] = '0';
-            }
-        }
-    }
-
     private void inverseBytes(char[] buf) {
         for (int i = 0; i <= 30; i++) {
             if (buf[i] == '0') {
@@ -96,5 +116,14 @@ public class IntegerToBinary {
         assertThat(toBinaryString(8), is("1000"));
         assertThat(toBinaryString(9), is("1001"));
         assertThat(toBinaryString(-8), is("11111111111111111111111111111000"));
+    }
+
+    @Test
+    public void test2() {
+        System.out.println(toBinaryString(0, 8));
+        System.out.println(toBinaryString(1, 8));
+        System.out.println(toBinaryString(2, 8));
+        System.out.println(toBinaryString(9, 8));
+        System.out.println(toBinaryString(255, 8));
     }
 }

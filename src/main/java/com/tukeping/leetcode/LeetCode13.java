@@ -77,6 +77,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * math | string
+ *
+ * bloomberg | facebook | microsoft | uber | yahoo
+ *
+ * frequency 4
+ *
  * @author tukeping
  * @since 2018/12/15
  **/

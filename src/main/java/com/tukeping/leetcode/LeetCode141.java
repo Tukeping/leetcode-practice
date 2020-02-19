@@ -19,16 +19,11 @@ package com.tukeping.leetcode;
  *
  * 为了表示给定链表中的环，我们使用整数 pos 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 pos 是 -1，则在该链表中没有环。
  *
- *
- *
  * 示例 1：
  *
  * 输入：head = [3,2,0,-4], pos = 1
  * 输出：true
  * 解释：链表中有一个环，其尾部连接到第二个节点。
- *
- *
- *
  *
  * 示例 2：
  *
@@ -36,26 +31,19 @@ package com.tukeping.leetcode;
  * 输出：true
  * 解释：链表中有一个环，其尾部连接到第一个节点。
  *
- *
- *
- *
  * 示例 3：
  *
  * 输入：head = [1], pos = -1
  * 输出：false
  * 解释：链表中没有环。
  *
- *
- *
- *
- *
- *
  * 进阶：
  *
  * 你能用 O(1)（即，常量）内存解决此问题吗？
- *
  */
 
+import com.tukeping.leetcode.structures.ListNode;
+import com.tukeping.tools.ListNodeHelper;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -68,27 +56,23 @@ import java.util.Set;
  **/
 public class LeetCode141 {
 
-    @Test
-    public void test1() {
-        ListNode head = new ListNode(3);
-        head.next = new ListNode(2);
-        head.next.next = new ListNode(0);
-        head.next.next.next = new ListNode(-4);
-        head.next.next.next.next = head.next;
-
-        boolean b = hasCycle(head);
-
-        Assert.assertTrue(b);
-    }
-
-    class ListNode {
-        int val;
-        ListNode next;
-
-        ListNode(int x) {
-            val = x;
-            next = null;
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false;
         }
+
+        ListNode slow = head;
+        ListNode fast = head.next;
+
+        while (slow != fast) {
+            if (fast == null || fast.next == null) {
+                return false;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        return true;
     }
 
     public boolean hasCycleV2(ListNode head) {
@@ -109,22 +93,10 @@ public class LeetCode141 {
         return false;
     }
 
-    public boolean hasCycle(ListNode head) {
-        if (head == null || head.next == null) {
-            return false;
-        }
-
-        ListNode turtle = head;
-        ListNode rabbit = head.next;
-
-        while (turtle != rabbit) {
-            if (rabbit == null || rabbit.next == null) {
-                return false;
-            }
-            turtle = turtle.next;
-            rabbit = rabbit.next.next;
-        }
-
-        return true;
+    @Test
+    public void test1() {
+        ListNode head = ListNodeHelper.buildCycle(new int[]{3, 2, 0, -4}, 1);
+        boolean b = hasCycle(head);
+        Assert.assertTrue(b);
     }
 }
