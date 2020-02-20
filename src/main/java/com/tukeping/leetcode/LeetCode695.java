@@ -48,11 +48,15 @@ package com.tukeping.leetcode;
 
 import org.junit.Test;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
  * array | depth-first-search
+ *
+ * Unknown
  *
  * @author tukeping
  * @date 2020/2/12
@@ -60,11 +64,42 @@ import static org.junit.Assert.assertThat;
 public class LeetCode695 {
 
     /**
-     * 注意: 给定的矩阵grid 的长度和宽度都不超过 50。
+     * 726/726 cases passed (3 ms)
+     * Your runtime beats 84.8 % of java submissions
+     * Your memory usage beats 85.51 % of java submissions (42 MB)
      */
-    public int maxAreaOfIsland(int[][] grid) {
 
-        return 0;
+    public int maxAreaOfIsland(int[][] grid) {
+        int nr = grid.length;
+        int cr = grid[0].length;
+
+        AtomicInteger areaN = new AtomicInteger(0);
+        int maxAreaN = 0;
+        for (int r = 0; r < nr; r++) {
+            for (int c = 0; c < cr; c++) {
+                if (grid[r][c] == 1) {
+                    areaN.set(0);
+                    dfs(grid, r, c, nr, cr, areaN);
+                    maxAreaN = Math.max(maxAreaN, areaN.get());
+                }
+            }
+        }
+
+        return maxAreaN;
+    }
+
+    private void dfs(int[][] grid, int r, int c, int nr, int cr, AtomicInteger N) {
+        if (r < 0 || c < 0 || r >= nr || c >= cr || grid[r][c] == 0) {
+            return;
+        }
+
+        grid[r][c] = 0;
+        N.getAndIncrement();
+
+        dfs(grid, r - 1, c, nr, cr, N);
+        dfs(grid, r + 1, c, nr, cr, N);
+        dfs(grid, r, c - 1, nr, cr, N);
+        dfs(grid, r, c + 1, nr, cr, N);
     }
 
     /**

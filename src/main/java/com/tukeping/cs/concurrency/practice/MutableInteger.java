@@ -1,4 +1,4 @@
-package com.tukeping.cs.concurrency.bookpractice;
+package com.tukeping.cs.concurrency.practice;
 
 /**
  * @author tukeping
