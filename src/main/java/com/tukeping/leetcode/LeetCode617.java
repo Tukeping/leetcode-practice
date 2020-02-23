@@ -47,6 +47,8 @@ import com.tukeping.leetcode.structures.TreeNode;
 import com.tukeping.tools.TreeNodeHelper;
 import org.junit.Test;
 
+import java.util.Stack;
+
 /**
  * @author tukeping
  * @date 2020/2/20
@@ -54,45 +56,63 @@ import org.junit.Test;
 public class LeetCode617 {
 
     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
-        TreeNode master, slave;
-        if (t1 == null) {
-            master = t2;
-            slave = t1;
-        } else {
-            master = t1;
-            slave = t2;
-        }
-        if (master != null && slave != null) {
-            master.val = master.val + slave.val;
-        }
-        dfs(master, slave);
-        return master;
+        if (t1 == null)
+            return t2;
+        if (t2 == null)
+            return t1;
+        return dfsLoop(t1, t2);
     }
 
-    private void dfs(TreeNode tree1, TreeNode tree2) {
-        if (tree1 == null && tree2 == null)
-            return;
+    /**
+     * 183/183 cases passed (3 ms)
+     * Your runtime beats 5.14 % of java submissions
+     * Your memory usage beats 11.28 % of java submissions (41.1 MB)
+     */
 
-        if (tree1 != null && tree2 != null) {
-            if (tree1.left != null && tree2.left != null) {
-                tree1.left.val = tree1.left.val + tree2.left.val;
-            } else if (tree1.left == null && tree2.left != null) {
-                tree1.left = tree2.left;
+    private TreeNode dfsLoop(TreeNode t1, TreeNode t2) {
+        Stack<TreeNode[]> stack = new Stack<>();
+        stack.push(new TreeNode[]{t1, t2});
+
+        while (!stack.isEmpty()) {
+            TreeNode[] nodes = stack.pop();
+
+            if (nodes[0] == null || nodes[1] == null) {
+                continue;
             }
-            if (tree1.right != null && tree2.right != null) {
-                tree1.right.val = tree1.right.val + tree2.right.val;
-            } else if (tree1.right == null && tree2.right != null) {
-                tree1.right = tree2.right;
+
+            nodes[0].val = nodes[0].val + nodes[1].val;
+
+            if (nodes[0].left == null) {
+                nodes[0].left = nodes[1].left;
+            } else {
+                stack.push(new TreeNode[]{nodes[0].left, nodes[1].left});
+            }
+
+            if (nodes[0].right == null) {
+                nodes[0].right = nodes[1].right;
+            } else {
+                stack.push(new TreeNode[]{nodes[0].right, nodes[1].right});
             }
         }
 
-        TreeNode tree1Left = (tree1 == null) ? null : tree1.left;
-        TreeNode tree1Right = (tree1 == null) ? null : tree1.right;
-        TreeNode tree2Left = (tree2 == null) ? null : tree2.left;
-        TreeNode tree2Right = (tree2 == null) ? null : tree2.right;
+        return t1;
+    }
 
-        dfs(tree1Left, tree2Left);
-        dfs(tree1Right, tree2Right);
+    /**
+     * 183/183 cases passed (0 ms)
+     * Your runtime beats 100 % of java submissions
+     * Your memory usage beats 10.94 % of java submissions (42 MB)
+     */
+
+    private TreeNode dfsRecursion(TreeNode t1, TreeNode t2) {
+        if (t1 == null)
+            return t2;
+        if (t2 == null)
+            return t1;
+        t1.val = t1.val + t2.val;
+        t1.left = dfsRecursion(t1.left, t2.left);
+        t1.right = dfsRecursion(t1.right, t2.right);
+        return t1;
     }
 
     /**

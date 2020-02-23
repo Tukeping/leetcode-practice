@@ -48,14 +48,11 @@ package com.tukeping.leetcode;
  *
  */
 
+import com.tukeping.tools.ListHelper;
 import org.junit.Test;
 
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 
 /**
  * array | backtracking
@@ -99,12 +96,12 @@ public class LeetCode39 {
      */
     @Test
     public void test1() {
-        List<List<Integer>> res = combinationSum(new int[]{2,3,6,7}, 7);
-        List<List<Integer>> expect = asList(
-                asList(7),
-                asList(2,2,3)
-        );
-        assertThat(res, containsInAnyOrder(expect.toArray()));
+        int[][] actual = ListHelper.asTwoDimArray(combinationSum(new int[]{2, 3, 6, 7}, 7));
+        int[][] expect = {
+                {7},
+                {2, 2, 3}
+        };
+        ListHelper.checkInAnyOrder(actual, expect);
     }
 
     /**
@@ -118,6 +115,22 @@ public class LeetCode39 {
      */
     @Test
     public void test2() {
+        int[][] actual = ListHelper.asTwoDimArray(combinationSum(new int[]{2, 3, 5}, 8));
+        int[][] expect = {
+                {2, 2, 2, 2},
+                {2, 3, 3},
+                {3, 5}
+        };
+        ListHelper.checkInAnyOrder(actual, expect);
+    }
 
+    @Test
+    public void test3() {
+        int[][] actual = ListHelper.asTwoDimArray(combinationSum(new int[]{2, 3, 6, 7}, 7));
+        int[][] expect = {
+                {2, 2, 3},
+                {7}
+        };
+        ListHelper.checkInAnyOrder(actual, expect);
     }
 }

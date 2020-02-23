@@ -25,13 +25,10 @@ package com.tukeping.leetcode;
  *
  * 说明:
  *
- *
  * 可能会有多种最长上升子序列的组合，你只需要输出对应的长度即可。
  * 你算法的时间复杂度应该为 O(n^2) 。
  *
- *
  * 进阶: 你能将算法的时间复杂度降低到 O(n log n) 吗?
- *
  */
 
 import org.junit.Test;
@@ -40,6 +37,10 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
 /**
+ * binary-search | dynamic-programming
+ *
+ * microsoft
+ *
  * @author tukeping
  * @date 2020/2/15
  **/

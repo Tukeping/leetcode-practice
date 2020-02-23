@@ -55,6 +55,21 @@ public class TreeNodeHelper {
         check0(a, 1, queue);
     }
 
+    public static void check(TreeNode actual, TreeNode expect) {
+        if (actual == null && expect == null) return;
+
+        if (actual == null) {
+            throw new AssertionError(String.format("actual not match expect: %d", expect.val));
+        } else if (expect == null) {
+            throw new AssertionError(String.format("expect not match actual: %d", actual.val));
+        }
+
+        assertThat(actual.val, is(expect.val));
+
+        check(actual.left, expect.left);
+        check(actual.right, expect.right);
+    }
+
     private static void check0(Integer[] a, int idx, LinkedList<TreeNode> queue) {
         if (idx >= a.length) return;
         if (queue.isEmpty()) return;

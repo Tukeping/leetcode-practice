@@ -48,16 +48,43 @@ package com.tukeping.leetcode;
 
 import org.junit.Test;
 
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 /**
  * array | dynamic-programming
+ *
+ * Unknown
  *
  * @author tukeping
  * @date 2020/2/16
  **/
 public class LeetCode123 {
 
+    /**
+     * {@link LeetCode121}
+     *
+     * k = 2
+     *
+     * k = 2 和前面题目的情况稍微不同，因为上面的情况都和 k 的关系不太大。要么 k 是正无穷，状态转移和 k 没关系了；要么 k = 1，跟 k = 0 这个 base case 挨得近，最后也没有存在感。
+     *
+     * 这道题 k = 2 和后面要讲的 k 是任意正整数的情况中，对 k 的处理就凸显出来了。我们直接写代码，边写边分析原因。
+     *
+     * 原始的动态转移方程，没有可化简的地方
+     * dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
+     * dp[i][k][1] = max(dp[i-1][k][1], dp[i-1][k-1][0] - prices[i])
+     */
+
     public int maxProfit(int[] prices) {
-        return 0;
+        int dp_i10 = 0, dp_i11 = Integer.MIN_VALUE;
+        int dp_i20 = 0, dp_i21 = Integer.MIN_VALUE;
+        for (int price : prices) {
+            dp_i20 = Math.max(dp_i20, dp_i21 + price);
+            dp_i21 = Math.max(dp_i21, dp_i10 - price);
+            dp_i10 = Math.max(dp_i10, dp_i11 + price);
+            dp_i11 = Math.max(dp_i11, -price);
+        }
+        return dp_i20;
     }
 
     /**
@@ -68,7 +95,8 @@ public class LeetCode123 {
      */
     @Test
     public void test1() {
-
+        int n = maxProfit(new int[]{3, 3, 5, 0, 0, 3, 1, 4});
+        assertThat(n, is(6));
     }
 
     /**
@@ -80,7 +108,8 @@ public class LeetCode123 {
      */
     @Test
     public void test2() {
-
+        int n = maxProfit(new int[]{1, 2, 3, 4, 5});
+        assertThat(n, is(4));
     }
 
     /**
@@ -90,6 +119,13 @@ public class LeetCode123 {
      */
     @Test
     public void test3() {
+        int n = maxProfit(new int[]{7, 6, 4, 3, 1});
+        assertThat(n, is(0));
+    }
 
+    @Test
+    public void test4() {
+        int n = maxProfit(new int[]{2, 1, 2, 0, 1});
+        assertThat(n, is(2));
     }
 }

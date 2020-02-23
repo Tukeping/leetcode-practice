@@ -26,8 +26,6 @@ package com.tukeping.leetcode;
  * ⁠ "()(())",
  * ⁠ "()()()"
  * ]
- *
- *
  */
 
 import java.util.List;
@@ -45,6 +43,7 @@ import java.util.List;
 public class LeetCode22 {
 
     public List<String> generateParenthesis(int n) {
+
         return null;
     }
 }

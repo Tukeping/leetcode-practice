@@ -43,6 +43,7 @@ import com.tukeping.tools.ListHelper;
 import com.tukeping.tools.TreeNodeHelper;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,15 +63,33 @@ import static org.hamcrest.core.Is.is;
  **/
 public class LeetCode102 {
 
-    /*
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        if (root == null) return Collections.emptyList();
+        List<List<Integer>> res = new ArrayList<>();
+        bfs0(root, 0, res);
+        return res;
+    }
+
+    private void bfs0(TreeNode root, int level, List<List<Integer>> levelList) {
+        if (levelList.size() == level)
+            levelList.add(new ArrayList<>());
+
+        levelList.get(level).add(root.val);
+
+        if (root.left != null)
+            bfs0(root.left, level + 1, levelList);
+
+        if (root.right != null)
+            bfs0(root.right, level + 1, levelList);
+    }
+
+    /**
      * 34/34 cases passed (2 ms)
      * Your runtime beats 19.46 % of java submissions
      * Your memory usage beats 5.14 % of java submissions (42.5 MB)
      */
 
-    public List<List<Integer>> levelOrder(TreeNode root) {
-        if (root == null) return Collections.emptyList();
-
+    private List<List<Integer>> bfs(TreeNode root) {
         List<List<Integer>> res = new LinkedList<>();
         res.add(Collections.singletonList(root.val));
 
@@ -181,10 +200,6 @@ public class LeetCode102 {
         ListHelper.check(actual, expect);
     }
 
-    /**
-     * 输入: [1,2,3,4,null,null,5]
-     * 输出: [[1],[2,3],[4,5]]
-     */
     @Test
     public void test4() {
         TreeNode root = TreeNodeHelper.build(1, 2, 3, 4, null, null, 5);
@@ -215,9 +230,6 @@ public class LeetCode102 {
 
     @Test
     public void test6() {
-        //[0,2,4,1,null,3,-1,5,1,null,6,null,8]
-        //[[0],[2,4],[1,3,-1],[5,1,6]]
-        //[[0],[2,4],[1,3,-1],[5,1,6,8]]
         TreeNode root = TreeNodeHelper.build(0, 2, 4, 1, null, 3, -1, 5, 1, null, 6, null, 8);
         List<List<Integer>> res = levelOrder(root);
         int[][] actual = ListHelper.asTwoDimArray(res);

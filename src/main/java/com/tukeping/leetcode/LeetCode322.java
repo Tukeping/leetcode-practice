@@ -63,7 +63,6 @@ public class LeetCode322 {
             }
             f[x] = (cost == Integer.MAX_VALUE) ? -1 : cost;
             min = Math.min(min, f[x]);
-//            System.out.println(String.format("f[%d] = %d", x, f[x]));
         }
         return f[amount];
     }
