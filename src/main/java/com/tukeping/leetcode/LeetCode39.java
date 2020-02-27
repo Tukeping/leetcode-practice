@@ -51,6 +51,8 @@ package com.tukeping.leetcode;
 import com.tukeping.tools.ListHelper;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,25 +67,27 @@ import java.util.List;
 public class LeetCode39 {
 
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
-        List<List<Integer>> res = new LinkedList<>();
-        backtrack(candidates, 0, target, new LinkedList<>(), res);
+        List<List<Integer>> res = new ArrayList<>();
+        Arrays.sort(candidates);
+        helper(candidates, candidates.length, 0, 0, target, new LinkedList<>(), res);
         return res;
     }
 
-    private void backtrack(int[] nums, int start, int target, LinkedList<Integer> track, List<List<Integer>> res) {
-        if (sumTrack(track) == target) {
-            res.add(new LinkedList<>(track));
+    private void helper(int[] nums, int len, int start, int sum, int target, LinkedList<Integer> track, List<List<Integer>> res) {
+        if (sum == target) {
+            res.add(new ArrayList<>(track));
+            return;
+        } else if (sum > target) {
+            return;
         }
 
-        for (int i = start; i < nums.length; i++) {
+        for (int i = start; i < len && sum + nums[i] <= target; i++) {
+            sum += nums[i];
             track.add(nums[i]);
-            backtrack(nums, i + 1, target, track, res);
+            helper(nums, len, i, sum, target, track, res);
+            sum -= nums[i];
             track.removeLast();
         }
-    }
-
-    private Integer sumTrack(LinkedList<Integer> track) {
-        return track.stream().mapToInt(Integer::intValue).sum();
     }
 
     /**
@@ -98,7 +102,7 @@ public class LeetCode39 {
     public void test1() {
         int[][] actual = ListHelper.asTwoDimArray(combinationSum(new int[]{2, 3, 6, 7}, 7));
         int[][] expect = {
-                {7},
+                {7, 0, 0},
                 {2, 2, 3}
         };
         ListHelper.checkInAnyOrder(actual, expect);
@@ -118,8 +122,8 @@ public class LeetCode39 {
         int[][] actual = ListHelper.asTwoDimArray(combinationSum(new int[]{2, 3, 5}, 8));
         int[][] expect = {
                 {2, 2, 2, 2},
-                {2, 3, 3},
-                {3, 5}
+                {2, 3, 3, 0},
+                {3, 5, 0, 0}
         };
         ListHelper.checkInAnyOrder(actual, expect);
     }
@@ -129,7 +133,33 @@ public class LeetCode39 {
         int[][] actual = ListHelper.asTwoDimArray(combinationSum(new int[]{2, 3, 6, 7}, 7));
         int[][] expect = {
                 {2, 2, 3},
-                {7}
+                {7, 0, 0}
+        };
+        ListHelper.checkInAnyOrder(actual, expect);
+    }
+
+    @Test
+    public void test4() {
+        int[][] actual = ListHelper.asTwoDimArray(combinationSum(new int[]{2, 3, 5}, 8));
+        int[][] expect = {
+                {2, 2, 2, 2},
+                {2, 3, 3, 0},
+                {3, 5, 0, 0}
+        };
+        ListHelper.checkInAnyOrder(actual, expect);
+    }
+
+    @Test
+    public void test5() {
+        int[][] actual = ListHelper.asTwoDimArray(combinationSum(new int[]{7, 3, 2}, 18));
+        int[][] expect = {
+                {2, 2, 2, 2, 2, 2, 2, 2, 2},
+                {2, 2, 2, 2, 2, 2, 3, 3, 0},
+                {2, 2, 2, 2, 3, 7, 0, 0, 0},
+                {2, 2, 2, 3, 3, 3, 3, 0, 0},
+                {2, 2, 7, 7, 0, 0, 0, 0, 0},
+                {2, 3, 3, 3, 7, 0, 0, 0, 0},
+                {3, 3, 3, 3, 3, 3, 0, 0, 0}
         };
         ListHelper.checkInAnyOrder(actual, expect);
     }

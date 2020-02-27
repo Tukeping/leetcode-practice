@@ -18,7 +18,6 @@ package com.tukeping.leetcode;
  * 给定一个可包含重复数字的序列，返回所有不重复的全排列。
  *
  * 示例:
- *
  * 输入: [1,1,2]
  * 输出:
  * [
@@ -26,18 +25,14 @@ package com.tukeping.leetcode;
  * ⁠ [1,2,1],
  * ⁠ [2,1,1]
  * ]
- *
  */
 
+import com.tukeping.tools.ListHelper;
 import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
 
 /**
  * backtracking
@@ -84,14 +79,21 @@ public class LeetCode47 {
      * ]
      */
     @Test
-    public void test() {
+    public void test1() {
         List<List<Integer>> ret = permuteUnique(new int[]{1, 1, 2});
         ret.forEach(arr -> System.out.println(arr.toString()));
-        List<List<Integer>> expect = asList(
-                asList(1, 1, 2),
-                asList(1, 2, 1),
-                asList(2, 1, 1)
-        );
-        assertThat(ret, containsInAnyOrder(expect.toArray()));
+        int[][] actual = ListHelper.asTwoDimArray(ret);
+        int[][] expect = {
+                {1, 1, 2},
+                {1, 2, 1},
+                {2, 1, 1}
+        };
+        ListHelper.checkInAnyOrder(actual, expect);
+    }
+
+    @Test
+    public void test2() {
+        List<List<Integer>> ret = permuteUnique(new int[]{1, 1, 0, 0, 1, -1, -1, 1});
+        ret.forEach(arr -> System.out.println(arr.toString()));
     }
 }

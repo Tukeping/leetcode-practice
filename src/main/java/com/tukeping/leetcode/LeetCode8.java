@@ -86,12 +86,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode8 {
 
-    /*
-     * 1079/1079 cases passed (5 ms)
-     * Your runtime beats 22.51 % of java submissions
-     * Your memory usage beats 5.04 % of java submissions (44.1 MB)
-     */
-
     public int myAtoi(String str) {
         if (null == str || str.isEmpty()) return 0;
 

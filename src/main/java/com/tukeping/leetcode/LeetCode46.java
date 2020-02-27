@@ -61,11 +61,6 @@ public class LeetCode46 {
         return res;
     }
 
-    /**
-     * 路径：记录在 track 中
-     * 选择列表：nums 中不存在于 track 的那些元素
-     * 结束条件：nums 中的元素全都在 track 中出现
-     **/
     private void backtrack(int[] nums, LinkedList<Integer> track, List<List<Integer>> res) {
         // 触发结束条件
         if (track.size() == nums.length) {
