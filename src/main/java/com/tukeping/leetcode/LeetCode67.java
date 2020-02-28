@@ -47,12 +47,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode67 {
 
-    /*
-     * 294/294 cases passed (3 ms)
-     * Your runtime beats 56.88 % of java submissions
-     * Your memory usage beats 5.01 % of java submissions (42.3 MB)
-     */
-
     public String addBinary(String a, String b) {
         int aLen = a.length();
         int bLen = b.length();

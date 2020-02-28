@@ -57,12 +57,6 @@ import static org.junit.Assert.assertNull;
  **/
 public class LeetCode49 {
 
-    /*
-     * 101/101 cases passed (8 ms)
-     * Your runtime beats 99.91 % of java submissions
-     * Your memory usage beats 24.77 % of java submissions (44.7 MB)
-     */
-
     public List<List<String>> groupAnagrams(String[] strs) {
         // corner case
         if (strs == null) return null;

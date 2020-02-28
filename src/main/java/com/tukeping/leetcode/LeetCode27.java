@@ -76,12 +76,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode27 {
 
-    /*
-     * 113/113 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 5.13 % of java submissions (41.1 MB)
-     */
-
     public int removeElement(int[] nums, int val) {
         int cur, gap, srcPos, destPos, moveLen, newLen = nums.length, restLen = newLen;
 

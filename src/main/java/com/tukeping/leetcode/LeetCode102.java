@@ -34,8 +34,6 @@ package com.tukeping.leetcode;
  * ⁠ [9,20],
  * ⁠ [15,7]
  * ]
- *
- *
  */
 
 import com.tukeping.leetcode.structures.TreeNode;
@@ -82,12 +80,6 @@ public class LeetCode102 {
         if (root.right != null)
             bfs0(root.right, level + 1, levelList);
     }
-
-    /**
-     * 34/34 cases passed (2 ms)
-     * Your runtime beats 19.46 % of java submissions
-     * Your memory usage beats 5.14 % of java submissions (42.5 MB)
-     */
 
     private List<List<Integer>> bfs(TreeNode root) {
         List<List<Integer>> res = new LinkedList<>();
