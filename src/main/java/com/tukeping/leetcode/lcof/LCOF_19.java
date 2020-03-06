@@ -6,7 +6,7 @@ package com.tukeping.leetcode.lcof;
  * @author tukeping
  * @date 2020/2/16
  **/
-public class Lcof19 {
+public class LCOF_19 {
 
 
 }

@@ -56,12 +56,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode3 {
 
-    /*
-     * 987/987 cases passed (2 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 11.31 % of java submissions (39 MB)
-     */
-
     /** sliding window optimized 2, time: O(n) space: O(m) **/
     public int lengthOfLongestSubstring(String s) {
         // ascii 128 [0,127]

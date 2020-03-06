@@ -10,6 +10,10 @@ import java.util.stream.Collectors;
  **/
 public final class Strings {
 
+    public static String arrayToString(Integer[] arr) {
+        return Arrays.stream(arr).map(String::valueOf).collect(Collectors.joining(","));
+    }
+
     public static String arrayToString(int[] arr) {
         return Arrays.stream(arr).boxed().map(String::valueOf).collect(Collectors.joining(","));
     }

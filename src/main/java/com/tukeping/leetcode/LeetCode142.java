@@ -57,12 +57,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode142 {
 
-    /*
-     * 16/16 cases passed (1 ms)
-     * Your runtime beats 55.3 % of java submissions
-     * Your memory usage beats 5 % of java submissions (46.6 MB)
-     */
-
     public ListNode detectCycle(ListNode head) {
         // no cycle should return null.
 
