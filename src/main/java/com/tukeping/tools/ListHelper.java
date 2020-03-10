@@ -22,19 +22,15 @@ public class ListHelper {
     }
 
     public static int[][] asTwoDimArray(List<List<Integer>> list) {
-        int maxD2Len = Integer.MIN_VALUE;
+        int[][] a = new int[list.size()][];
 
         for (int i = 0; i < list.size(); i++) {
-            maxD2Len = Math.max(maxD2Len, list.get(i).size());
-        }
-
-        int[][] a = new int[list.size()][maxD2Len];
-
-        for (int i = 0; i < list.size(); i++) {
-            List<Integer> innerList = list.get(i);
-            for (int j = 0; j < innerList.size(); j++) {
-                a[i][j] = innerList.get(j);
+            List<Integer> subList = list.get(i);
+            int[] b = new int[subList.size()];
+            for (int j = 0; j < subList.size(); j++) {
+                b[j] = subList.get(j);
             }
+            a[i] = b;
         }
 
         return a;

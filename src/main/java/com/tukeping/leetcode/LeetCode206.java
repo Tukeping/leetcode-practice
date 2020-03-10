@@ -24,7 +24,6 @@ package com.tukeping.leetcode;
  *
  * 进阶:
  * 你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
- *
  */
 
 import com.tukeping.leetcode.structures.ListNode;
@@ -41,31 +40,49 @@ import org.junit.Test;
  **/
 public class LeetCode206 {
 
-    /*
-     * 进阶:
-     * 你可以迭代或递归地反转链表。你能否用两种方法解决这道题？
-     */
+    public ListNode reverseList(ListNode head) {
+        ListNode pre = null;
+        ListNode cur = head;
+        ListNode next;
+        while (cur != null) {
+            next = cur.next;
+            cur.next = pre;
+            pre = cur;
+            cur = next;
+        }
+        return pre;
+    }
 
     /** time: O(n log n) space: O(1) **/
-    public ListNode reverseList(ListNode head) {
+    public ListNode reverseList2(ListNode head) {
         if (head == null) return null;
         ListNode tail = findTail(head);
         return loop(head, tail);
     }
 
+    public ListNode reverseListLoop(ListNode head) {
+        if (head == null || head.next == null) return head;
+
+        ListNode tail = head;
+        while (tail.next != null) tail = tail.next;
+
+        ListNode cur;
+        while (head != tail) {
+            cur = head;
+            head = head.next;
+            cur.next = tail.next;
+            tail.next = cur;
+        }
+
+        return head;
+    }
+
     private ListNode findTail(ListNode head) {
         ListNode tail = head;
-        while (tail.next != null) {
-            tail = tail.next;
-        }
+        while (tail.next != null) tail = tail.next;
         return tail;
     }
 
-    /**
-     * 27/27 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 5.13 % of java submissions (42.4 MB)
-     */
     private ListNode loop(ListNode head, ListNode tail) {
         ListNode cur;
         while (head != tail) {
@@ -77,11 +94,6 @@ public class LeetCode206 {
         return head;
     }
 
-    /**
-     * 27/27 cases passed (1 ms)
-     * Your runtime beats 7.75 % of java submissions
-     * Your memory usage beats 5.13 % of java submissions (41.9 MB)
-     */
     private ListNode recursion(ListNode head, ListNode tail) {
         if (head == tail) return head;
 

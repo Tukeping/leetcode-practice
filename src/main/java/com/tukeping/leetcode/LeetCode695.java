@@ -63,12 +63,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode695 {
 
-    /**
-     * 726/726 cases passed (3 ms)
-     * Your runtime beats 84.8 % of java submissions
-     * Your memory usage beats 85.51 % of java submissions (42 MB)
-     */
-
     public int maxAreaOfIsland(int[][] grid) {
         int nr = grid.length;
         int cr = grid[0].length;

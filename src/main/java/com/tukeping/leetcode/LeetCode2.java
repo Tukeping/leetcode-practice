@@ -26,8 +26,6 @@ package com.tukeping.leetcode;
  * 输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
  * 输出：7 -> 0 -> 8
  * 原因：342 + 465 = 807
- *
- *
  */
 
 import com.tukeping.leetcode.structures.ListNode;
@@ -47,6 +45,43 @@ import org.junit.Test;
 public class LeetCode2 {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        if (l1 == null || l2 == null) return l1 == null ? l2 : l1;
+
+        ListNode dummy = new ListNode(0);
+        ListNode pre = dummy;
+
+        int carry = 0, sum;
+        while (l1 != null && l2 != null) {
+            sum = l1.val + l2.val + carry;
+            carry = sum / 10;
+            pre.next = new ListNode(sum % 10);
+
+            l1 = l1.next;
+            l2 = l2.next;
+            pre = pre.next;
+        }
+
+        if (carry > 0) {
+            ListNode rest = (l1 == null) ? l2 : l1;
+            while (rest != null) {
+                sum = rest.val + carry;
+                carry = sum / 10;
+                pre.next = new ListNode(sum % 10);
+
+                rest = rest.next;
+                pre = pre.next;
+            }
+            if (carry > 0) {
+                pre.next = new ListNode(carry);
+            }
+        } else {
+            pre.next = (l1 == null) ? l2 : l1;
+        }
+
+        return dummy.next;
+    }
+
+    public ListNode addTwoNumbers2(ListNode l1, ListNode l2) {
         ListNode sentry = new ListNode(-1); // 哨兵
         ListNode pre = sentry; // 由于单向链表, 定义一个前节点指针
         int up = 0; // 进位
@@ -195,5 +230,13 @@ public class LeetCode2 {
         ListNode l2 = ListNodeHelper.build0(9, 2);
         ListNode l3 = addTwoNumbers(l1, l2);
         ListNodeHelper.check0(l3, 2, 0, 1);
+    }
+
+    @Test
+    public void test7() {
+        ListNode l1 = ListNodeHelper.build0(1);
+        ListNode l2 = ListNodeHelper.build0(9, 9);
+        ListNode l3 = addTwoNumbers(l1, l2);
+        ListNodeHelper.check0(l3, 0, 0, 1);
     }
 }

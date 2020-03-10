@@ -15,6 +15,20 @@ import static org.junit.Assert.assertThat;
  **/
 public class TreeNodeHelper {
 
+    public static TreeNode find(TreeNode root, Integer val) {
+        if (root == null) return null;
+
+        if (root.val == val) return root;
+
+        TreeNode left = find(root.left, val);
+        if (left != null) return left;
+
+        TreeNode right = find(root.right, val);
+        if (right != null) return right;
+
+        return null;
+    }
+
     public static TreeNode build(Integer... a) {
         LinkedList<TreeNode> queue = new LinkedList<>();
         TreeNode root = new TreeNode(a[0]);

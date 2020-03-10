@@ -59,15 +59,14 @@ import java.util.Queue;
 public class LeetCode226 {
 
     public TreeNode invertTree(TreeNode root) {
-        return invertTreeBFS(root);
+        return bfs(root);
     }
 
-    private TreeNode invertTreeDFS(TreeNode root) {
-        if (root == null)
-            return null;
+    private TreeNode dfs(TreeNode root) {
+        if (root == null) return null;
 
-        TreeNode right = invertTreeDFS(root.right);
-        TreeNode left = invertTreeDFS(root.left);
+        TreeNode right = dfs(root.right);
+        TreeNode left = dfs(root.left);
 
         root.left = right;
         root.right = left;
@@ -75,9 +74,8 @@ public class LeetCode226 {
         return root;
     }
 
-    private TreeNode invertTreeBFS(TreeNode root) {
-        if (root == null)
-            return null;
+    private TreeNode bfs(TreeNode root) {
+        if (root == null) return null;
 
         Queue<TreeNode> Q = new LinkedList<>();
         Q.add(root);

@@ -11,6 +11,15 @@ import static org.junit.Assert.assertThat;
  **/
 public class ListNodeHelper {
 
+    public static ListNode find(ListNode head, int val) {
+        ListNode cur = head;
+        while (cur != null) {
+            if (cur.val == val) return cur;
+            cur = cur.next;
+        }
+        return null;
+    }
+
     public static ListNode build0(int... a) {
         return build(a);
     }

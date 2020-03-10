@@ -40,11 +40,17 @@ import org.junit.Test;
  **/
 public class LeetCode83 {
 
-    /*
-     * 165/165 cases passed (1 ms)
-     * Your runtime beats 98.3 % of java submissions
-     * Your memory usage beats 5.04 % of java submissions (39.6 MB)
-     */
+    public ListNode deleteDuplicatesV2(ListNode head) {
+        if(head == null || head.next == null) return head;
+
+        ListNode cur = head;
+        while(cur.next != null) {
+            if(cur.val == cur.next.val) cur.next = cur.next.next;
+            else cur = cur.next;
+        }
+
+        return head;
+    }
 
     public ListNode deleteDuplicates(ListNode head) {
         // corner case

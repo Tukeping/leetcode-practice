@@ -103,6 +103,8 @@ public class LeetCode121 {
 
     /** time: O(n) space: O(n) **/
     private int dp(int[] prices) {
+        if (prices == null || prices.length <= 1) return 0;
+
         int len = prices.length;
         int[][] f = new int[len][2];
 
@@ -173,6 +175,20 @@ public class LeetCode121 {
                 if (prices[i] >= prices[j])
                     max = Math.max(max, prices[i] - prices[j]);
         return max;
+    }
+
+    @Test
+    public void test0() {
+        int n;
+
+        n = maxProfit(null);
+        assertThat(n, is(0));
+
+        n = maxProfit(new int[0]);
+        assertThat(n, is(0));
+
+        n = maxProfit(new int[]{1});
+        assertThat(n, is(0));
     }
 
     /**

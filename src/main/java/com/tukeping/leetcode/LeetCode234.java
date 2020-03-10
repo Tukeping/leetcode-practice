@@ -51,6 +51,36 @@ import static org.junit.Assert.assertTrue;
 public class LeetCode234 {
 
     public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) return true;
+        // find middle
+        ListNode slow = head;
+        ListNode fast = head;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        // reverse list
+        ListNode head2 = slow;
+        ListNode pre = null;
+        ListNode next;
+        while (head2 != null) {
+            next = head2.next;
+            head2.next = pre;
+            pre = head2;
+            head2 = next;
+        }
+        head2 = pre;
+
+        // is palindrome
+        while (head != null && head2 != null) {
+            if (head.val != head2.val) return false;
+            head = head.next;
+            head2 = head2.next;
+        }
+        return true;
+    }
+
+    public boolean isPalindrome2(ListNode head) {
         // corner case
         if (head == null) return true;
 
@@ -118,5 +148,11 @@ public class LeetCode234 {
     public void test2() {
         boolean b = isPalindrome(ListNodeHelper.build0(1, 2, 2, 1));
         assertTrue(b);
+    }
+
+    @Test
+    public void test3() {
+        boolean b = isPalindrome(ListNodeHelper.build0(1, 1, 2, 1));
+        assertFalse(b);
     }
 }

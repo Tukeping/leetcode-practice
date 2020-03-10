@@ -52,12 +52,6 @@ import java.util.List;
  **/
 public class LeetCode103 {
 
-    /**
-     * 33/33 cases passed (1 ms)
-     * Your runtime beats 98.72 % of java submissions
-     * Your memory usage beats 5.05 % of java submissions (38.3 MB)
-     */
-
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList<>();
         if (root == null) return res;
