@@ -63,15 +63,16 @@ public class LeetCode78 {
 
     public List<List<Integer>> subsets(int[] nums) {
         List<List<Integer>> res = new LinkedList<>();
-        backtrack(nums, 0, new LinkedList<>(), res);
+        subsets(nums, 0, new LinkedList<>(), res);
         return res;
     }
 
-    private void backtrack(int[] nums, int start, LinkedList<Integer> track, List<List<Integer>> res) {
+    private void subsets(int[] nums, int start, LinkedList<Integer> track, List<List<Integer>> res) {
         res.add(new LinkedList<>(track));
+
         for (int i = start; i < nums.length; i++) {
             track.add(nums[i]);
-            backtrack(nums, i + 1, track, res);
+            subsets(nums, i + 1, track, res);
             track.removeLast();
         }
     }

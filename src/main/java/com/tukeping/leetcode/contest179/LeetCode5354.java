@@ -1,7 +1,9 @@
-package com.tukeping.leetcode;
+package com.tukeping.leetcode.contest179;
 
 /*
  * 5354. 通知所有员工所需的时间
+ *
+ * https://leetcode-cn.com/problems/time-needed-to-inform-all-employees/
  *
  * 公司里有 n 名员工，每个员工的 ID 都是独一无二的，编号从 0 到 n - 1。公司的总负责人通过 headID 进行标识。
  *
@@ -16,69 +18,48 @@ package com.tukeping.leetcode;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
- * 答案是错的，需要修改
- *
  * @author tukeping
  * @date 2020/3/8
  **/
 public class LeetCode5354 {
 
+    private int ret = 0;
+
     public int numOfMinutes(int n, int headID, int[] manager, int[] informTime) {
-        if(n == 1) return informTime[0];
+        int[][] ch = parentToChildren(manager, n);
+        dfs(headID, ch, informTime, 0);
+        return ret;
+    }
 
-        Map<Integer, List<Integer>> map = new HashMap<>();
+    private void dfs(int cur, int[][] ch, int[] it, int time) {
+        ret = Math.max(ret, time);
+        time += it[cur];
+        for (int e : ch[cur]) {
+            dfs(e, ch, it, time);
+        }
+    }
 
-        for(int i = 0; i < n; i++) {
-            if(map.containsKey(manager[i])) {
-                List<Integer> list = map.get(manager[i]);
-                list.add(i);
-            } else {
-                List<Integer> list = new ArrayList<>();
-                list.add(i);
-                map.put(manager[i], list);
+    public int[][] parentToChildren(int[] par, int n) {
+        int[] ct = new int[n];
+        for (int i = 0; i < n; i++) {
+            if (par[i] >= 0) {
+                ct[par[i]]++;
             }
         }
-
-        LinkedList<Integer> linkedlist = new LinkedList<>();
-        Queue<int[]> queue = new LinkedList<>();
-        List<Integer> nps = map.get(-1);
-        for(int i = 0; i< nps.size(); i++) {
-            int[] xx = new int[2];
-            xx[0] = nps.get(i);
-            xx[1] = i == 0 ? informTime[nps.get(0)] : 0;
-            queue.add(xx);
+        int[][] g = new int[n][];
+        for (int i = 0; i < n; i++) {
+            g[i] = new int[ct[i]];
         }
-        int[] np;
-        while((np = queue.poll()) != null) {
-            linkedlist.add(np[1]);
-            List<Integer> list = map.get(np[0]);
-            if(list == null) {
-                break;
-            } else {
-                int t = informTime[list.get(0)];
-                for(int i = 0; i< list.size(); i++) {
-                    int[] xx = new int[2];
-                    xx[0] = list.get(i);
-                    xx[1] = i == 0 ? t : 0;
-                    queue.add(xx);
-                }
+        for (int i = 0; i < n; i++) {
+            if (par[i] >= 0) {
+                g[par[i]][--ct[par[i]]] = i;
             }
         }
-
-        int sum = 0;
-        for(int x : linkedlist) {
-            sum += x;
-        }
-
-        return sum;
+        return g;
     }
 
     /**
@@ -88,7 +69,8 @@ public class LeetCode5354 {
      */
     @Test
     public void test1() {
-
+        int n = numOfMinutes(1, 0, new int[]{-1}, new int[]{0});
+        assertThat(n, is(0));
     }
 
     /**
@@ -99,7 +81,8 @@ public class LeetCode5354 {
      */
     @Test
     public void test2() {
-
+        int n = numOfMinutes(6, 2, new int[]{2, 2, -1, 2, 2, 2}, new int[]{0, 0, 1, 0, 0, 0});
+        assertThat(n, is(1));
     }
 
     /**
@@ -115,7 +98,8 @@ public class LeetCode5354 {
      */
     @Test
     public void test3() {
-
+        int n = numOfMinutes(7, 6, new int[]{1, 2, 3, 4, 5, 6, -1}, new int[]{0, 6, 5, 4, 3, 2, 1});
+        assertThat(n, is(21));
     }
 
     /**
@@ -127,7 +111,8 @@ public class LeetCode5354 {
      */
     @Test
     public void test4() {
-
+        int n = numOfMinutes(15, 0, new int[]{-1, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6}, new int[]{1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0});
+        assertThat(n, is(3));
     }
 
     /**
@@ -136,6 +121,7 @@ public class LeetCode5354 {
      */
     @Test
     public void test5() {
-
+        int n = numOfMinutes(4, 2, new int[]{3, 3, -1, 2}, new int[]{0, 0, 162, 914});
+        assertThat(n, is(1076));
     }
 }

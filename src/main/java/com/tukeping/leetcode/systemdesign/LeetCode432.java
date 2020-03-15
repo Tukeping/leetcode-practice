@@ -24,9 +24,7 @@ package com.tukeping.leetcode.systemdesign;
  * GetMaxKey() - 返回 key 中值最大的任意一个。如果没有元素存在，返回一个空字符串""。
  * GetMinKey() - 返回 key 中值最小的任意一个。如果没有元素存在，返回一个空字符串""。
  *
- *
  * 挑战：以 O(1) 的时间复杂度实现所有操作。
- *
  */
 
 import org.junit.Test;
@@ -49,15 +47,6 @@ import static org.junit.Assert.assertThat;
  * @date 2020/2/16
  **/
 public class LeetCode432 {
-
-    /*
-     * Your AllOne object will be instantiated and called as such:
-     * AllOne obj = new AllOne();
-     * obj.inc(key);
-     * obj.dec(key);
-     * String param_3 = obj.getMaxKey();
-     * String param_4 = obj.getMinKey();
-     */
 
     class AllOne {
         class KeyNode {

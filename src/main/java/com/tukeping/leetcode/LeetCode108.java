@@ -50,10 +50,6 @@ public class LeetCode108 {
      * 中序遍历(inorder), left -> root -> right !!!
      * 前序遍历(preorder), root -> left -> right
      * 后序遍历(postorder), left -> right -> root
-     *
-     * 32/32 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 5.02 % of java submissions (42.2 MB)
      */
     private TreeNode inorder(int[] nums, int left, int right) {
         if (left > right) return null;

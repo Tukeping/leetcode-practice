@@ -1,7 +1,9 @@
-package com.tukeping.leetcode;
+package com.tukeping.leetcode.contest179;
 
 /*
  * 5352. 生成每种字符都是奇数个的字符串
+ *
+ * https://leetcode-cn.com/problems/generate-a-string-with-characters-that-have-odd-counts/
  *
  * 给你一个整数 n，请你返回一个含 n 个字符的字符串，其中每种字符在该字符串中都恰好出现 奇数次 。
  *
@@ -10,6 +12,9 @@ package com.tukeping.leetcode;
 
 import org.junit.Test;
 
+import java.util.Collections;
+
+import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -20,6 +25,13 @@ import static org.junit.Assert.assertThat;
 public class LeetCode5352 {
 
     public String generateTheString(int n) {
+        if (n % 2 == 1)
+            return String.join("", Collections.nCopies(n, "a"));
+        else
+            return "a" + String.join("", Collections.nCopies(n - 1, "b"));
+    }
+
+    public String generateTheString2(int n) {
         if (n == 1) return "a";
 
         char[] chars = new char[n];
@@ -45,7 +57,7 @@ public class LeetCode5352 {
     @Test
     public void test1() {
         String res = generateTheString(4);
-        assertThat(res, is("aaab"));
+        assertThat(res, anyOf(is("aaab"), is("abbb")));
     }
 
     /**

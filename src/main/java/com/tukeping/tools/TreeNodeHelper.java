@@ -4,6 +4,8 @@ import com.tukeping.leetcode.structures.TreeNode;
 import org.junit.Test;
 
 import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNull;
@@ -14,6 +16,25 @@ import static org.junit.Assert.assertThat;
  * @date 2020/2/18
  **/
 public class TreeNodeHelper {
+
+    public static boolean isBalancedBST(TreeNode root) {
+        if (root == null) return true;
+        if (root.left == null && root.right == null) return true;
+        AtomicBoolean ans = new AtomicBoolean(true);
+        depth(root, 0, ans);
+        return ans.get();
+    }
+
+    private static int depth(TreeNode root, int level, AtomicBoolean ans) {
+        if (root == null) return level;
+        int L = depth(root.left, level + 1, ans);
+        int R = depth(root.right, level + 1, ans);
+        if (ans.get()) {
+            int N = Math.abs(L - R);
+            ans.set(N == 0 || N == 1);
+        }
+        return Math.max(L, R);
+    }
 
     public static TreeNode find(TreeNode root, Integer val) {
         if (root == null) return null;
@@ -67,6 +88,22 @@ public class TreeNodeHelper {
         assertThat(root.val, is(a[0]));
         queue.addLast(root);
         check0(a, 1, queue);
+    }
+
+    public static void check(List<TreeNode> actuals, List<TreeNode> expects) {
+        for (TreeNode actual : actuals) {
+            boolean pass = false;
+            for (TreeNode expect : expects) {
+                try {
+                    check(actual, expect);
+                    pass = true;
+                } catch (AssertionError ignore) {
+                }
+            }
+            if (!pass) {
+                throw new AssertionError("actual not match expect");
+            }
+        }
     }
 
     public static void check(TreeNode actual, TreeNode expect) {

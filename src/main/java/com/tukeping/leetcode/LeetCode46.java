@@ -29,7 +29,6 @@ package com.tukeping.leetcode;
  * ⁠ [3,1,2],
  * ⁠ [3,2,1]
  * ]
- *
  */
 
 import org.junit.Test;
@@ -57,25 +56,20 @@ public class LeetCode46 {
 
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new LinkedList<>();
-        backtrack(nums, new LinkedList<>(), res);
+        permute(nums, new LinkedList<>(), res);
         return res;
     }
 
-    private void backtrack(int[] nums, LinkedList<Integer> track, List<List<Integer>> res) {
-        // 触发结束条件
+    private void permute(int[] nums, LinkedList<Integer> track, List<List<Integer>> res) {
         if (track.size() == nums.length) {
             res.add(new LinkedList<>(track));
             return;
         }
 
         for (int num : nums) {
-            // 排除不合法的选择
             if (track.contains(num)) continue;
-            // 做选择
             track.add(num);
-            // 进入下一层决策树
-            backtrack(nums, track, res);
-            // 取消选择
+            permute(nums, track, res);
             track.removeLast();
         }
     }

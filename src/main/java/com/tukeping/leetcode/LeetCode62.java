@@ -56,12 +56,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode62 {
 
-    /**
-     * 62/62 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 5.05 % of java submissions (36.2 MB)
-     */
-
     public int uniquePaths(int m, int n) {
         int[] f = new int[n];
         Arrays.fill(f, 1);

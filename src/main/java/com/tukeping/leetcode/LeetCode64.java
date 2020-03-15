@@ -29,11 +29,8 @@ package com.tukeping.leetcode;
  * ]
  * 输出: 7
  * 解释: 因为路径 1→3→1→1→1 的总和最小。
- *
- *
  */
 
-import com.tukeping.tools.annotation.Cost;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -47,18 +44,96 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode64 {
 
-    @Cost
+    private int[][] mem;
+
     public int minPathSum(int[][] grid) {
-        return minPathSumBruteForce(0, 0, grid);
+        int R = grid.length, C = grid[0].length;
+        mem = new int[R][C];
+        return dp(grid, R - 1, C - 1);
     }
 
-    /** time: O(2^(m+n)) space: O(m+n) **/
-    public int minPathSumBruteForce(int m, int n, int[][] grid) {
+    public int dp(int[][] grid, int r, int c) {
+        if (r == 0 && c == 0) return grid[0][0];
+        int len = Integer.MAX_VALUE;
+        if (r - 1 >= 0) {
+            if (mem[r - 1][c] != 0) {
+                len = Math.min(len, mem[r - 1][c] + grid[r][c]);
+            } else {
+                int temp = dp(grid, r - 1, c);
+                mem[r - 1][c] = temp;
+                len = Math.min(len, mem[r - 1][c] + grid[r][c]);
+            }
+        }
+        if (c - 1 >= 0) {
+            if (mem[r][c - 1] != 0) {
+                len = Math.min(len, mem[r][c - 1] + grid[r][c]);
+            } else {
+                int temp = dp(grid, r, c - 1);
+                mem[r][c - 1] = temp;
+                len = Math.min(len, mem[r][c - 1] + grid[r][c]);
+            }
+        }
+        return len;
+    }
+
+    /** DP time: O(m*n) space: O(1) **/
+    public int minPathSum4(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j > 0) grid[i][j] += grid[i][j - 1];
+                else if (j == 0 && i > 0) grid[i][j] += grid[i - 1][j];
+                else if (i > 0) grid[i][j] += Math.min(grid[i - 1][j], grid[i][j - 1]);
+            }
+        }
+        return grid[m - 1][n - 1];
+    }
+
+    /** DP time: O(m*n) space: O(m) **/
+    public int minPathSum3(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        int[] dp = new int[n];
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j > 0) dp[j] = grid[i][j] + dp[j - 1];
+                else if (j == 0 && i > 0) dp[j] = grid[i][j] + dp[j];
+                else if (i > 0) dp[j] = grid[i][j] + Math.min(dp[j], dp[j - 1]);
+                else dp[j] = grid[i][j];
+            }
+        }
+        return dp[n - 1];
+    }
+
+    /** DP time: O(m*n) space: O(m*n) **/
+    public int minPathSum2(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+
+        int[][] dp = new int[m][n];
+        for (int i = 0; i < m; i++) {
+            System.arraycopy(grid[i], 0, dp[i], 0, n);
+        }
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (i == 0 && j > 0) dp[i][j] += dp[i][j - 1];
+                else if (j == 0 && i > 0) dp[i][j] += dp[i - 1][j];
+                else if (i > 0) dp[i][j] += Math.min(dp[i][j - 1], dp[i - 1][j]);
+            }
+        }
+
+        return dp[m - 1][n - 1];
+    }
+
+    /** BruteForce time: O(2^(m+n)) space: O(m+n) **/
+    public int minPathSum(int m, int n, int[][] grid) {
         if (m == grid.length || n == grid[0].length) return Integer.MAX_VALUE;
         if (m == grid.length - 1 && n == grid[0].length - 1) return grid[m][n];
         return grid[m][n] + Math.min(
-                minPathSumBruteForce(m + 1, n, grid),
-                minPathSumBruteForce(m, n + 1, grid));
+                minPathSum(m + 1, n, grid),
+                minPathSum(m, n + 1, grid));
     }
 
     @Test

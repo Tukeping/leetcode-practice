@@ -42,18 +42,10 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode53 {
 
-    /**
-     * 202/202 cases passed (1 ms)
-     * Your runtime beats 99.64 % of java submissions
-     * Your memory usage beats 8.59 % of java submissions (41.4 MB)
-     */
-
     public int maxSubArray(int[] nums) {
         int n = nums.length, maxSum = nums[0];
         for (int i = 1; i < n; i++) {
-            if (nums[i - 1] > 0) {
-                nums[i] += nums[i - 1];
-            }
+            if (nums[i - 1] > 0) nums[i] += nums[i - 1];
             maxSum = Math.max(maxSum, nums[i]);
         }
         return maxSum;

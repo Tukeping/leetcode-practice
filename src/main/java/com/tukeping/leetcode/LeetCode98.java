@@ -77,15 +77,14 @@ public class LeetCode98 {
      * 所有左子树和右子树自身必须也是二叉搜索树。
      */
 
-    public boolean isValidBST(TreeNode root) {
-        return dfsRecursionSimplify(root);
-    }
+    private long inorder = Long.MIN_VALUE;
 
-    /*
-     * 75/75 cases passed (2 ms)
-     * Your runtime beats 40.26 % of java submissions
-     * Your memory usage beats 5.11 % of java submissions (44.2 MB)
-     */
+    public boolean isValidBST(TreeNode root) {
+        return root == null
+                || isValidBST(root.left)
+                && inorder < (inorder = root.val)
+                && isValidBST(root.right);
+    }
 
     private boolean dfsLoop(TreeNode root) {
         Stack<TreeNode> stack = new Stack<>();
@@ -108,36 +107,19 @@ public class LeetCode98 {
         return true;
     }
 
-    /*
-     * 75/75 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 5.11 % of java submissions (44.2 MB)
-     */
-
-    private long inorder = -Long.MAX_VALUE;
-
     private boolean dfsRecursion(TreeNode root) {
-        if (root == null)
-            return true;
+        if (root == null) return true;
 
-        if (!dfsRecursion(root.left))
-            return false;
+        if (!dfsRecursion(root.left)) return false;
 
         // If next element in inorder traversal
         // is smaller than the previous one
         // that's not BST.
-        if (root.val <= inorder)
-            return false;
+        if (root.val <= inorder) return false;
 
         inorder = root.val;
-        return dfsRecursion(root.right);
-    }
 
-    private boolean dfsRecursionSimplify(TreeNode root) {
-        return (root == null)
-                || dfsRecursionSimplify(root.left)
-                && inorder < (inorder = root.val)
-                && dfsRecursionSimplify(root.right);
+        return dfsRecursion(root.right);
     }
 
     /**

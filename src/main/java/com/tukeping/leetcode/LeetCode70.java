@@ -56,26 +56,43 @@ import static org.hamcrest.core.Is.is;
  **/
 public class LeetCode70 {
 
-    /** time: O(n) space:O(n) **/
+    /** DP 压缩状态空间 time: O(n) space:O(1) **/
     public int climbStairs(int n) {
-        int[] f = new int[n <= 2 ? 3 : n + 1];
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        if (n == 2) return 2;
+
+        // 初始化状态
+        int prepre = 1, pre = 2, cur = 0;
+        for (int x = 3; x <= n; x++) {
+            // 状态转移方程
+            cur = (x - 2 >= 0) ? pre + prepre : prepre;
+            prepre = pre;
+            pre = cur;
+        }
+
+        return cur;
+    }
+
+    /** DP time: O(n) space:O(n) **/
+    public int climbStairs2(int n) {
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        if (n == 2) return 2;
+
+        // 初始化状态
+        int[] f = new int[n + 1];
         f[0] = 0;
         f[1] = 1;
         f[2] = 2;
-        if (n <= 2) return f[n];
-
-        int max = Integer.MIN_VALUE;
 
         for (int x = 3; x <= n; x++) {
-            int cost = Integer.MIN_VALUE;
-            if (x - 1 >= 0) cost = f[x - 1];
-            if (x - 2 >= 0) cost += f[x - 2];
-            f[x] = cost;
+            // 状态转移方程
+            f[x] = (x - 2 >= 0) ? f[x - 1] + f[x - 2] : f[x - 1];
             System.out.println(String.format("f[%d] = %d", x, f[x]));
-            max = Math.max(max, f[x]);
         }
 
-        return max;
+        return f[n];
     }
 
     @Test
@@ -106,5 +123,11 @@ public class LeetCode70 {
     public void test4() {
         int n = climbStairs(5);
         assertThat(n, is(8));
+    }
+
+    @Test
+    public void test5() {
+        int n = climbStairs(10);
+        assertThat(n, is(89));
     }
 }

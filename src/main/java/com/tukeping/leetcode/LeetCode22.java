@@ -32,7 +32,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
@@ -51,30 +50,19 @@ import static org.junit.Assert.assertThat;
 public class LeetCode22 {
 
     public List<String> generateParenthesis(int n) {
-        // corner case
-        if (n <= 0) return Collections.emptyList();
-
-        // prepare
         List<String> res = new ArrayList<>();
-
-        // backtracking
-        helper(res, "", 0, 0, n);
+        helper(n, "", 0, 0, res);
         return res;
     }
 
-    private void helper(List<String> res, String cur, int open, int close, int max) {
-        if (cur.length() == max * 2) {
+    private void helper(int n, String cur, int open, int close, List<String> res) {
+        if (cur.length() == n * 2) {
             res.add(cur);
             return;
         }
 
-        if (open < max) {
-            helper(res, cur + "(", open + 1, close, max);
-        }
-
-        if (close < open) {
-            helper(res, cur + ")", open, close + 1, max);
-        }
+        if (open < n) helper(n, cur + "(", open + 1, close, res);
+        if (close < open) helper(n, cur + ")", open, close + 1, res);
     }
 
     /**

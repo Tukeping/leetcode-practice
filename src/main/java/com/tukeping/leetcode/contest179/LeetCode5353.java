@@ -1,7 +1,9 @@
-package com.tukeping.leetcode;
+package com.tukeping.leetcode.contest179;
 
 /*
  * 5353. 灯泡开关 III
+ *
+ * https://leetcode-cn.com/problems/bulb-switcher-iii/
  *
  * 房间中有 n 枚灯泡，编号从 1 到 n，自左向右排成一排。最初，所有的灯都是关着的。
  *
@@ -26,6 +28,19 @@ import static org.junit.Assert.assertThat;
 public class LeetCode5353 {
 
     public int numTimesAllBlue(int[] light) {
+        int n = light.length;
+        int max = 0;
+        int ret = 0;
+        for (int i = 0; i < n; i++) {
+            max = Math.max(max, light[i]);
+            if (max == i + 1) {
+                ret++;
+            }
+        }
+        return ret;
+    }
+
+    public int numTimesAllBlue2(int[] light) {
         if (light == null) return 0;
 
         int n = light.length;
