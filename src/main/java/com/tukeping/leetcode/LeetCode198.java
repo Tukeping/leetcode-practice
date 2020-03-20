@@ -48,12 +48,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode198 {
 
-    /*
-     * 69/69 cases passed (1 ms)
-     * Your runtime beats 9 % of java submissions
-     * Your memory usage beats 5.05 % of java submissions (37.1 MB)
-     */
-
     /**
      * 动态规划方程:
      * Max(Money) = f(x)

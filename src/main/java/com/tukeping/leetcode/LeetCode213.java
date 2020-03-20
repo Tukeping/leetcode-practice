@@ -50,12 +50,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode213 {
 
-    /**
-     * 74/74 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 5.12 % of java submissions (37.3 MB)
-     */
-
     public int rob(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
 

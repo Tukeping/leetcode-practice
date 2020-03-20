@@ -48,9 +48,6 @@ package com.tukeping.leetcode;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-
 /**
  * 给你一个整数数组 nums 和一个整数 k。
  *
@@ -63,6 +60,27 @@ import java.util.Deque;
  **/
 public class LeetCode1248 {
 
+    public int numberOfSubarrays(int[] nums, int k) {
+        int len = nums.length, res = 0, feed = 0;
+        int[] arr = new int[len + 2];
+        for (int i = 0; i < len; i++) {
+            // if it is odd
+            if ((nums[i] & 1) == 1) {
+                arr[++feed] = i;
+            }
+        }
+
+        // left border
+        arr[0] = -1;
+        // right border
+        arr[feed + 1] = len;
+
+        for (int i = 1; i + k < feed + 2; i++) {
+            res += (arr[i] - arr[i - 1]) * (arr[i + k] - arr[i + k - 1]);
+        }
+        return res;
+    }
+
     /**
      * 输入：nums = [1,1,2,1,1], k = 3
      * 输出：2
@@ -73,7 +91,7 @@ public class LeetCode1248 {
      */
     @Test
     public void test1() {
-        int[] nums = new int[]{1,1,2,1,1};
+        int[] nums = new int[]{1, 1, 2, 1, 1};
         int k = 3;
 
         int n = numberOfSubarrays(nums, k);
@@ -88,7 +106,7 @@ public class LeetCode1248 {
      */
     @Test
     public void test2() {
-        int[] nums = new int[]{2,4,6};
+        int[] nums = new int[]{2, 4, 6};
         int k = 1;
 
         int n = numberOfSubarrays(nums, k);
@@ -105,7 +123,7 @@ public class LeetCode1248 {
      */
     @Test
     public void test3() {
-        int[] nums = new int[]{2,2,2,1,2,2,1,2,2,2};
+        int[] nums = new int[]{2, 2, 2, 1, 2, 2, 1, 2, 2, 2};
         int k = 2;
 
         int n = numberOfSubarrays(nums, k);
@@ -119,52 +137,11 @@ public class LeetCode1248 {
      */
     @Test
     public void test4() {
-        int[] nums = new int[]{2044,96397,50143};
+        int[] nums = new int[]{2044, 96397, 50143};
         int k = 1;
 
         int n = numberOfSubarrays(nums, k);
 
         Assert.assertEquals(3, n);
-    }
-
-    public int numberOfSubarrays(int[] nums, int k) {
-        int count = 0, currentOddNum = 0;
-        int oddIndexStart = -1, oddIndexEnd = -1;
-
-        Deque<Integer> stack = new ArrayDeque<>();
-
-        for (int i = 0; i < nums.length; i++) {
-            // 找到 奇数
-            if(nums[i] % 2 != 0) {
-                stack.add(i);
-
-                currentOddNum ++;
-
-                // 第一次标记 奇数 位置
-                if(oddIndexStart == -1) {
-                    oddIndexStart = i;
-                    stack.pop();
-                }
-                // 又找到了下一个 奇数 位置
-                else if(oddIndexEnd != -1) {
-                    // 计算子数组个数
-                    count += (oddIndexStart + 1) * (i - oddIndexEnd);
-                    // start后的下一个奇数的位置
-                    oddIndexStart = stack.pop();
-                    oddIndexEnd = i;
-                }
-
-                // 如果当前找到的奇数个数符合连续k个奇数个数, 只会命中一次
-                if(currentOddNum == k) {
-                    oddIndexEnd = i;
-                }
-            }
-        }
-
-        if(oddIndexEnd - oddIndexStart + 1 == k) {
-            count += nums.length - oddIndexEnd;
-        }
-
-        return count;
     }
 }

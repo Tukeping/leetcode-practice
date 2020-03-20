@@ -1,4 +1,4 @@
-package com.tukeping.leetcode.systemdesign;
+package com.tukeping.leetcode;
 
 /*
  * @lc app=leetcode.cn id=146 lang=java
