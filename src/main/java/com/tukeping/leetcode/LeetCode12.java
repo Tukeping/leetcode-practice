@@ -68,6 +68,11 @@ package com.tukeping.leetcode;
  * 解释: M = 1000, CM = 900, XC = 90, IV = 4.
  */
 
+import org.junit.Test;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
 /**
  * math | string
  *
@@ -81,8 +86,59 @@ package com.tukeping.leetcode;
 public class LeetCode12 {
 
     public String intToRoman(int num) {
+
         return null;
     }
 
+    /**
+     * 输入: 3
+     * 输出: "III"
+     */
+    @Test
+    public void test1() {
+        String s = intToRoman(3);
+        assertThat(s, is("III"));
+    }
 
+    /**
+     * 输入: 4
+     * 输出: "IV"
+     */
+    @Test
+    public void test2() {
+        String s = intToRoman(4);
+        assertThat(s, is("IV"));
+    }
+
+    /**
+     * 输入: 9
+     * 输出: "IX"
+     */
+    @Test
+    public void test3() {
+        String s = intToRoman(9);
+        assertThat(s, is("IX"));
+    }
+
+    /**
+     * 输入: 58
+     * 输出: "LVIII"
+     * 解释: L = 50, V = 5, III = 3.
+     */
+    @Test
+    public void test4() {
+        String s = intToRoman(58);
+        assertThat(s, is("LVIII"));
+    }
+
+    /**
+     * 输入: 1994
+     * 输出: "MCMXCIV"
+     * 解释: M = 1000, CM = 900, XC = 90, IV = 4.
+     */
+    @Test
+    public void test5() {
+        String s = intToRoman(1994);
+        assertThat(s, is("MCMXCIV"));
+    }
 }

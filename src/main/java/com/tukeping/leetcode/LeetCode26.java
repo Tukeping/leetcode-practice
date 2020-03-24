@@ -52,12 +52,12 @@ package com.tukeping.leetcode;
  * for (int i = 0; i < len; i++) {
  * print(nums[i]);
  * }
- *
- *
  */
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * @author tukeping
@@ -66,40 +66,60 @@ import org.junit.Test;
 public class LeetCode26 {
 
     public int removeDuplicates(int[] nums) {
-        return 0;
+        if (nums.length == 0) return 0;
+        int i = 0;
+        for (int j = 1; j < nums.length; j++) {
+            if (nums[j] != nums[i]) {
+                i++;
+                nums[i] = nums[j];
+            }
+        }
+        return i + 1;
+    }
+
+    public int removeDuplicates2(int[] nums) {
+        int len = nums.length;
+        if (len <= 1) return len;
+
+        int i = 1, pre, size, newLen = len;
+        while (i < newLen) {
+            pre = nums[i - 1];
+            size = 0;
+            while (i < newLen && nums[i++] == pre) size++;
+            System.arraycopy(nums, i - 1, nums, i - 1 - size, len - i + 1);
+            newLen -= size;
+            i -= size;
+        }
+        return newLen;
     }
 
     @Test
     public void test1() {
-        int[] nums = new int[3];
-        nums[0] = 1;
-        nums[1] = 1;
-        nums[2] = 2;
+        int[] nums = {1, 1, 2};
         int len = removeDuplicates(nums);
-        Assert.assertEquals(2, len);
-        Assert.assertEquals(1, nums[0]);
-        Assert.assertEquals(2, nums[1]);
+        assertThat(len, is(2));
+        int[] ret = new int[len];
+        System.arraycopy(nums, 0, ret, 0, len);
+        assertThat(ret, is(new int[]{1, 2}));
     }
 
     @Test
     public void test2() {
-        int[] nums = new int[10];
-        nums[0] = 0;
-        nums[1] = 0;
-        nums[2] = 1;
-        nums[3] = 1;
-        nums[4] = 1;
-        nums[5] = 2;
-        nums[6] = 2;
-        nums[7] = 3;
-        nums[8] = 3;
-        nums[9] = 4;
+        int[] nums = {0, 0, 1, 1, 1, 2, 2, 3, 3, 4};
         int len = removeDuplicates(nums);
-        Assert.assertEquals(5, len);
-        Assert.assertEquals(0, nums[0]);
-        Assert.assertEquals(1, nums[1]);
-        Assert.assertEquals(2, nums[2]);
-        Assert.assertEquals(3, nums[3]);
-        Assert.assertEquals(4, nums[4]);
+        assertThat(len, is(5));
+        int[] ret = new int[len];
+        System.arraycopy(nums, 0, ret, 0, len);
+        assertThat(ret, is(new int[]{0, 1, 2, 3, 4}));
+    }
+
+    @Test
+    public void test3() {
+        int[] nums = {1, 1};
+        int len = removeDuplicates(nums);
+        assertThat(len, is(1));
+        int[] ret = new int[len];
+        System.arraycopy(nums, 0, ret, 0, len);
+        assertThat(ret, is(new int[]{1}));
     }
 }

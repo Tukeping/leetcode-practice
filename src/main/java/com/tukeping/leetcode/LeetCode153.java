@@ -50,12 +50,6 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode153 {
 
-    /*
-     * 146/146 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 20.52 % of java submissions (38.2 MB)
-     */
-
     /**
      * 找旋转点, 如果找到旋转点 则旋转点那个位置的元素是最小的, 否则没有找到旋转点则直接取第0个元素
      *

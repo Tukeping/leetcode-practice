@@ -46,20 +46,6 @@ import java.util.Random;
  **/
 public class LeetCode169 {
 
-    @Test
-    public void test2() {
-        int[] nums = new int[]{2, 2, 1, 1, 1, 2, 2};
-        int ret = majorityElementBM(nums);
-        Assert.assertEquals(2, ret);
-    }
-
-    @Test
-    public void test1() {
-        int[] nums = new int[]{3, 2, 3};
-        int ret = majorityElementBM(nums);
-        Assert.assertEquals(3, ret);
-    }
-
     public static int majorityElement(int[] nums) {
         int n = nums.length;
         int m = n / 2;
@@ -162,7 +148,20 @@ public class LeetCode169 {
                 candidate = nums[i];
             }
         }
-
         return candidate;
+    }
+
+    @Test
+    public void test2() {
+        int[] nums = new int[]{2, 2, 1, 1, 1, 2, 2};
+        int ret = majorityElementBM(nums);
+        Assert.assertEquals(2, ret);
+    }
+
+    @Test
+    public void test1() {
+        int[] nums = new int[]{3, 2, 3};
+        int ret = majorityElementBM(nums);
+        Assert.assertEquals(3, ret);
     }
 }

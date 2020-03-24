@@ -694,7 +694,7 @@
 5. Merge Two Sorted Lists **~21** $\color{#70C1B3}{[Easy]}$ ✔
 6. Implement strStr() **~28** $\color{#70C1B3}{[Easy]}$ ✔
 7. Pow(x, n) **~50** $\color{#247BA0}{[Medium]}$
-8. Merge Intervals **~56** $\color{#FF1654}{[Hard]}$
+8. Merge Intervals **~56** $\color{#FF1654}{[Hard]}$ ✔
 9. Insert Interval **~57** $\color{#FF1654}{[Hard]}$
 10. Valid Number **~65** $\color{#FF1654}{[Hard]}$
 11. Climbing Stairs **~70** $\color{#70C1B3}{[Easy]}$ ✔
