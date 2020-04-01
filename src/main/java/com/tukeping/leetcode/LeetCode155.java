@@ -56,7 +56,6 @@ public class LeetCode155 {
         private Stack<Integer> stackData;
         private Stack<Integer> stackMini;
 
-        /** initialize your data structure here. */
         public MinStack() {
             stackData = new Stack<>();
             stackMini = new Stack<>();
@@ -64,15 +63,11 @@ public class LeetCode155 {
 
         public void push(int x) {
             stackData.push(x);
-            if (stackMini.isEmpty() || getMin() > x)
-                stackMini.push(x);
-            else
-                stackMini.push(getMin());
+            if (stackMini.isEmpty() || getMin() > x) stackMini.push(x);
+            else stackMini.push(getMin());
         }
 
         public void pop() {
-            if (stackData.isEmpty())
-                throw new RuntimeException("stack is empty, pop failed");
             stackData.pop();
             stackMini.pop();
         }
@@ -86,16 +81,6 @@ public class LeetCode155 {
         }
     }
 
-    /**
-     * MinStack minStack = new MinStack();
-     * minStack.push(-2);
-     * minStack.push(0);
-     * minStack.push(-3);
-     * minStack.getMin();   --> 返回 -3.
-     * minStack.pop();
-     * minStack.top();      --> 返回 0.
-     * minStack.getMin();   --> 返回 -2.
-     */
     @Test
     public void test1() {
         MinStack minStack = new MinStack();
@@ -108,23 +93,6 @@ public class LeetCode155 {
         assertThat(minStack.getMin(), is(-2));    // --> 返回 -2.
     }
 
-    /**
-     * ["MinStack",
-     *  "push",
-     *  "push",
-     *  "push",
-     *  "getMin",
-     *  "pop",
-     *  "getMin"]
-     *
-     * [[],
-     *  [0],
-     *  [1],
-     *  [0],
-     *  [],
-     *  [],
-     *  []]
-     */
     @Test
     public void test2() {
         MinStack minStack = new MinStack();

@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
  * @author tukeping
  * @date 2020/3/6
  **/
-public class LCOF_57 {
+public class LCOF57_2 {
 
     public int[][] findContinuousSequence(int target) {
         List<int[]> res = new ArrayList<>();

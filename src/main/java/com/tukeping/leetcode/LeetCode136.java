@@ -52,7 +52,14 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode136 {
 
+    /** time: O(n) space: O(1) **/
     public int singleNumber(int[] nums) {
+        int s = 0;
+        for (int n : nums) s ^= n;
+        return s;
+    }
+
+    public int singleNumber2(int[] nums) {
         HashMap<Integer, Boolean> map = new HashMap<>();
 
         for (int num : nums) {

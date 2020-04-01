@@ -86,60 +86,56 @@ import static org.junit.Assert.assertTrue;
  **/
 public class LeetCode10 {
 
+    private String s, p;
+    private int sLen, pLen;
+
     public boolean isMatch(String s, String p) {
-        return isMatchB(s, p);
+        this.s = s;
+        this.p = p;
+        this.sLen = s.length();
+        this.pLen = p.length();
+        return isMatch(0, 0);
     }
 
-    /** 使用回溯思想 不改变原有输入字符串和正则字符串 编写正则表达式匹配算法 **/
-    public boolean isMatchB(String s, String p) {
-        return isMatchBackTracking(0, 0, s, p);
-    }
-
-    public boolean isMatchBackTracking(int sIndex, int pIndex, String s, String p) {
+    private boolean isMatch(int sIdx, int pIdx) {
         // 正则表达式串如果匹配完了，查看字符串如果也匹配完了则表示 这是一个正确的匹配
-        if (pIndex == p.length()) return sIndex == s.length();
-
-        boolean firstMatch = sIndex < s.length() &&
-                (p.charAt(pIndex) == s.charAt(sIndex) || p.charAt(pIndex) == '.');
-
-        if (p.length() > pIndex + 1 && p.charAt(pIndex + 1) == '*') {
-            return isMatchBackTracking(sIndex, pIndex + 2, s, p) ||
-                    (firstMatch && isMatchBackTracking(sIndex + 1, pIndex, s, p));
+        if (pIdx == pLen) return sIdx == sLen;
+        boolean matched = sIdx < sLen
+                && (p.charAt(pIdx) == s.charAt(sIdx) || p.charAt(pIdx) == '.');
+        if (pIdx < p.length() - 1 && p.charAt(pIdx + 1) == '*') {
+            return isMatch(sIdx, pIdx + 2) || (matched && isMatch(sIdx + 1, pIdx));
         } else {
-            return firstMatch && isMatchBackTracking(sIndex + 1, pIndex + 1, s, p);
+            return matched && isMatch(sIdx + 1, pIdx + 1);
         }
     }
 
     private boolean[][] memo;
 
-    public boolean isMatchD(String s, String p) {
+    public boolean isMatch0(String s, String p) {
         memo = new boolean[s.length() + 1][p.length() + 1];
-        return dp(0, 0, s, p);
+        return isMatch(0, 0, s, p);
     }
 
-    private boolean dp(int sIndex, int pIndex, String s, String p) {
+    private boolean isMatch(int sIndex, int pIndex, String s, String p) {
         if (memo[sIndex][pIndex]) return true;
 
         boolean ans;
-
         // 当正则表达式的指针到达最末尾后 判断字符串的指针是否也在末尾，如果是末尾则表示匹配正确，否则未匹配成功
         if (pIndex == p.length()) {
             ans = (sIndex == s.length());
         } else {
-            boolean match = sIndex < s.length() &&
+            boolean matched = sIndex < s.length() &&
                     (p.charAt(pIndex) == s.charAt(sIndex) || p.charAt(pIndex) == '.');
-
             // 判断正则字符串中当前指针的下一个指针的字符是*号时需要特殊处理
             if (p.length() > pIndex + 1 && p.charAt(pIndex + 1) == '*') {
-                ans = dp(sIndex, pIndex + 2, s, p) ||
-                        (match && dp(sIndex + 1, pIndex, s, p));
+                ans = isMatch(sIndex, pIndex + 2, s, p) ||
+                        (matched && isMatch(sIndex + 1, pIndex, s, p));
             } else {
-                ans = match && dp(sIndex + 1, pIndex + 1, s, p);
+                ans = matched && isMatch(sIndex + 1, pIndex + 1, s, p);
             }
         }
 
         memo[sIndex][pIndex] = ans;
-
         return ans;
     }
 
@@ -147,47 +143,48 @@ public class LeetCode10 {
     public void test1() {
         String s = "aa";
         String p = "a";
-        boolean b = isMatch(s, p);
-        assertFalse(b);
+        assertFalse(isMatch(s, p));
     }
 
     @Test
     public void test2() {
         String s = "aa";
         String p = "a*";
-        boolean b = isMatch(s, p);
-        assertTrue(b);
+        assertTrue(isMatch(s, p));
     }
 
     @Test
     public void test3() {
         String s = "ab";
         String p = ".*";
-        boolean b = isMatch(s, p);
-        assertTrue(b);
+        assertTrue(isMatch(s, p));
     }
 
     @Test
     public void test4() {
         String s = "aab";
         String p = "c*a*b";
-        boolean b = isMatch(s, p);
-        assertTrue(b);
+        assertTrue(isMatch(s, p));
     }
 
     @Test
     public void test5() {
         String s = "mississippi";
         String p = "mis*is*p*.";
-        boolean b = isMatch(s, p);
-        assertFalse(b);
+        assertFalse(isMatch(s, p));
     }
 
     @Test
     public void test6() {
         String s = "";
         String p = ".*";
-        boolean b = isMatch(s, p);
-        assertTrue(b);
+        assertTrue(isMatch(s, p));
+    }
+
+    @Test
+    public void test7() {
+        String s = "aa";
+        String p = "a*b*c*d*";
+        assertTrue(isMatch(s, p));
     }
 }

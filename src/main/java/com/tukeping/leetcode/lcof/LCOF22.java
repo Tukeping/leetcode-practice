@@ -15,9 +15,21 @@ import org.junit.Test;
  * @author tukeping
  * @date 2020/3/9
  **/
-public class LCOF_22 {
+public class LCOF22 {
 
     public ListNode getKthFromEnd(ListNode head, int k) {
+        ListNode slow = head;
+        ListNode fast = head;
+        for (int i = 1; i <= k; i++) fast = fast.next;
+
+        while (fast != null) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return slow;
+    }
+
+    public ListNode getKthFromEnd2(ListNode head, int k) {
         int len = 0;
         ListNode cur = head;
         while (cur != null) {

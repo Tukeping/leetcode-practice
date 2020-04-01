@@ -1,4 +1,4 @@
-package com.tukeping.leetcode.structures;
+package com.tukeping.leetcode.structures.graph;
 
 import java.util.ArrayList;
 import java.util.List;

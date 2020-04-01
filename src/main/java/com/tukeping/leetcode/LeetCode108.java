@@ -47,20 +47,16 @@ public class LeetCode108 {
     }
 
     /**
-     * 中序遍历(inorder), left -> root -> right !!!
-     * 前序遍历(preorder), root -> left -> right
-     * 后序遍历(postorder), left -> right -> root
+     * 中序遍历(inorder), left -> root -> right
      */
     private TreeNode inorder(int[] nums, int left, int right) {
         if (left > right) return null;
 
         int mid = (left + right) / 2;
-
         TreeNode root = new TreeNode(nums[mid]);
 
         root.left = inorder(nums, left, mid - 1);
         root.right = inorder(nums, mid + 1, right);
-
         return root;
     }
 

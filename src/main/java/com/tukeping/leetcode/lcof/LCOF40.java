@@ -32,7 +32,7 @@ import static org.junit.Assert.assertThat;
  * @author tukeping
  * @date 2020/3/20
  **/
-public class LCOF_40 {
+public class LCOF40 {
 
     private void qsort(int[] arr, int l, int r, int k) {
         int pivot = pickPivot(l, r);

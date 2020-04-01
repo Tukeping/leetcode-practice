@@ -134,4 +134,14 @@ public class LeetCode79 {
         assertTrue(exist(board, "SEE"));
         assertFalse(exist(board, "ABCB"));
     }
+
+    @Test
+    public void test2() {
+        char[][] board = {
+                {'C', 'A', 'A'},
+                {'A', 'A', 'A'},
+                {'B', 'C', 'D'}
+        };
+        assertTrue(exist(board, "AAB"));
+    }
 }

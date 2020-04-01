@@ -1,4 +1,4 @@
-package com.tukeping.leetcode;
+package com.tukeping.leetcode.lcof;
 
 /*
  * @lc app=leetcode.cn id=65 lang=java
@@ -60,12 +60,10 @@ import static org.junit.Assert.assertTrue;
  *
  * linkedin
  *
- * frequency 5
- *
  * @author tukeping
- * @date 2020/2/16
+ * @date 2020/3/31
  **/
-public class LeetCode65 {
+public class LCOF20 {
 
     private String s;
 

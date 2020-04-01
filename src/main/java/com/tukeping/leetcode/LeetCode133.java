@@ -86,7 +86,7 @@ package com.tukeping.leetcode;
  * 图是连通图，你可以从给定节点访问到所有节点。
  */
 
-import com.tukeping.leetcode.structures.Node;
+import com.tukeping.leetcode.structures.graph.Node;
 import org.junit.Test;
 
 import java.util.ArrayList;

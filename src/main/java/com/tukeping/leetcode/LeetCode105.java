@@ -48,38 +48,28 @@ import java.util.Map;
  **/
 public class LeetCode105 {
 
-    /**
-     * 203/203 cases passed (2 ms)
-     * Your runtime beats 97.05 % of java submissions
-     * Your memory usage beats 37.26 % of java submissions (41.6 MB)
-     */
-
-    private int preorderIdx;
-    private int[] preorder;
     private Map<Integer, Integer> inorderMap = new HashMap<>();
+    private int[] preorder;
+    private int preIdx;
 
     public TreeNode buildTree(int[] preorder, int[] inorder) {
         this.preorder = preorder;
 
-        int inorderIdx = 0;
-        for (int num : inorder) {
-            inorderMap.put(num, inorderIdx++);
-        }
+        for (int i = 0; i < inorder.length; i++)
+            inorderMap.put(inorder[i], i);
 
-        return dfs(0, inorder.length);
+        return buildTree(0, inorder.length);
     }
 
-    private TreeNode dfs(int left, int right) {
+    private TreeNode buildTree(int left, int right) {
         if (left == right) return null;
 
-        int rootVal = preorder[preorderIdx++];
+        int rootVal = preorder[preIdx++];
         TreeNode root = new TreeNode(rootVal);
 
         int midIdx = inorderMap.get(rootVal);
-
-        root.left = dfs(left, midIdx);
-        root.right = dfs(midIdx + 1, right);
-
+        root.left = buildTree(left, midIdx);
+        root.right = buildTree(midIdx + 1, right);
         return root;
     }
 

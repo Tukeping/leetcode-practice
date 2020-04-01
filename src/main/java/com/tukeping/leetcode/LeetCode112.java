@@ -48,26 +48,16 @@ import static org.junit.Assert.assertTrue;
  **/
 public class LeetCode112 {
 
-    /**
-     * 114/114 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 14.6 % of java submissions (39.1 MB)
-     */
-
     public boolean hasPathSum(TreeNode root, int sum) {
-        return dfs(root, 0, sum);
+        return hasPathSum(root, 0, sum);
     }
 
-    private boolean dfs(TreeNode root, int cur, int sum) {
+    private boolean hasPathSum(TreeNode root, int cur, int sum) {
         if (root == null) return false;
-
         cur += root.val;
-
         if (cur == sum && isLeaf(root)) return true;
-
-        if (dfs(root.left, cur, sum)) return true;
-
-        return dfs(root.right, cur, sum);
+        else if (hasPathSum(root.left, cur, sum)) return true;
+        else return hasPathSum(root.right, cur, sum);
     }
 
     private boolean isLeaf(TreeNode root) {

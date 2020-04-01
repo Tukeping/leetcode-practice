@@ -1,6 +1,6 @@
-package com.tukeping.tools;
+package com.tukeping.tools.graph;
 
-import com.tukeping.leetcode.structures.Node;
+import com.tukeping.leetcode.structures.graph.Node;
 
 /**
  * @author tukeping
