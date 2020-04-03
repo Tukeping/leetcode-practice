@@ -61,21 +61,19 @@ public class LeetCode102 {
     public List<List<Integer>> levelOrder(TreeNode root) {
         if (root == null) return Collections.emptyList();
         List<List<Integer>> res = new ArrayList<>();
-        bfs0(root, 0, res);
+        levelOrder(root, 0, res);
         return res;
     }
 
-    private void bfs0(TreeNode root, int level, List<List<Integer>> levelList) {
-        if (levelList.size() == level)
+    private void levelOrder(TreeNode root, int level, List<List<Integer>> levelList) {
+        if (levelList.size() == level) {
             levelList.add(new ArrayList<>());
-
+        }
         levelList.get(level).add(root.val);
-
         if (root.left != null)
-            bfs0(root.left, level + 1, levelList);
-
+            levelOrder(root.left, level + 1, levelList);
         if (root.right != null)
-            bfs0(root.right, level + 1, levelList);
+            levelOrder(root.right, level + 1, levelList);
     }
 
     private List<List<Integer>> bfs(TreeNode root) {

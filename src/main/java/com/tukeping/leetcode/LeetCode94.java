@@ -51,7 +51,7 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode94 {
 
-    public List<Integer> inorderTraversal(TreeNode root) {
+    public List<Integer> inorderTraversal1(TreeNode root) {
         return inorderTraversalMorris(root);
     }
 
@@ -94,7 +94,7 @@ public class LeetCode94 {
         return res;
     }
 
-    public List<Integer> inorderTraversalRecursion(TreeNode root) {
+    public List<Integer> inorderTraversal(TreeNode root) {
         if (root == null) return Collections.emptyList();
         List<Integer> res = new ArrayList<>();
         inorder(root, res);
