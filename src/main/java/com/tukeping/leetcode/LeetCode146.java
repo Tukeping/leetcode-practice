@@ -62,40 +62,38 @@ public class LeetCode146 {
 
     class LRUCache {
         private int capacity;
-        private Map<Integer, Integer> map;
-        private LinkedList<Integer> cache;
+        private LinkedList<Integer> queue;
+        private Map<Integer, Integer> cache;
 
         public LRUCache(int capacity) {
             this.capacity = capacity;
-            map = new HashMap<>(capacity + 1);
-            cache = new LinkedList<>();
+            this.queue = new LinkedList<>();
+            this.cache = new HashMap<>(capacity, 1.0F);
         }
 
         public int get(int key) {
-            if (!map.containsKey(key)) {
-                return -1;
-            } else {
-                cache.remove((Integer) key);
-                cache.addFirst(key);
-                if (cache.size() > capacity) {
-                    int removeKey = cache.removeLast();
-                    map.remove(removeKey);
+            if (cache.containsKey(key)) {
+                queue.remove((Integer) key);
+                queue.addFirst(key);
+                if (queue.size() > capacity) {
+                    cache.remove(queue.removeLast());
                 }
-                return map.get(key);
+                return cache.get(key);
+            } else {
+                return -1;
             }
         }
 
         public void put(int key, int value) {
-            if (map.containsKey(key)) {
-                cache.remove((Integer) key);
-                cache.addFirst(key);
-                map.put(key, value);
+            if (cache.containsKey(key)) {
+                queue.remove((Integer) key);
+                queue.addFirst(key);
+                cache.put(key, value);
             } else {
-                cache.addFirst(key);
-                map.put(key, value);
-                if (cache.size() > capacity) {
-                    int removeKey = cache.removeLast();
-                    map.remove(removeKey);
+                queue.addFirst(key);
+                cache.put(key, value);
+                if (queue.size() > capacity) {
+                    cache.remove(queue.removeLast());
                 }
             }
         }
@@ -119,9 +117,9 @@ public class LeetCode146 {
         cache.put(1, 1);
         cache.put(2, 2);
         assertThat(cache.get(1), is(1));   // 返回  1
-        cache.put(3, 3);                        // 该操作会使得密钥 2 作废
+        cache.put(3, 3);                        // 该操作会使得 2 作废
         assertThat(cache.get(2), is(-1));  // 返回 -1 (未找到)
-        cache.put(4, 4);                        // 该操作会使得密钥 1 作废
+        cache.put(4, 4);                        // 该操作会使得 1 作废
         assertThat(cache.get(1), is(-1));  // 返回 -1 (未找到)
         assertThat(cache.get(3), is(3));   // 返回  3
         assertThat(cache.get(4), is(4));   // 返回  4
