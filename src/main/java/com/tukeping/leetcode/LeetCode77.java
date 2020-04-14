@@ -32,12 +32,17 @@ package com.tukeping.leetcode;
  *
  */
 
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.junit.Assert.assertThat;
 
 /**
  * backtracking
- *
- * Unknown
  *
  * frequency 4
  *
@@ -47,6 +52,51 @@ import java.util.List;
 public class LeetCode77 {
 
     public List<List<Integer>> combine(int n, int k) {
-        return null;
+        int[] nums = new int[n];
+        for (int i = 1; i <= n; i++) {
+            nums[i - 1] = i;
+        }
+        List<List<Integer>> res = new ArrayList<>();
+        combine(nums, n, k, 0, new ArrayList<>(), res);
+        return res;
+    }
+
+    private void combine(int[] nums, int n, int k, int start, List<Integer> track, List<List<Integer>> res) {
+        if (track.size() == k) {
+            res.add(new ArrayList<>(track));
+            return;
+        }
+        for (int i = start; i < n; i++) {
+            if (track.contains(nums[i])) continue;
+            track.add(nums[i]);
+            combine(nums, n, k, i + 1, track, res);
+            track.remove(track.size() - 1);
+        }
+    }
+
+    /**
+     * 输入: n = 4, k = 2
+     * 输出:
+     * [
+     *   [2,4],
+     *   [3,4],
+     *   [2,3],
+     *   [1,2],
+     *   [1,3],
+     *   [1,4],
+     * ]
+     */
+    @Test
+    public void test1() {
+        List<List<Integer>> ans = combine(4, 2);
+        List<List<Integer>> expect = Arrays.asList(
+                Arrays.asList(2, 4),
+                Arrays.asList(3, 4),
+                Arrays.asList(2, 3),
+                Arrays.asList(1, 2),
+                Arrays.asList(1, 3),
+                Arrays.asList(1, 4)
+        );
+        assertThat(ans, containsInAnyOrder(expect.toArray()));
     }
 }

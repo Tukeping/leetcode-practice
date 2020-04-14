@@ -56,8 +56,27 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode3 {
 
+    int lengthOfLongestSubstring(String s) {
+        int i, count, max = 0, start = 0, len = s.length();
+        int[] index = new int[128];
+        for (i = 0; i < len; i++) {
+            //index用来储存出现重复字符时
+            if (index[s.charAt(i)] > start) {
+                //子串起始下标应移动到的地方
+                count = i - start;
+                if (count > max) {
+                    max = count;
+                }
+                start = index[s.charAt(i)];
+            }
+            index[s.charAt(i)] = i + 1;
+        }
+        count = i - start;
+        return Math.max(count, max);
+    }
+
     /** sliding window optimized 2, time: O(n) space: O(m) **/
-    public int lengthOfLongestSubstring(String s) {
+    public int lengthOfLongestSubstring3(String s) {
         // ascii 128 [0,127]
         int[] slidingWindow = new int[128];
         int maxLength = 0;

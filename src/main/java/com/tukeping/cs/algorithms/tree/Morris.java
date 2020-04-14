@@ -40,19 +40,16 @@ public class Morris {
     }
 
     public static void morrisInorder(Node head) {
-        if (head == null) {
-            return;
-        }
-
         Node cur = head;
         Node mostRight;
 
         while (cur != null) {
             mostRight = cur.left;
+
             if (mostRight != null) {
-                while (mostRight.right != null && mostRight.right != cur) {
+                while (mostRight.right != null && mostRight.right != cur)
                     mostRight = mostRight.right;
-                }
+
                 if (mostRight.right == null) {
                     mostRight.right = cur;
                     cur = cur.left;
@@ -61,10 +58,10 @@ public class Morris {
                     mostRight.right = null;
                 }
             }
+
             System.out.print(cur.val + " ");
             cur = cur.right;
         }
-        System.out.println();
     }
 
     public static void morrisPostorder(Node head) {

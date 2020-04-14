@@ -85,9 +85,58 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode12 {
 
+    /**
+     * 字符          数值
+     * I             1
+     * V             5
+     * X             10
+     * L             50
+     * C             100
+     * D             500
+     * M             1000
+     */
     public String intToRoman(int num) {
+        // 1 <= num <= 3999
+        int[] nums = new int[4];
+        int idx = 0;
+        while (num > 0) {
+            nums[idx++] = num % 10;
+            num /= 10;
+        }
 
-        return null;
+        StringBuilder ans = new StringBuilder();
+        if (nums[0] != 0) {
+            helper(nums, 0, ans, "IX", "V", "IV", "I");
+        }
+        if (nums[1] != 0) {
+            helper(nums, 1, ans, "XC", "L", "XL", "X");
+        }
+        if (nums[2] != 0) {
+            helper(nums, 2, ans, "CM", "D", "CD", "C");
+        }
+        if (nums[3] != 0) {
+            helper(nums, 3, ans, "", "", "", "M");
+        }
+        return ans.toString();
+    }
+
+    private void helper(int[] nums, int idx, StringBuilder ans, String nine, String five, String four, String one) {
+        if (nums[idx] == 9) {
+            ans.insert(0, nine);
+        } else if (nums[idx] == 5) {
+            ans.insert(0, five);
+        } else if (nums[idx] == 4) {
+            ans.insert(0, four);
+        } else if (nums[idx] < 4) {
+            for (int i = 0; i < nums[idx]; i++) {
+                ans.insert(0, one);
+            }
+        } else { // 5 < nums[idx] < 9
+            ans.insert(0, five);
+            for (int i = 0; i < nums[idx] - 5; i++) {
+                ans.insert(1, one);
+            }
+        }
     }
 
     /**

@@ -6,5 +6,5 @@ package com.tukeping.cs.datastructures;
  * @author tukeping
  * @date 2020/1/7
  **/
-public class SkipListPractice {
+public class SkipList {
 }

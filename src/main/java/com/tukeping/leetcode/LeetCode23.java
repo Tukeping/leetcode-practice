@@ -52,17 +52,19 @@ import java.util.List;
 public class LeetCode23 {
 
     public ListNode mergeKLists(ListNode[] lists) {
-        if (lists == null || lists.length == 0) return null;
+        if (lists.length == 0)
+            return null;
 
-        int len = lists.length;
-        if (len == 1) return lists[0];
+        if (lists.length == 1)
+            return lists[0];
 
-        return mergeKListsDivideAndConquer(lists, 0, len - 1);
+        return mergeKListsDivideAndConquer(lists, 0, lists.length - 1);
     }
 
     public ListNode mergeKListsDivideAndConquer(ListNode[] lists, int from, int to) {
         // step 1, write end condition
-        if (from == to) return lists[from];
+        if (from == to)
+            return lists[from];
 
         if (from + 1 == to)
             return mergeTwoLists(lists[from], lists[to]);
@@ -77,24 +79,22 @@ public class LeetCode23 {
     }
 
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
-        ListNode preHead = new ListNode(-1);
-
-        ListNode prev = preHead;
+        ListNode dummy = new ListNode(0);
+        ListNode pre = dummy;
 
         while (l1 != null && l2 != null) {
             if (l1.val < l2.val) {
-                prev.next = l1;
+                pre.next = l1;
                 l1 = l1.next;
             } else {
-                prev.next = l2;
+                pre.next = l2;
                 l2 = l2.next;
             }
-            prev = prev.next;
+            pre = pre.next;
         }
 
-        prev.next = (l1 == null) ? l2 : l1;
-
-        return preHead.next;
+        pre.next = (l1 == null) ? l2 : l1;
+        return dummy.next;
     }
 
     public ListNode mergeKListsV1(ListNode[] lists) {
