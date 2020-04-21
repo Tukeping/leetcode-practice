@@ -24,22 +24,24 @@ public class Manacher {
     public int maxPalindromeLength(String str) {
         if (str.isEmpty()) return 0;
 
-        char[] p = manacherString(str);
-        int len = p.length;
+        char[] chars = manacherString(str);
+        int len = chars.length;
 
-        int[] radius = new int[len]; /*回文半径数组*/
-        int C = -1 /*回文中心*/, R = -1 /*回文右边界*/, max = Integer.MIN_VALUE;
-        for (int i = 0; i <= len; i++) {
-            radius[i] = R > i ? Math.min(2 * C - i, R - i) : 1;
-            while (i + radius[i] < len && i - radius[i] >= 0) {
-                if (p[i + radius[i]] == p[i - radius[i]]) radius[i]++;
+        int[] p = new int[len]; /*回文半径数组*/
+        int C = -1 /*回文中心*/, R = -1 /*回文右边界*/;
+        int max = Integer.MIN_VALUE;
+
+        for (int i = 0; i < len; i++) {
+            p[i] = R > i ? Math.min(p[2 * C - i], R - i) : 1;
+            while (i + p[i] < len && i - p[i] >= 0) {
+                if (chars[i + p[i]] == chars[i - p[i]]) p[i]++;
                 else break;
             }
             if (i + p[i] > R) {
                 R = i + p[i];
                 C = i;
             }
-            max = Math.max(radius[i], max);
+            max = Math.max(p[i], max);
         }
         return max - 1;
     }
