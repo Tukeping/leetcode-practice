@@ -43,9 +43,12 @@ package com.tukeping.leetcode;
  * 输出: True
  *
  * 解释: 可由子字符串 "abc" 重复四次构成。 (或者子字符串 "abcabc" 重复两次构成。)
- *
- *
  */
+
+import org.junit.Test;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author tukeping
@@ -54,6 +57,78 @@ package com.tukeping.leetcode;
 public class LeetCode459 {
 
     public boolean repeatedSubstringPattern(String s) {
+        int n = s.length();
+        if (n == 0) return false;
+
+        char[] p = s.toCharArray();
+
+        int[] next = new int[n + 1];
+        next[0] = -1;
+
+        int i = 0, k = -1;
+        while (i < n) {
+            if (k == -1 || p[i] == p[k]) {
+                i++;
+                k++;
+                next[i] = k;
+            } else {
+                k = next[k];
+            }
+        }
+        return next[n] > 0 && n % (n - next[n]) == 0;
+    }
+
+    @Test
+    public void test0() {
+        assertFalse(repeatedSubstringPattern("a"));
+    }
+
+    @Test
+    public void test1() {
+        assertTrue(repeatedSubstringPattern("aaaa"));
+    }
+
+    @Test
+    public void test2() {
+        assertFalse(repeatedSubstringPattern("aab"));
+    }
+
+    @Test
+    public void test3() {
+        assertFalse(repeatedSubstringPattern("aabc"));
+    }
+
+    @Test
+    public void test4() {
+        assertTrue(repeatedSubstringPattern("abab"));
+    }
+
+    @Test
+    public void test5() {
+        assertTrue(repeatedSubstringPattern("abcabc"));
+    }
+
+    @Test
+    public void test6() {
+        assertFalse(repeatedSubstringPattern("abcabca"));
+    }
+
+    @Test
+    public void test7() {
+        assertFalse(repeatedSubstringPattern("abcabcabd"));
+    }
+
+    @Test
+    public void test8() {
+        assertFalse(repeatedSubstringPattern("aba"));
+    }
+
+    @Test
+    public void test9() {
+        assertTrue(repeatedSubstringPattern("ababababab"));
+    }
+
+    public boolean repeatedSubstringPattern2(String s) {
         return regularTrick(s);
     }
 

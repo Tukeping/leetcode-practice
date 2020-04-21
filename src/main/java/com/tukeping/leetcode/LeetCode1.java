@@ -29,6 +29,7 @@ package com.tukeping.leetcode;
 
 import org.junit.Test;
 
+import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -46,6 +47,21 @@ import static org.junit.Assert.assertThat;
  * @since 2018/12/15
  **/
 public class LeetCode1 {
+
+    public int countPrimesOptimize(int n) {
+        if (n <= 2) {
+            return 0;
+        }
+        BitSet bit = new BitSet(n);
+        for (int i = 2; i * i < n; i++) {
+            if (!bit.get(i)) {
+                for (int j = i * i; j < n; j += i) {
+                    bit.set(j);
+                }
+            }
+        }
+        return n - 2 - bit.cardinality();//排除n和1
+    }
 
     public int[] twoSum(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
