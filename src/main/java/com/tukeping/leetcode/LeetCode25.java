@@ -57,6 +57,36 @@ import org.junit.Test;
 public class LeetCode25 {
 
     public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode cur = dummy;
+        while (cur != null) {
+            int cnt = 0;
+            for (ListNode i = cur.next; i != null; i = i.next)
+                cnt++;
+            if (cnt < k) break;
+
+            cnt = 0;
+            ListNode a = cur.next;
+            ListNode b = a.next;
+            while (cnt < k - 1) {
+                cnt++;
+                ListNode c = b.next;
+                b.next = a;
+                a = b;
+                b = c;
+            }
+
+            ListNode p = cur.next;
+            cur.next.next = b;
+            cur.next = a;
+            cur = p;
+        }
+        return dummy.next;
+    }
+
+    public ListNode reverseKGroup3(ListNode head, int k) {
         ListNode cur = head;
         int count = 0;
         while (cur != null && count != k) {
@@ -64,7 +94,7 @@ public class LeetCode25 {
             count++;
         }
         if (count == k) {
-            cur = reverseKGroup(cur, k);
+            cur = reverseKGroup3(cur, k);
             while (count != 0) {
                 ListNode next = head.next;
                 head.next = cur;

@@ -74,6 +74,18 @@ public class ListHelper {
         return list;
     }
 
+    public static List<List<Integer>> asIntegerList(int[][] a) {
+        List<List<Integer>> list = new ArrayList<>();
+        for (int[] line : a) {
+            List<Integer> lineList = new ArrayList<>();
+            for (int val : line) {
+                lineList.add(val);
+            }
+            list.add(lineList);
+        }
+        return list;
+    }
+
     public static void checkDoubleListInAnyOrder(List<List<String>> actual, List<List<String>> expect) {
         boolean b = false;
         int k = 0;

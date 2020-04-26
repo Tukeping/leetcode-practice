@@ -54,6 +54,7 @@ import com.tukeping.tools.TreeNodeHelper;
 import org.junit.Test;
 
 import java.util.Stack;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -70,6 +71,38 @@ import static org.junit.Assert.assertTrue;
  **/
 public class LeetCode98 {
 
+    public boolean isValidBST(TreeNode root) {
+        if (root == null) return true;
+
+        return dfs(root,
+                new AtomicInteger(0),
+                new AtomicInteger(0));
+    }
+
+    private boolean dfs(TreeNode root,
+                        AtomicInteger minVal,
+                        AtomicInteger maxVal) {
+        minVal.set(root.val);
+        maxVal.set(root.val);
+
+        if (root.left != null) {
+            AtomicInteger curMinVal = new AtomicInteger(0);
+            AtomicInteger curMaxVal = new AtomicInteger(0);
+            if (!dfs(root.left, curMinVal, curMaxVal)) return false;
+            if (curMaxVal.get() >= root.val) return false;
+            minVal.set(curMinVal.get());
+        }
+
+        if (root.right != null) {
+            AtomicInteger curMinVal = new AtomicInteger(0);
+            AtomicInteger curMaxVal = new AtomicInteger(0);
+            if (!dfs(root.right, curMinVal, curMaxVal)) return false;
+            if (curMinVal.get() <= root.val) return false;
+            maxVal.set(curMaxVal.get());
+        }
+        return true;
+    }
+
     /*
      * 假设一个二叉搜索树具有如下特征：
      * 节点的左子树只包含小于当前节点的数。
@@ -79,11 +112,11 @@ public class LeetCode98 {
 
     private long inorder = Long.MIN_VALUE;
 
-    public boolean isValidBST(TreeNode root) {
+    public boolean isValidBST2(TreeNode root) {
         return root == null
-                || isValidBST(root.left)
+                || isValidBST2(root.left)
                 && inorder < (inorder = root.val)
-                && isValidBST(root.right);
+                && isValidBST2(root.right);
     }
 
     private boolean dfsLoop(TreeNode root) {

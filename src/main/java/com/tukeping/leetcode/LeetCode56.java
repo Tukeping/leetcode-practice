@@ -53,6 +53,30 @@ import static org.junit.Assert.assertThat;
 public class LeetCode56 {
 
     public int[][] merge(int[][] intervals) {
+        if (intervals.length == 0) return new int[0][0];
+
+        Arrays.sort(intervals, ((o1, o2) -> o1[0] - o2[0]));
+
+        List<int[]> ans = new ArrayList<>();
+
+        int st = intervals[0][0], ed = intervals[0][1];
+        for (int i = 1; i < intervals.length; i++) {
+            if (ed < intervals[i][0]) {
+                ans.add(new int[]{st, ed});
+                st = intervals[i][0];
+                ed = intervals[i][1];
+            } else {
+                ed = Math.max(ed, intervals[i][1]);
+            }
+        }
+        ans.add(new int[]{st, ed});
+
+        int[][] res = new int[ans.size()][2];
+        for (int i = 0; i < ans.size(); i++) res[i] = ans.get(i);
+        return res;
+    }
+
+    public int[][] merge2(int[][] intervals) {
         if (intervals == null || intervals.length <= 1) return intervals;
 
         Arrays.sort(intervals, Comparator.comparingInt(arr -> arr[0]));

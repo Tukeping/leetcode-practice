@@ -49,6 +49,66 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode33 {
 
+    public int search(int[] nums, int target) {
+        int n = nums.length;
+        if (n == 0) return -1;
+
+        int lo = 0, hi = n - 1;
+        if (nums[0] > nums[n - 1]) {
+            int l = 0, r = n - 1;
+            while (l < r) {
+                int mid = l + r + 1 >> 1;
+                if (nums[mid] >= nums[0]) l = mid;
+                else r = mid - 1;
+            }
+
+            if (target >= nums[0]) hi = l;
+            else lo = l + 1;
+        }
+
+        while (lo < hi) {
+            int mid = lo + hi >> 1;
+            if (nums[mid] < target) lo = mid + 1;
+            else hi = mid;
+        }
+        return nums[lo] == target ? lo : -1;
+    }
+
+    public int search3(int[] nums, int target) {
+        int n = nums.length;
+        if (n == 0) return -1;
+        int idx;
+        if (nums[0] <= nums[n - 1]) {
+            idx = findTarget(nums, 0, n - 1, target);
+        } else {
+            int rot = findRotation(nums, 0, n - 1);
+            if (target >= nums[0]) {
+                idx = findTarget(nums, 0, rot, target);
+            } else {
+                idx = findTarget(nums, rot + 1, n - 1, target);
+            }
+        }
+        return nums[idx] == target ? idx : -1;
+    }
+
+    private int findRotation(int[] nums, int lo, int hi) {
+        while (lo < hi) {
+            int mid = lo + hi + 1 >> 1;
+            if (nums[mid] >= nums[0]) lo = mid;
+            else hi = mid - 1;
+        }
+        return lo;
+    }
+
+    private int findTarget(int[] nums, int lo, int hi, int target) {
+        while (lo < hi) {
+            int mid = lo + hi >> 1;
+            if (nums[mid] < target) lo = mid + 1;
+            else hi = mid;
+        }
+        return lo;
+    }
+
     /**
      * 你可以假设数组中不存在重复的元素。
      * 你的算法时间复杂度必须是 O(log n) 级别。
@@ -57,7 +117,7 @@ public class LeetCode33 {
      *
      * time: O(2 * (log n)) => O(log n) space: O(2 * 1) => O(1)
      */
-    public int search(int[] nums, int target) {
+    public int search2(int[] nums, int target) {
         // corner case
         if (nums == null || nums.length == 0) return -1;
 

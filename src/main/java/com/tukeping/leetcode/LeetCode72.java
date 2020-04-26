@@ -49,6 +49,7 @@ package com.tukeping.leetcode;
  *
  */
 
+import com.tukeping.tools.DPHelper;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -62,7 +63,26 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode72 {
 
-    public int minDistance(String word1, String word2) {
+    public int minDistance(String s1, String s2) {
+        int n = s1.length(), m = s2.length();
+        int[][] f = new int[n + 1][m + 1];
+        for(int i = 0; i <= m; i++) f[0][i] = i;
+        for(int i = 0; i <= n; i++) f[i][0] = i;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= m; j++) {
+                f[i][j] = f[i - 1][j - 1];
+                if (s1.charAt(i - 1) != s2.charAt(j - 1)) {
+                    f[i][j] = f[i - 1][j - 1] + 1;
+                    f[i][j] = Math.min(f[i][j], f[i - 1][j] + 1);
+                    f[i][j] = Math.min(f[i][j], f[i][j - 1] + 1);
+                }
+            }
+        }
+        DPHelper.print(f, s1, s2);
+        return f[n][m];
+    }
+
+    public int minDistance4(String word1, String word2) {
         int n = word1.length();
         int m = word2.length();
 

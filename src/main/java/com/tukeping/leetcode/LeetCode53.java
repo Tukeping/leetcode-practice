@@ -43,6 +43,18 @@ import static org.junit.Assert.assertThat;
 public class LeetCode53 {
 
     public int maxSubArray(int[] nums) {
+        int n = nums.length;
+        int[] f = new int[n];
+        f[0] = nums[0];
+        int max = nums[0];
+        for (int i = 1; i < n; i++) {
+            f[i] = Math.max(f[i - 1], 0) + nums[i];
+            max = Math.max(max, f[i]);
+        }
+        return max;
+    }
+
+    public int maxSubArray2(int[] nums) {
         int n = nums.length, maxSum = nums[0];
         for (int i = 1; i < n; i++) {
             if (nums[i - 1] > 0) nums[i] += nums[i - 1];
@@ -60,5 +72,17 @@ public class LeetCode53 {
     public void test1() {
         int n = maxSubArray(new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4});
         assertThat(n, is(6));
+    }
+
+    @Test
+    public void test2() {
+        int n = maxSubArray(new int[]{1});
+        assertThat(n, is(1));
+    }
+
+    @Test
+    public void test3() {
+        int n = maxSubArray(new int[]{1, 2});
+        assertThat(n, is(3));
     }
 }

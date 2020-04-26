@@ -38,6 +38,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * linked-list | divide-and-conquer | heap
@@ -52,6 +53,23 @@ import java.util.List;
 public class LeetCode23 {
 
     public ListNode mergeKLists(ListNode[] lists) {
+        if (lists == null || lists.length == 0) return null;
+
+        PriorityQueue<ListNode> heap = new PriorityQueue<>((o1, o2) -> o1.val - o2.val);
+        Collections.addAll(heap, lists);
+
+        ListNode dummy = new ListNode(0);
+        ListNode cur = dummy;
+        while (!heap.isEmpty()) {
+            ListNode node = heap.poll();
+            if (node.next != null) heap.add(node.next);
+            cur.next = node;
+            cur = cur.next;
+        }
+        return dummy.next;
+    }
+
+    public ListNode mergeKLists2(ListNode[] lists) {
         if (lists.length == 0)
             return null;
 
