@@ -14,7 +14,7 @@ import static org.junit.Assert.assertTrue;
  **/
 public class LeetCode1391 {
 
-    public boolean hasValidPath(int[][] a) {
+    public boolean hasValidPath2(int[][] a) {
         int n = a.length, m = a[0].length;
 
         int[][][] ds = {
@@ -86,25 +86,28 @@ public class LeetCode1391 {
         }
     }
 
-    private int getId(int x, int y) {
+    private int flatId(int x, int y) {
         return x * m + y;
     }
 
     private void handler(int x, int y) {
         int pattern = PATTERNS[grid[x][y]];
         for (int i = 0; i < 4; ++i) {
-            if ((pattern & (1 << i)) > 0) {
+            if ((pattern & (1 << i)) != 0) {
                 int sx = x + DIRS[i][0];
                 int sy = y + DIRS[i][1];
-                if (sx >= 0 && sx < n && sy >= 0 && sy < m
-                        && (PATTERNS[grid[sx][sy]] & (1 << ((i + 2) % 4))) > 0) {
-                    ds.merge(getId(x, y), getId(sx, sy));
+                if (inGrid(sx, sy) && (PATTERNS[grid[sx][sy]] & (1 << ((i + 2) % 4))) != 0) {
+                    ds.merge(flatId(x, y), flatId(sx, sy));
                 }
             }
         }
     }
 
-    public boolean hasValidPath2(int[][] grid) {
+    private boolean inGrid(int x, int y) {
+        return 0 <= x && x < n && 0 <= y && y < m;
+    }
+
+    public boolean hasValidPath(int[][] grid) {
         this.grid = grid;
         this.n = grid.length;
         this.m = grid[0].length;
@@ -115,7 +118,7 @@ public class LeetCode1391 {
             }
         }
 
-        return ds.find(getId(0, 0)) == ds.find(getId(n - 1, m - 1));
+        return ds.find(flatId(0, 0)) == ds.find(flatId(n - 1, m - 1));
     }
 
     /**

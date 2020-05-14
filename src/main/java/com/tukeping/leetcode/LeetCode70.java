@@ -57,41 +57,30 @@ import static org.hamcrest.core.Is.is;
 public class LeetCode70 {
 
     /** DP 压缩状态空间 time: O(n) space:O(1) **/
-    public int climbStairs(int n) {
-        if (n == 0) return 0;
-        if (n == 1) return 1;
-        if (n == 2) return 2;
+    public int climbStairs2(int n) {
+        if (n <= 2) return n;
 
-        // 初始化状态
         int prepre = 1, pre = 2, cur = 0;
         for (int x = 3; x <= n; x++) {
-            // 状态转移方程
             cur = (x - 2 >= 0) ? pre + prepre : prepre;
             prepre = pre;
             pre = cur;
         }
-
         return cur;
     }
 
     /** DP time: O(n) space:O(n) **/
-    public int climbStairs2(int n) {
-        if (n == 0) return 0;
-        if (n == 1) return 1;
-        if (n == 2) return 2;
+    public int climbStairs(int n) {
+        if (n <= 2) return n;
 
-        // 初始化状态
         int[] f = new int[n + 1];
         f[0] = 0;
         f[1] = 1;
         f[2] = 2;
 
-        for (int x = 3; x <= n; x++) {
-            // 状态转移方程
-            f[x] = (x - 2 >= 0) ? f[x - 1] + f[x - 2] : f[x - 1];
-            System.out.println(String.format("f[%d] = %d", x, f[x]));
+        for (int i = 3; i <= n; i++) {
+            f[i] = f[i - 1] + f[i - 2];
         }
-
         return f[n];
     }
 

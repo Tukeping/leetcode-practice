@@ -6,6 +6,12 @@ package com.tukeping.tools;
  **/
 public class DPHelper {
 
+    public static void print(int[] f) {
+        for (int i = 0; i < f.length; i++) {
+            System.out.println("f[" + i + "] = " + f[i]);
+        }
+    }
+
     public static void print(int[][] f) {
         for (int i = 0; i < f.length; i++) {
             System.out.print("[n:" + i + "]");

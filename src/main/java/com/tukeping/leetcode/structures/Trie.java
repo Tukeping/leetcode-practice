@@ -6,11 +6,10 @@ package com.tukeping.leetcode.structures;
  **/
 public class Trie {
 
-    private static class TrieNode {
-        // R links to node children
-        private TrieNode[] links;
-        private int R = 26;
-        private boolean end;
+    class TrieNode {
+        TrieNode[] links;
+        int R = 26;
+        boolean end;
 
         public TrieNode() {
             links = new TrieNode[R];
@@ -37,14 +36,13 @@ public class Trie {
             return end;
         }
 
-        public void setEnd() {
+        public void end() {
             this.end = true;
         }
     }
 
-    private TrieNode root;
+    TrieNode root;
 
-    /** Initialize your data structure here. */
     public Trie() {
         root = new TrieNode();
     }
@@ -53,7 +51,6 @@ public class Trie {
         root = new TrieNode(R);
     }
 
-    /** Inserts a word into the trie. */
     public void insert(String word) {
         TrieNode node = root;
         for (int i = 0; i < word.length(); i++) {
@@ -63,13 +60,9 @@ public class Trie {
             }
             node = node.get(c);
         }
-        node.setEnd();
+        node.end();
     }
 
-    /**
-     * search a prefix or whole key in trie and
-     * returns the node where search ends
-     */
     private TrieNode searchPrefix(String word) {
         TrieNode node = root;
         for (int i = 0; i < word.length(); i++) {
@@ -83,13 +76,11 @@ public class Trie {
         return node;
     }
 
-    /** Returns if the word is in the trie. **/
     public boolean search(String word) {
         TrieNode node = searchPrefix(word);
         return node != null && node.isEnd();
     }
 
-    /** Returns if there is any word in the trie that starts with the given prefix. */
     public boolean startsWith(String prefix) {
         TrieNode node = searchPrefix(prefix);
         return node != null;

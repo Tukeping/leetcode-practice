@@ -16,7 +16,35 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode118 {
 
-    public List<List<Integer>> generate(int numRows) {
+    public List<List<Integer>> generate(int n) {
+        List<List<Integer>> res = new ArrayList<>();
+        if (n < 1) return res;
+        generate(n - 1, res);
+        return res;
+    }
+
+    private void generate(int n, List<List<Integer>> res) {
+        if (n == 0) {
+            res.add(Arrays.asList(1));
+            return;
+        }
+
+        generate(n - 1, res);
+
+        List<Integer> line = new ArrayList<>();
+        for (int i = 0; i <= n; i++) {
+            line.add(f(n, i, res));
+        }
+        res.add(line);
+    }
+
+    // f(i, j) = f(i - 1, j - 1) + f(i - 1, j)
+    private int f(int i, int j, List<List<Integer>> res) {
+        if (i == 0 || j == 0 || i == j) return 1;
+        return res.get(i - 1).get(j - 1) + res.get(i - 1).get(j);
+    }
+
+    public List<List<Integer>> generate2(int numRows) {
         List<List<Integer>> ans = new ArrayList<>();
 
         if (numRows >= 1)
