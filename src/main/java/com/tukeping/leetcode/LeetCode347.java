@@ -41,6 +41,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -57,6 +59,17 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode347 {
 
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int val : nums) map.merge(val, 1, Integer::sum);
+        return map.entrySet()
+                .stream()
+                .sorted((o1, o2) -> o2.getValue() - o1.getValue())
+                .limit(k)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
+
     private HashMap<Integer, Integer> map;
     private int[] queue;
     private int size;
@@ -64,7 +77,7 @@ public class LeetCode347 {
     /**
      * 算法的时间复杂度必须优于 O(n log n) , n 是数组的大小
      */
-    public List<Integer> topKFrequent(int[] nums, int k) {
+    public List<Integer> topKFrequent2(int[] nums, int k) {
         initHeap(k);
 
         for (int i = 0; i < nums.length; i++) {

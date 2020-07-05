@@ -46,8 +46,31 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode300 {
 
+    public int lengthOfLIS(int[] nums) {
+        int n = nums.length;
+        if (n == 0) return 0;
+
+        int k = 0;
+        int[] f = new int[n];
+        f[0] = nums[0];
+
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > f[k]) f[++k] = nums[i];
+            else {
+                int l = 0, r = k;
+                while (l < r) {
+                    int m = l + r >> 1;
+                    if (f[m] < nums[i]) l = m + 1;
+                    else r = m;
+                }
+                f[l] = nums[i];
+            }
+        }
+        return k + 1;
+    }
+
     /** time: O(n log n) space: O(n) **/
-    public int lengthOfLIS(int[] a) {
+    public int lengthOfLIS2(int[] a) {
         // corner case
         if (a == null || a.length == 0) return 0;
 

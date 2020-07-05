@@ -54,6 +54,7 @@ public class LeetCode33 {
         if (n == 0) return -1;
 
         int lo = 0, hi = n - 1;
+
         if (nums[0] > nums[n - 1]) {
             int l = 0, r = n - 1;
             while (l < r) {
