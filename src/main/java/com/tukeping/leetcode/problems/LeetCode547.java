@@ -66,6 +66,29 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode547 {
 
+    public int findCircleNum(int[][] grid) {
+        int n = grid.length;
+        if (n == 0) return 0;
+        int count = 0;
+        int[] visited = new int[n];
+        for (int i = 0; i < n; i++) {
+            if (visited[i] == 0) {
+                dfs2(grid, visited, i);
+                count++;
+            }
+        }
+        return count;
+    }
+
+    private void dfs2(int[][] grid, int[] visited, int i) {
+        for (int j = 0; j < grid.length; j++) {
+            if (visited[j] == 0 && grid[i][j] == 1) {
+                visited[j] = 1;
+                dfs2(grid, visited, j);
+            }
+        }
+    }
+
     int find(int[] parent, int i) {
         if (parent[i] == -1)
             return i;
@@ -79,7 +102,7 @@ public class LeetCode547 {
             parent[xset] = yset;
     }
 
-    public int findCircleNum(int[][] M) {
+    public int findCircleNumV2(int[][] M) {
         int[] parent = new int[M.length];
         Arrays.fill(parent, -1);
         for (int i = 0; i < M.length; i++) {
@@ -139,15 +162,6 @@ public class LeetCode547 {
         }
     }
 
-    /**
-     * 输入:
-     * [[1,1,0],
-     *  [1,1,0],
-     *  [0,0,1]]
-     * 输出: 2
-     * 说明：已知学生0和学生1互为朋友，他们在一个朋友圈。
-     * 第2个学生自己在一个朋友圈。所以返回2。
-     */
     @Test
     public void test1() {
         int[][] M = {
@@ -159,20 +173,24 @@ public class LeetCode547 {
         assertThat(n, is(2));
     }
 
-    /**
-     * 输入:
-     * [[1,1,0],
-     *  [1,1,1],
-     *  [0,1,1]]
-     * 输出: 1
-     * 说明：已知学生0和学生1互为朋友，学生1和学生2互为朋友，所以学生0和学生2也是朋友，所以他们三个在一个朋友圈，返回1。
-     */
     @Test
     public void test2() {
         int[][] M = {
                 {1, 1, 0},
                 {1, 1, 1},
                 {0, 1, 1}
+        };
+        int n = findCircleNum(M);
+        assertThat(n, is(1));
+    }
+
+    @Test
+    public void test3() {
+        int[][] M = {
+                {1, 0, 0, 1},
+                {0, 1, 1, 0},
+                {0, 1, 1, 1},
+                {1, 0, 1, 1}
         };
         int n = findCircleNum(M);
         assertThat(n, is(1));

@@ -1,5 +1,7 @@
 package com.tukeping.leetcode.problems;
 
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -37,5 +39,14 @@ public class LeetCode785 {
             }
         }
         return true;
+    }
+
+    @Test
+    public void test() {
+        int[][] graph = new int[][]{
+                {1, 2, 3}, {0, 2}, {0, 1, 3}, {0, 2}
+        };
+        boolean b = isBipartite(graph);
+        System.out.println(b);
     }
 }
