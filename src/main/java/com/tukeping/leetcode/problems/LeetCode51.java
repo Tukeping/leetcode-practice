@@ -44,9 +44,11 @@ package com.tukeping.leetcode.problems;
  *
  */
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -54,6 +56,70 @@ import java.util.List;
  * @date 2020/1/21
  **/
 public class LeetCode51 {
+
+    public List<Integer> spiralOrder(int[][] matrix) {
+        // edge case
+        List<Integer> order = new ArrayList<Integer>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return order;
+        }
+        int rows = matrix.length, cols = matrix[0].length;
+        int left = 0, right = cols - 1, top = 0, bottom = rows - 1;
+        while (left <= right && top <= bottom) {
+            // 行不动, 列向右移动
+            for (int i = left; i <= right; i++) {
+                order.add(matrix[top][i]);
+            }
+            // 列不动, 行向下移动
+            for (int i = top + 1; i <= bottom; i++) {
+                order.add(matrix[i][right]);
+            }
+            if (top < bottom) {
+                // 行不动, 列向左移动
+                for (int i = right - 1; i >= left; i--) {
+                    order.add(matrix[bottom][i]);
+                }
+            }
+            if (left < right) {
+                // 列不动, 行向上移动
+                for (int i = bottom - 1; i >= top + 1; i--) {
+                    order.add(matrix[i][left]);
+                }
+            }
+            // 矩形四个点坐标 缩小一圈
+            left++;
+            right--;
+            top++;
+            bottom--;
+        }
+        return order;
+    }
+
+    @Test
+    public void test1() {
+        int[][] input = new int[][]{
+                {1, 2, 3},
+                {4, 5, 6},
+                {7, 8, 9}
+        };
+        List<Integer> expect = Arrays.asList(1, 2, 3, 6, 9, 8, 7, 4, 5);
+        List<Integer> actual = spiralOrder(input);
+        Assert.assertEquals(expect, actual);
+    }
+
+    @Test
+    public void test2() {
+        // [[1,2,3,4],[5,6,7,8],[9,10,11,12]]
+        int[][] input = new int[][]{
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12}
+        };
+        // [1,2,3,4,8,12,11,10,9,5,6,7]
+        List<Integer> expect = Arrays.asList(1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7);
+        List<Integer> actual = spiralOrder(input);
+        Assert.assertEquals(expect, actual);
+    }
 
     @Test
     public void test() {

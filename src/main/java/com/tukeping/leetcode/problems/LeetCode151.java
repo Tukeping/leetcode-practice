@@ -49,6 +49,7 @@ package com.tukeping.leetcode.problems;
  * 请选用 C 语言的用户尝试使用 O(1) 额外空间复杂度的原地解法。
  */
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -60,11 +61,29 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode151 {
 
-    /**
-     * 25/25 cases passed (7 ms)
-     * Your runtime beats 49.94 % of java submissions
-     * Your memory usage beats 56.16 % of java submissions (37.6 MB)
-     */
+    public String reverseWordsV2(String s) {
+        s = s.trim();
+        String[] words = s.split(" +");
+        int size = words.length;
+        StringBuilder reverseWord = new StringBuilder(words[size - 1]);
+        for (int i = size - 2; i >= 0; i--) {
+            reverseWord.append(" ").append(words[i]);
+        }
+        return reverseWord.toString();
+    }
+
+    @Test
+    public void test5() {
+        String reverseWord = reverseWords("the sky is blue");
+        Assert.assertEquals("blue is sky the", reverseWord);
+    }
+
+    @Test
+    public void test6() {
+        String reverseWord = reverseWords("a good  example");
+        Assert.assertEquals("example good a", reverseWord);
+    }
+
     public String reverseWords(String s) {
         s = s.trim();
         StringBuilder word = new StringBuilder();
