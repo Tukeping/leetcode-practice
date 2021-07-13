@@ -1,9 +1,9 @@
 package com.tukeping.tools;
 
 import com.tukeping.leetcode.structures.ListNode;
+import org.junit.Assert;
 
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author tukeping
@@ -20,7 +20,7 @@ public class ListNodeHelper {
         return null;
     }
 
-    public static ListNode build0(int... a) {
+    public static ListNode as(int... a) {
         return build(a);
     }
 
@@ -51,12 +51,12 @@ public class ListNodeHelper {
     public static void check(ListNode check, int[] a) {
         int i = 0;
         while (check != null) {
-            assertThat(check.val, is(a[i++]));
+            Assert.assertThat(check.val, is(a[i++]));
             check = check.next;
         }
     }
 
-    public static void check0(ListNode check, int... a) {
+    public static void assertThat(ListNode check, int... a) {
         check(check, a);
     }
 }

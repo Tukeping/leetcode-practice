@@ -1,5 +1,6 @@
 package com.tukeping.tools;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -9,7 +10,6 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 /**
  * @author tukeping
@@ -19,6 +19,10 @@ public class ListHelper {
 
     public static List<Integer> asList(int[] a) {
         return Arrays.stream(a).boxed().collect(Collectors.toList());
+    }
+
+    public static int[] asArray(List<Integer> list) {
+        return list.stream().mapToInt(Integer::intValue).toArray();
     }
 
     public static int[][] asTwoDimArray(List<List<Integer>> list) {
@@ -36,21 +40,49 @@ public class ListHelper {
         return a;
     }
 
-    public static void check(int[][] actual, int[][] expect) {
+    public static int[][] asTwoDimArray(ArrayList<ArrayList<Integer>> list) {
+        int[][] a = new int[list.size()][];
+
+        for (int i = 0; i < list.size(); i++) {
+            List<Integer> subList = list.get(i);
+            int[] b = new int[subList.size()];
+            for (int j = 0; j < subList.size(); j++) {
+                b[j] = subList.get(j);
+            }
+            a[i] = b;
+        }
+
+        return a;
+    }
+
+    public static void assertThat(int[] actual, int[] expect) {
+        int n = actual.length;
+        int m = expect.length;
+        if (n != m) {
+            throw new AssertionError("actual size not equals expect size");
+        }
+        for (int i = 0; i < n; i++) {
+            if (actual[i] != expect[i]) {
+                throw new AssertionError("iTh element not equals, i = " + i + ", actual = " + actual[i] + ", expect = " + expect[i]);
+            }
+        }
+    }
+
+    public static void assertThatTwoDim(int[][] actual, int[][] expect) {
         int aD1Len = actual.length;
         int eD1Len = expect.length;
 
-        assertThat(aD1Len, is(eD1Len));
+        Assert.assertThat(aD1Len, is(eD1Len));
 
         for (int i = 0; i < expect.length; i++) {
             for (int j = 0; j < expect[i].length; j++) {
-                assertThat(actual[i][j], is(expect[i][j]));
+                Assert.assertThat(actual[i][j], is(expect[i][j]));
             }
         }
     }
 
     public static void checkInAnyOrder(int[][] actual, int[][] expect) {
-        assertThat(toDoubleList(actual), containsInAnyOrder(toDoubleList(expect).toArray()));
+        Assert.assertThat(toDoubleList(actual), containsInAnyOrder(toDoubleList(expect).toArray()));
     }
 
     public static List<List<Integer>> toDoubleList(int[][] matrix) {
@@ -93,7 +125,7 @@ public class ListHelper {
             for (; k < actual.size(); k++) {
                 List<String> acLine = actual.get(k);
                 try {
-                    assertThat(acLine, containsInAnyOrder(exLine.toArray()));
+                    Assert.assertThat(acLine, containsInAnyOrder(exLine.toArray()));
                     actual.remove(k);
                     b = true;
                     break;
@@ -148,6 +180,6 @@ public class ListHelper {
                 {15, 7}
         };
 
-        check(actual, expect);
+        assertThatTwoDim(actual, expect);
     }
 }

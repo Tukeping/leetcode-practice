@@ -51,7 +51,7 @@ public class LCOF22 {
      */
     @Test
     public void test1() {
-        ListNode res = getKthFromEnd(ListNodeHelper.build0(1, 2, 3, 4, 5), 2);
-        ListNodeHelper.check0(res, 4, 5);
+        ListNode res = getKthFromEnd(ListNodeHelper.as(1, 2, 3, 4, 5), 2);
+        ListNodeHelper.assertThat(res, 4, 5);
     }
 }

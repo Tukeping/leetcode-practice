@@ -59,7 +59,7 @@ public class LCOF06 {
      */
     @Test
     public void test1() {
-        ListNode head = ListNodeHelper.build0(1, 3, 2);
+        ListNode head = ListNodeHelper.as(1, 3, 2);
         int[] ans = reversePrint(head);
         assertThat(ans, is(new int[]{2, 3, 1}));
     }
