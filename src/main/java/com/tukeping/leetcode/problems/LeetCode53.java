@@ -63,6 +63,16 @@ public class LeetCode53 {
         return maxSum;
     }
 
+    public int maxSubArrayV3(int[] nums) {
+        int n = nums.length;
+        int ans = nums[0];
+        for (int i = 1; i < n; i++) {
+            if (nums[i - 1] > 0) nums[i] += nums[i - 1];
+            ans = Math.max(ans, nums[i]);
+        }
+        return ans;
+    }
+
     /**
      * 输入: [-2,1,-3,4,-1,2,1,-5,4]
      * 输出: 6

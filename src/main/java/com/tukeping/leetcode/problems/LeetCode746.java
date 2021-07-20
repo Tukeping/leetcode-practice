@@ -59,6 +59,18 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode746 {
 
+    public int minCostClimbingStairsV2(int[] cost) {
+        int n = cost.length;
+        int[] dp = new int[n + 1];
+        dp[0] = cost[0];
+        dp[1] = cost[1];
+        for (int i = 2; i <= n; i++) {
+            int c = i == n ? 0 : cost[i];
+            dp[i] = Math.min(c + dp[i - 1], c + dp[i - 2]);
+        }
+        return Math.min(dp[n], dp[n - 1]);
+    }
+
     public int minCostClimbingStairs(int[] cost) {
         int f1 = 0, f2 = 0;
         for (int i = cost.length - 1; i >= 0; --i) {

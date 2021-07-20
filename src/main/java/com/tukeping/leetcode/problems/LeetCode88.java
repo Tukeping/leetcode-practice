@@ -51,18 +51,31 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode88 {
 
-    /*
-     * 初始化 nums1 和 nums2 的元素数量分别为 m 和 n。
-     * 你可以假设 nums1 有足够的空间（空间大小大于或等于 m + n）来保存 nums2 中的元素。
-     */
-
-    /*
-     * 59/59 cases passed (1 ms)
-     * Your runtime beats 31.61 % of java submissions
-     * Your memory usage beats 5.1 % of java submissions (41.8 MB)
-     */
-
     public void merge(int[] nums1, int m, int[] nums2, int n) {
+        int i = 0, j = 0, k = m;
+        while (k < m + n) {
+            if (j == n) {
+                return;
+            } else if (i == k) {
+                for (int z = k; z < m + n; z++) {
+                    nums1[z] = nums2[j];
+                    j++;
+                }
+            } else if (nums1[i] <= nums2[j]) {
+                i++;
+            } else {
+                for (int z = k - 1; z >= i; z--) {
+                    nums1[z + 1] = nums1[z];
+                }
+                nums1[i] = nums2[j];
+                i++;
+                k++;
+                j++;
+            }
+        }
+    }
+
+    public void mergeV2(int[] nums1, int m, int[] nums2, int n) {
         if (nums1 == null) nums1 = nums2;
         if (nums2 == null) return;
         if (m + n == 0) return;
@@ -89,12 +102,6 @@ public class LeetCode88 {
         }
     }
 
-    /**
-     * 输入:
-     * nums1 = [1,2,3,0,0,0], m = 3
-     * nums2 = [2,5,6],       n = 3
-     * 输出: [1,2,2,3,5,6]
-     */
     @Test
     public void test1() {
         int[] nums1 = {1, 2, 3, 0, 0, 0};

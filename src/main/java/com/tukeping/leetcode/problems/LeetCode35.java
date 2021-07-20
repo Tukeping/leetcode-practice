@@ -55,11 +55,16 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode35 {
 
-    /**
-     * 62/62 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 35.82 % of java submissions (38.9 MB)
-     */
+    public int searchInsertV2(int[] nums, int target) {
+        int n = nums.length;
+        int l = 0, r = n - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] >= target) r = mid;
+            else l = mid + 1;
+        }
+        return nums[l] < target ? l + 1 : l;
+    }
 
     public int searchInsert(int[] nums, int target) {
         return bsearch(nums, target, 0, nums.length - 1);
