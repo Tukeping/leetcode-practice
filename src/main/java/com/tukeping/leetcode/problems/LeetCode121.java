@@ -50,6 +50,18 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode121 {
 
+    public int maxProfitV2(int[] prices) {
+        int max = 0;
+        int n = prices.length;
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int profit = prices[j] - prices[i];
+                max = Math.max(max, profit);
+            }
+        }
+        return max;
+    }
+
     /**
      * dp[i][k][0] = max(dp[i-1][k][0], dp[i-1][k][1] + prices[i])
      *               max(   选择 rest  ,           选择 sell      )

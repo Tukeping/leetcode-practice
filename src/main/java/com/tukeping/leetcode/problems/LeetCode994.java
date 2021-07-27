@@ -83,6 +83,50 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode994 {
 
+    public int orangesRottingV2(int[][] grid) {
+        int m = grid.length;
+        int n = grid[0].length;
+        Queue<int[]> q = new ArrayDeque<>();
+        int cnt = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 2) {
+                    q.add(new int[]{i, j, 0});
+                } else if (grid[i][j] == 1) {
+                    cnt++;
+                }
+            }
+        }
+        if (q.isEmpty() && cnt == 0) {
+            return 0;
+        }
+        int maxDeep = -1;
+        int[] d = new int[]{1, 0, -1, 0, 1};
+        while (!q.isEmpty()) {
+            int[] node = q.poll();
+            int x = node[0];
+            int y = node[1];
+            int deep = node[2];
+            maxDeep = Math.max(maxDeep, deep);
+            for (int i = 0; i < 4; i++) {
+                int sx = x + d[i];
+                int sy = y + d[i + 1];
+                if (sx >= 0 && sx < m && sy >= 0 && sy < n && grid[sx][sy] == 1) {
+                    q.add(new int[]{sx, sy, deep + 1});
+                    grid[sx][sy] = 2;
+                }
+            }
+        }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    return -1;
+                }
+            }
+        }
+        return maxDeep;
+    }
+
     int[] dr = new int[]{-1, 0, 1, 0};
     int[] dc = new int[]{0, -1, 0, 1};
 

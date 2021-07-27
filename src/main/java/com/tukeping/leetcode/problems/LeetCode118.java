@@ -16,6 +16,36 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode118 {
 
+    public List<List<Integer>> generateV2(int n) {
+        List<List<Integer>> ret = new ArrayList<>();
+        int cnt = 0;
+        while (cnt < n) {
+            if (cnt == 0) {
+                List<Integer> list = new ArrayList<>();
+                list.add(1);
+                ret.add(list);
+            } else if (cnt == 1) {
+                List<Integer> list = new ArrayList<>();
+                list.add(1);
+                list.add(1);
+                ret.add(list);
+            } else {
+                List<Integer> list = new ArrayList<>();
+                List<Integer> prev = ret.get(cnt - 1);
+                for (int i = 0; i <= cnt; i++) {
+                    if (i == 0 || i == cnt) {
+                        list.add(1);
+                    } else {
+                        list.add(prev.get(i - 1) + prev.get(i));
+                    }
+                }
+                ret.add(list);
+            }
+            cnt++;
+        }
+        return ret;
+    }
+
     public List<List<Integer>> generate(int n) {
         List<List<Integer>> res = new ArrayList<>();
         if (n < 1) return res;

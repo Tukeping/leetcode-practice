@@ -56,8 +56,8 @@ package com.tukeping.leetcode.problems;
 import com.tukeping.tools.ListHelper;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * array
@@ -71,81 +71,31 @@ import java.util.List;
  **/
 public class LeetCode73 {
 
-    /*
-     * 进阶:
-     * 一个直接的解决方案是使用  O(mn) 的额外空间，但这并不是一个好的解决方案。
-     * 一个简单的改进方案是使用 O(m + n) 的额外空间，但这仍然不是最好的解决方案。
-     * 你能想出一个常数空间的解决方案吗？
-     */
-
-    /*
-     * 159/159 cases passed (3 ms)
-     * Your runtime beats 30.05 % of java submissions
-     * Your memory usage beats 5.03 % of java submissions (55 MB)
-     */
-
-    private static int ash = Integer.MIN_VALUE + 1314;
-
     public void setZeroes(int[][] matrix) {
-        if (matrix == null) return;
-
-        int m = matrix.length, n = matrix[0].length;
-
-        int row = -1;
-        List<Integer> column = new ArrayList<>();
-
-        for (int x = 0; x < m; x++) {
-            for (int y = 0; y < n; y++) {
-                if (matrix[x][y] == 0) {
-                    row = x;
-                    column.add(y);
+        Set<Integer> rows = new HashSet<>();
+        Set<Integer> cols = new HashSet<>();
+        int m = matrix.length;
+        int n = matrix[0].length;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (matrix[i][j] == 0) {
+                    rows.add(i);
+                    cols.add(j);
                 }
-            }
-            if (!column.isEmpty()) {
-                boom(matrix, m, n, row, column);
-                row = -1;
-                column.clear();
             }
         }
-
-        for (int x = 0; x < m; x++) {
-            for (int y = 0; y < n; y++) {
-                if (matrix[x][y] == ash) {
-                    matrix[x][y] = 0;
-                }
+        for (int row : rows) {
+            for (int i = 0; i < n; i++) {
+                matrix[row][i] = 0;
+            }
+        }
+        for (int col : cols) {
+            for (int i = 0; i < m; i++) {
+                matrix[i][col] = 0;
             }
         }
     }
 
-    private void boom(int[][] matrix, int m, int n, int row, List<Integer> column) {
-        for (int y = 0; y < n; y++) {
-            if (matrix[row][y] != 0) {
-                matrix[row][y] = ash;
-            }
-        }
-        for (Integer col : column) {
-            for (int x = 0; x < m; x++) {
-                if (matrix[x][col] != 0) {
-                    matrix[x][col] = ash;
-                }
-            }
-        }
-    }
-
-    /**
-     * 输入:
-     * [
-     *   [1,1,1],
-     *   [1,0,1],
-     *   [1,1,1]
-     * ]
-     * 输出:
-     * [
-     *   [1,0,1],
-     *   [0,0,0],
-     *   [1,0,1]
-     * ]
-     */
     @Test
     public void test1() {
         int[][] matrix = {
@@ -162,20 +112,6 @@ public class LeetCode73 {
         ListHelper.assertThatTwoDim(matrix, expect);
     }
 
-    /**
-     * 输入:
-     * [
-     *   [0,1,2,0],
-     *   [3,4,5,2],
-     *   [1,3,1,5]
-     * ]
-     * 输出:
-     * [
-     *   [0,0,0,0],
-     *   [0,4,5,0],
-     *   [0,3,1,0]
-     * ]
-     */
     @Test
     public void test2() {
         int[][] matrix = {

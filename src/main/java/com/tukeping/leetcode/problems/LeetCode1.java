@@ -48,6 +48,21 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode1 {
 
+    public int[] twoSumV3(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            int num = nums[i];
+            Integer idx = map.get(num);
+            if (idx != null) {
+                return new int[]{idx, i};
+            } else {
+                map.put(target - num, i);
+            }
+        }
+        return new int[0];
+    }
+
     public int[] twoSumV2(int[] nums, int target) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int i = 0; i < nums.length; i++) {

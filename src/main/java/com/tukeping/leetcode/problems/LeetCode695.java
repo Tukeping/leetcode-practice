@@ -48,6 +48,8 @@ package com.tukeping.leetcode.problems;
 
 import org.junit.Test;
 
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.hamcrest.core.Is.is;
@@ -62,6 +64,46 @@ import static org.junit.Assert.assertThat;
  * @date 2020/2/12
  **/
 public class LeetCode695 {
+
+    int[] d = new int[]{1, 0, -1, 0, 1};
+    int m = 0, n = 0;
+
+    public int maxAreaOfIslandV2(int[][] grid) {
+        this.m = grid.length;
+        this.n = grid[0].length;
+
+        int max = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 1) {
+                    max = Math.max(max, bfs(grid, i, j));
+                }
+            }
+        }
+        return max;
+    }
+
+    private int bfs(int[][] grid, int x, int y) {
+        Queue<int[]> q = new ArrayDeque<>();
+        q.add(new int[]{x, y});
+        int ans = 0;
+        while (!q.isEmpty()) {
+            int[] node = q.poll();
+            int r = node[0];
+            int c = node[1];
+            if (grid[r][c] == 0) continue;
+            grid[r][c] = 0;
+            ans++;
+            for (int i = 0; i < 4; i++) {
+                int sr = r + d[i];
+                int sc = c + d[i + 1];
+                if (sr >= 0 && sr < m && sc >= 0 && sc < n && grid[sr][sc] == 1) {
+                    q.add(new int[]{sr, sc});
+                }
+            }
+        }
+        return ans;
+    }
 
     public int maxAreaOfIsland(int[][] grid) {
         int nr = grid.length;

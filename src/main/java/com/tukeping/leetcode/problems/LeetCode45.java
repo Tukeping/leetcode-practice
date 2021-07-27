@@ -48,6 +48,21 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode45 {
 
+    public int jumpV2(int[] nums) {
+        int n = nums.length;
+        int[] dp = new int[n];
+        for (int i = n - 2; i >= 0; i--) {
+            dp[i] = 100_0000;
+            for (int j = Math.min(nums[i] + i, n - 1); j > i; j--) {
+                dp[i] = Math.min(dp[i], dp[j] + 1);
+            }
+        }
+        // for(int i = 0; i < n; i++) {
+        //     System.out.println("dp["+i+"] = " + dp[i]);
+        // }
+        return dp[0];
+    }
+
     public int jump(int[] nums) {
         int len = nums.length;
         int canJumpSteps = nums[0];

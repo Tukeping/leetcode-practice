@@ -11,6 +11,32 @@ import static org.junit.Assert.assertThat;
  **/
 public class LCCI_01_06 {
 
+    public String compressStringV2(String s) {
+        int n = s.length();
+        int m = 0;
+        int count = 1;
+        for (int i = 0; i < n; i++) {
+            if (i == n - 1 || s.charAt(i) != s.charAt(i + 1)) {
+                m += 1 + String.valueOf(count).length();
+                count = 1;
+            } else {
+                count++;
+            }
+        }
+        if (m >= n) return s;
+        StringBuilder sb = new StringBuilder(m);
+        for (int i = 0; i < n; i++) {
+            if (i == n - 1 || s.charAt(i) != s.charAt(i + 1)) {
+                sb.append(s.charAt(i));
+                sb.append(count);
+                count = 1;
+            } else {
+                count++;
+            }
+        }
+        return sb.toString();
+    }
+
     public String compressString(String S) {
         if (S.length() == 0) return "";
         StringBuilder compressString = new StringBuilder();

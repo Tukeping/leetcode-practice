@@ -52,6 +52,32 @@ import static org.junit.Assert.assertTrue;
  **/
 public class LeetCode55 {
 
+    public boolean canJumpV2(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return true;
+        boolean[] dp = new boolean[n];
+        dp[n - 1] = true;
+        for (int i = n - 2; i >= 0; i--) {
+            if (nums[i] != 0) {
+                int dist = n - 1 - i;
+                if (nums[i] >= dist) {
+                    dp[i] = true;
+                } else {
+                    for (int j = Math.min(i + nums[i], n - 2); j >= i; j--) {
+                        if (dp[j]) {
+                            dp[i] = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        // for(int i = 0; i < n; i++) {
+        //     System.out.println("dp["+i+"] = " + dp[i]);
+        // }
+        return dp[0];
+    }
+
     public boolean canJump(int[] nums) {
         int maxPos = 0, len = nums.length;
         for (int i = 0; i < len; i++) {

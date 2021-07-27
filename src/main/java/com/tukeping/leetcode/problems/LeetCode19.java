@@ -46,6 +46,30 @@ import org.junit.Test;
  **/
 public class LeetCode19 {
 
+    public ListNode removeNthFromEndV2(ListNode head, int n) {
+        ListNode guard = new ListNode(-1);
+        guard.next = head;
+
+        ListNode fast = head;
+        for (int i = 0; i < n; i++) {
+            fast = fast.next;
+            if (fast == null) {
+                guard.next = guard.next.next;
+                return guard.next;
+            }
+        }
+
+        ListNode slow = head;
+        while (fast != null && fast.next != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        slow.next = slow.next.next;
+
+        return guard.next;
+    }
+
     public ListNode removeNthFromEnd(ListNode head, int n) {
         ListNode sentinel = new ListNode(0);
         sentinel.next = head;

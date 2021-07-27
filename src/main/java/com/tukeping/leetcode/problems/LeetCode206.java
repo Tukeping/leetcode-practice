@@ -40,6 +40,19 @@ import org.junit.Test;
  **/
 public class LeetCode206 {
 
+    public ListNode reverseListV2(ListNode head) {
+        ListNode prev = null;
+        ListNode cur = head;
+        ListNode next;
+        while (cur != null) {
+            next = cur.next;
+            cur.next = prev;
+            prev = cur;
+            cur = next;
+        }
+        return prev;
+    }
+
     public ListNode reverseList(ListNode head) {
         ListNode pre = null;
         ListNode cur = head;

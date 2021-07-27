@@ -41,6 +41,31 @@ import org.junit.Test;
  */
 public class LeetCode21 {
 
+    public ListNode mergeTwoListsV2(ListNode l1, ListNode l2) {
+        ListNode guard = new ListNode(-1);
+        ListNode cur = guard;
+        guard.next = cur;
+
+        while (l1 != null && l2 != null) {
+            if (l1.val <= l2.val) {
+                cur.next = l1;
+                l1 = l1.next;
+            } else {
+                cur.next = l2;
+                l2 = l2.next;
+            }
+            cur = cur.next;
+        }
+
+        if (l1 == null) {
+            cur.next = l2;
+        } else if (l2 == null) {
+            cur.next = l1;
+        }
+
+        return guard.next;
+    }
+
     public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
         ListNode sentry = new ListNode(-1);
         ListNode cur = sentry;

@@ -55,9 +55,33 @@ import java.util.Stack;
  **/
 public class LeetCode617 {
 
+    public TreeNode mergeTreesV2(TreeNode root1, TreeNode root2) {
+        if (root1 == null) return root2;
+        dfs(root1, root2, root1, -1);
+        return root1;
+    }
+
+    private void dfs(TreeNode root1, TreeNode root2, TreeNode prev, int d) {
+        if (root1 == null && root2 == null) {
+            // ignore
+        } else if (root1 == null) {
+            if (d == 0) {
+                prev.left = root2;
+            } else if (d == 1) {
+                prev.right = root2;
+            }
+        } else if (root2 == null) {
+            // ignore
+        } else { // root1 != null && root2 != null
+            root1.val += root2.val;
+            dfs(root1.left, root2.left, root1, 0);
+            dfs(root1.right, root2.right, root1, 1);
+        }
+    }
+
     public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
-        if(t1 == null && t2 == null) return null;
-        if(t1 == null || t2 == null) return (t1 == null) ? t2 : t1;
+        if (t1 == null && t2 == null) return null;
+        if (t1 == null || t2 == null) return (t1 == null) ? t2 : t1;
 
         t1.val += t2.val;
 

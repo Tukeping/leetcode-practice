@@ -42,6 +42,35 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode283 {
 
+    public void moveZeroesV2(int[] nums) {
+        int size = nums.length;
+        if (size == 1) return;
+        int zeroIndex = 0, nonZeroIndex = 0;
+        while (true) {
+            while (zeroIndex < size) {
+                if (nums[zeroIndex] == 0) break;
+                else zeroIndex++;
+            }
+            if (zeroIndex >= size) break;
+            while (nonZeroIndex < size) {
+                if (nums[nonZeroIndex] != 0) break;
+                else nonZeroIndex++;
+            }
+            if (nonZeroIndex >= size) break;
+            if (zeroIndex > nonZeroIndex) {
+                nonZeroIndex = zeroIndex + 1;
+            } else {
+                swap(nums, zeroIndex, nonZeroIndex);
+            }
+        }
+    }
+
+//    private void swap(int[] nums, int source, int target) {
+//        int tmp = nums[source];
+//        nums[source] = nums[target];
+//        nums[target] = tmp;
+//    }
+
     public void moveZeroes(int[] nums) {
         int len = nums.length;
         for (int i = 0; i < len; i++) {
@@ -60,10 +89,6 @@ public class LeetCode283 {
         nums[b] = tmp;
     }
 
-    /**
-     * 输入: [0,1,0,3,12]
-     * 输出: [1,3,12,0,0]
-     */
     @Test
     public void test1() {
         int[] nums = new int[]{0, 1, 0, 3, 12};

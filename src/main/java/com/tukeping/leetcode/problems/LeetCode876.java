@@ -55,6 +55,20 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode876 {
 
+    public ListNode middleNodeV2(ListNode head) {
+        ListNode cur = head;
+        int count = 0;
+        while (cur != null) {
+            cur = cur.next;
+            count++;
+        }
+        int mid = count / 2;
+        for (int i = 1; i <= mid; i++) {
+            head = head.next;
+        }
+        return head;
+    }
+
     public ListNode middleNode(ListNode head) {
         if (head == null || head.next == null) return head;
         ListNode slow = head, fast = head;

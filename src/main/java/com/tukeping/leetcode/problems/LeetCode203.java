@@ -37,6 +37,23 @@ import static org.junit.Assert.assertNull;
  **/
 public class LeetCode203 {
 
+    public ListNode removeElementsV2(ListNode head, int val) {
+        ListNode guard = new ListNode(-1);
+        guard.next = head;
+
+        ListNode prev = guard;
+        ListNode cur = head;
+        while (cur != null) {
+            if (cur.val == val) {
+                prev.next = cur.next;
+            } else {
+                prev = cur;
+            }
+            cur = cur.next;
+        }
+        return guard.next;
+    }
+
     public ListNode removeElements(ListNode head, int val) {
         if (head == null) return head;
 

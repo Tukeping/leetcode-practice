@@ -75,6 +75,11 @@ package com.tukeping.leetcode.problems;
 
 import org.junit.Test;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -89,6 +94,48 @@ import static org.junit.Assert.assertTrue;
 public class LeetCode36 {
 
     public boolean isValidSudoku(char[][] board) {
+        Map<Integer, Set<Integer>> row = new HashMap<>();
+        for (int i = 0; i < 9; i++) {
+            Set<Integer> set = new HashSet<>();
+            row.put(i, set);
+        }
+
+        Map<Integer, Set<Integer>> col = new HashMap<>();
+        for (int i = 0; i < 9; i++) {
+            Set<Integer> set = new HashSet<>();
+            col.put(i, set);
+        }
+
+        Map<String, Set<Integer>> rect = new HashMap<>();
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                String coord = i + "" + j;
+                rect.put(coord, new HashSet<>());
+            }
+        }
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                char cell = board[i][j];
+                if (cell != '.') {
+                    int cellNum = (int) (cell - '0');
+
+                    if (row.get(i).contains(cellNum)) return false;
+                    else row.get(i).add(cellNum);
+
+                    if (col.get(j).contains(cellNum)) return false;
+                    else col.get(j).add(cellNum);
+
+                    String coord = i / 3 + "" + j / 3;
+                    if (rect.get(coord).contains(cellNum)) return false;
+                    else rect.get(coord).add(cellNum);
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isValidSudokuV2(char[][] board) {
         int n = 9;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
@@ -129,21 +176,6 @@ public class LeetCode36 {
         return true;
     }
 
-    /**
-     * 输入:
-     * [
-     *   ["5","3",".",".","7",".",".",".","."],
-     *   ["6",".",".","1","9","5",".",".","."],
-     *   [".","9","8",".",".",".",".","6","."],
-     *   ["8",".",".",".","6",".",".",".","3"],
-     *   ["4",".",".","8",".","3",".",".","1"],
-     *   ["7",".",".",".","2",".",".",".","6"],
-     *   [".","6",".",".",".",".","2","8","."],
-     *   [".",".",".","4","1","9",".",".","5"],
-     *   [".",".",".",".","8",".",".","7","9"]
-     * ]
-     * 输出: true
-     */
     @Test
     public void test1() {
         char[][] matrix = {
@@ -160,23 +192,6 @@ public class LeetCode36 {
         assertTrue(isValidSudoku(matrix));
     }
 
-    /**
-     * 输入:
-     * [
-     *   ["8","3",".",".","7",".",".",".","."],
-     *   ["6",".",".","1","9","5",".",".","."],
-     *   [".","9","8",".",".",".",".","6","."],
-     *   ["8",".",".",".","6",".",".",".","3"],
-     *   ["4",".",".","8",".","3",".",".","1"],
-     *   ["7",".",".",".","2",".",".",".","6"],
-     *   [".","6",".",".",".",".","2","8","."],
-     *   [".",".",".","4","1","9",".",".","5"],
-     *   [".",".",".",".","8",".",".","7","9"]
-     * ]
-     * 输出: false
-     * 解释: 除了第一行的第一个数字从 5 改为 8 以外，空格内其他数字均与 示例1 相同。
-     *      但由于位于左上角的 3x3 宫内有两个 8 存在, 因此这个数独是无效的。
-     */
     @Test
     public void test2() {
         char[][] matrix = {

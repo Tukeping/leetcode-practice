@@ -47,6 +47,24 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode152 {
 
+    public int maxProductV2(int[] nums) {
+        int n = nums.length;
+        if (n == 1) return nums[0];
+        int[][] dp = new int[n][2];
+        dp[0][0] = nums[0]; // 0 - 极小值
+        dp[0][1] = nums[0]; // 1 - 极大值
+        int max = nums[0];
+        for (int i = 1; i < n; i++) {
+            int k1 = nums[i];
+            int k2 = nums[i] * dp[i - 1][0];
+            int k3 = nums[i] * dp[i - 1][1];
+            dp[i][0] = Math.min(k1, Math.min(k2, k3));
+            dp[i][1] = Math.max(k1, Math.max(k2, k3));
+            max = Math.max(max, Math.max(dp[i][0], dp[i][1]));
+        }
+        return max;
+    }
+
     public int maxProduct(int[] nums) {
         int iThMax = 1, iThMin = 1, max = Integer.MIN_VALUE;
         for (int num : nums) {

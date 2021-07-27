@@ -34,18 +34,43 @@ import com.tukeping.leetcode.structures.ListNode;
 import com.tukeping.tools.ListNodeHelper;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * @author tukeping
  * @date 2020/2/19
  **/
 public class LeetCode83 {
 
+    public ListNode deleteDuplicatesV3(ListNode head) {
+        ListNode guard = new ListNode(-1);
+        guard.next = head;
+
+        Set<Integer> set = new HashSet<>();
+        ListNode prev = guard;
+        ListNode cur = head;
+        ListNode next;
+        while (cur != null) {
+            if (set.contains(cur.val)) {
+                next = cur.next;
+                prev.next = cur.next;
+                cur = next;
+            } else {
+                set.add(cur.val);
+                prev = cur;
+                cur = cur.next;
+            }
+        }
+        return guard.next;
+    }
+
     public ListNode deleteDuplicatesV2(ListNode head) {
-        if(head == null || head.next == null) return head;
+        if (head == null || head.next == null) return head;
 
         ListNode cur = head;
-        while(cur.next != null) {
-            if(cur.val == cur.next.val) cur.next = cur.next.next;
+        while (cur.next != null) {
+            if (cur.val == cur.next.val) cur.next = cur.next.next;
             else cur = cur.next;
         }
 

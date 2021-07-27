@@ -41,6 +41,7 @@ import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import static org.hamcrest.core.Is.is;
@@ -55,6 +56,30 @@ import static org.junit.Assert.assertThat;
  * @date 2020/1/9
  **/
 public class LeetCode3 {
+
+    public int lengthOfLongestSubstringV2(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        char[] chars = s.toCharArray();
+        int n = chars.length;
+        int l = 0, r = 0;
+        int maxLen = 0;
+        while (r < n) {
+            if (map.containsKey(chars[r])) {
+                int dupIndex = map.get(chars[r]);
+                for (int i = l; i <= dupIndex; i++) {
+                    map.remove(chars[i]);
+                }
+                l = dupIndex + 1;
+            } else {
+                int len = r - l + 1;
+                maxLen = Math.max(maxLen, len);
+
+                map.put(chars[r], r);
+                r++;
+            }
+        }
+        return maxLen;
+    }
 
     int lengthOfLongestSubstring(String s) {
         int i, count, max = 0, start = 0, len = s.length();

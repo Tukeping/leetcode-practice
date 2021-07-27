@@ -47,6 +47,22 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode387 {
 
+    public int firstUniqCharV2(String s) {
+        int[] letters = new int[26];
+        for (char c : s.toCharArray()) {
+            letters[c - 'a']++;
+        }
+
+        int len = s.length();
+        for (int i = 0; i < len; i++) {
+            char c = s.charAt(i);
+            if (letters[c - 'a'] == 1) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     /*
      * 104/104 cases passed (63 ms)
      * Your runtime beats 22.24 % of java submissions
