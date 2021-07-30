@@ -47,11 +47,19 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode104 {
 
-    /**
-     * 39/39 cases passed (0 ms)
-     * Your runtime beats 100 % of java submissions
-     * Your memory usage beats 6.85 % of java submissions (39.2 MB)
-     */
+    int maxDeepV2 = 0;
+
+    public int maxDepthV2(TreeNode root) {
+        dfsV2(root, 1);
+        return maxDeepV2;
+    }
+
+    private void dfsV2(TreeNode root, int deep) {
+        if (root == null) return;
+        if (deep > maxDeepV2) maxDeepV2 = deep;
+        dfs(root.left, deep + 1);
+        dfs(root.right, deep + 1);
+    }
 
     int maxDepth = 0;
 

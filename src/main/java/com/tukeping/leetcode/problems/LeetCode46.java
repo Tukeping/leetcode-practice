@@ -33,6 +33,7 @@ package com.tukeping.leetcode.problems;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -53,6 +54,26 @@ import static org.junit.Assert.assertThat;
  * @date 2020/2/13
  **/
 public class LeetCode46 {
+
+    List<List<Integer>> ret = new ArrayList<>();
+
+    public List<List<Integer>> permuteV2(int[] nums) {
+        helper(nums, nums.length, new ArrayList<>());
+        return ret;
+    }
+
+    private void helper(int[] nums, int k, List<Integer> path) {
+        if (path.size() == k) {
+            ret.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = 0; i < k; i++) {
+            if (path.contains(nums[i])) continue;
+            path.add(nums[i]);
+            helper(nums, k, path);
+            path.remove(path.size() - 1);
+        }
+    }
 
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> res = new LinkedList<>();

@@ -69,6 +69,12 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode509 {
 
+    public int fibV2(int n) {
+        if (n == 0) return 0;
+        if (n == 1) return 1;
+        return fibV2(n - 1) + fibV2(n - 2);
+    }
+
     public int fib(int n) {
         if (n == 0) return 0;
         if (n == 1) return 1;

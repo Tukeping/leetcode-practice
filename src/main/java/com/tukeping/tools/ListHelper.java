@@ -17,6 +17,35 @@ import static org.hamcrest.core.Is.is;
  **/
 public class ListHelper {
 
+    public static void assertSorted(int[] nums) {
+        Assert.assertTrue(isSorted(nums));
+    }
+
+    public static boolean isSorted(int[] nums) {
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] < nums[i - 1]) return false;
+        }
+        return true;
+    }
+
+    public static void printArray(int[] arr) {
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+
+    public static void printArray(int[] arr1, int[] arr2) {
+        for (int num : arr1) {
+            System.out.print(num + " ");
+        }
+        System.out.print("=> ");
+        for (int num : arr2) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+
     public static List<Integer> asList(int[] a) {
         return Arrays.stream(a).boxed().collect(Collectors.toList());
     }

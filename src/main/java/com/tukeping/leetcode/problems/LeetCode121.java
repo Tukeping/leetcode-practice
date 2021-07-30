@@ -50,6 +50,21 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode121 {
 
+    public int maxProfitV3(int[] prices) {
+        int n = prices.length;
+        int minPrice = prices[0];
+        int maxPrice = 0;
+        for (int i = 1; i < n; i++) {
+            if (prices[i] <= minPrice) {
+                minPrice = prices[i]; // 买入
+            } else {
+                // 尝试每一天都作为卖出日, 在迭代过程中找到最大利润
+                maxPrice = Math.max(maxPrice, prices[i] - minPrice);
+            }
+        }
+        return maxPrice;
+    }
+
     public int maxProfitV2(int[] prices) {
         int max = 0;
         int n = prices.length;

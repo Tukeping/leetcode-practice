@@ -19,6 +19,20 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode144 {
 
+    List<Integer> ret = new ArrayList<>();
+
+    public List<Integer> preorderTraversalV2(TreeNode root) {
+        dfs(root);
+        return ret;
+    }
+
+    private void dfs(TreeNode root) {
+        if (root == null) return;
+        ret.add(root.val);
+        dfs(root.left);
+        dfs(root.right);
+    }
+
     public List<Integer> preorderTraversal1(TreeNode root) {
         if (root == null) return Collections.emptyList();
         List<Integer> res = new ArrayList<>();

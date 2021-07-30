@@ -51,6 +51,26 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode77 {
 
+    List<List<Integer>> ret = new ArrayList<>();
+
+    public List<List<Integer>> combineV2(int n, int k) {
+        helper(n, k, 1, new ArrayList<>());
+        return ret;
+    }
+
+    private void helper(int n, int k, int start, List<Integer> path) {
+        if (path.size() == k) {
+            ret.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = start; i <= n; i++) {
+            path.add(i);
+            helper(n, k, i + 1, path);
+            path.remove(path.size() - 1);
+        }
+    }
+
     public List<List<Integer>> combine(int n, int k) {
         int[] nums = new int[n];
         for (int i = 1; i <= n; i++) {

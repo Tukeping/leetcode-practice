@@ -53,6 +53,44 @@ import java.util.List;
  **/
 public class LeetCode18 {
 
+    public List<List<Integer>> fourSumV2(int[] nums, int target) {
+        List<List<Integer>> ret = new ArrayList<>();
+        if (nums.length < 4) return ret;
+
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+            for (int j = i + 1; j < n; j++) {
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+
+                int l = j + 1;
+                int r = n - 1;
+                while (l < r) {
+                    int num = nums[i] + nums[j] + nums[l] + nums[r];
+                    if (num == target) {
+                        ret.add(Arrays.asList(nums[i], nums[j], nums[l], nums[r]));
+                        while (l < r && nums[l] == nums[l + 1]) {
+                            l++;
+                        }
+                        while (l < r && nums[r] == nums[r - 1]) {
+                            r--;
+                        }
+                        l++;
+                        r--;
+                    } else if (num > target) {
+                        r--;
+                    } else { // num < target
+                        l++;
+                    }
+                }
+            }
+        }
+        return ret;
+    }
+
     /** time: O(n^3) space: O(1) **/
     public List<List<Integer>> fourSum(int[] nums, int target) {
         int len = nums.length;

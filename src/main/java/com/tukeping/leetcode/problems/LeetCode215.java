@@ -53,6 +53,51 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode215 {
 
+    public int findKthLargestV2(int[] nums, int k) {
+        if (nums == null) return -1;
+        if (nums.length == 1) return nums[0];
+        return topK(nums, k - 1, 0, nums.length - 1);
+    }
+
+    private int topK(int[] nums, int k, int lo, int hi) {
+        int pivot = partition(nums, lo, hi); // array index
+        // System.out.println("lo = " + lo + ", hi = " + hi + ", pivot = " + pivot);
+        if (pivot == k) {
+            return nums[pivot];
+        } else if (pivot > k) { // find Left part
+            return topK(nums, k, lo, pivot - 1);
+        } else { // pivot < k -> find right part
+            return topK(nums, k, pivot + 1, hi);
+        }
+    }
+
+    // left(smaller) pivot right(bigger)
+    // left(bigger)  pivot left(smaller)
+    private int partition(int[] nums, int lo, int hi) {
+        if (lo == hi) return lo;
+
+        int i = lo, j = hi + 1;
+        while (true) {
+            while (nums[++i] > nums[lo]) {
+                if (i == hi) break;
+            }
+            while (nums[--j] < nums[lo]) {
+                if (j == lo) break;
+            }
+            if (i >= j) break;
+            swap(nums, i, j);
+        }
+        swap(nums, lo, j);
+        return j;
+    }
+
+    private void swap(int[] nums, int a, int b) {
+        if (a == b) return;
+        int tmp = nums[a];
+        nums[a] = nums[b];
+        nums[b] = tmp;
+    }
+
     public int findKthLargest(int[] nums, int k) {
         return topK(nums, k);
     }
@@ -225,12 +270,6 @@ public class LeetCode215 {
         swap(nums, low, high);
 
         return low;
-    }
-
-    private void swap(int[] nums, int a, int b) {
-        int t = nums[a];
-        nums[a] = nums[b];
-        nums[b] = t;
     }
 
     /**

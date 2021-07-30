@@ -51,6 +51,20 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode94 {
 
+    List<Integer> ret = new ArrayList<>();
+
+    public List<Integer> inorderTraversalV2(TreeNode root) {
+        dfs(root);
+        return ret;
+    }
+
+    private void dfs(TreeNode root) {
+        if (root == null) return;
+        dfs(root.left);
+        ret.add(root.val);
+        dfs(root.right);
+    }
+
     public List<Integer> inorderTraversal1(TreeNode root) {
         return inorderTraversalMorris(root);
     }

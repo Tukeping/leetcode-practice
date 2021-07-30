@@ -56,32 +56,34 @@ import org.junit.Test;
  **/
 public class LeetCode25 {
 
+    private boolean enoughK(ListNode cur, int k) {
+        int cnt = 0;
+        for (ListNode i = cur.next; i != null; i = i.next) {
+            if (++cnt == k) return true;
+        }
+        return false;
+    }
+
     public ListNode reverseKGroup(ListNode head, int k) {
         ListNode dummy = new ListNode(0);
         dummy.next = head;
 
         ListNode cur = dummy;
-        while (cur != null) {
-            int cnt = 0;
-            for (ListNode i = cur.next; i != null; i = i.next)
-                cnt++;
-            if (cnt < k) break;
-
-            cnt = 0;
+        while (enoughK(cur, k)) {
             ListNode a = cur.next;
             ListNode b = a.next;
-            while (cnt < k - 1) {
-                cnt++;
+            int cnt = k - 1;
+            while (cnt-- > 0) {
                 ListNode c = b.next;
                 b.next = a;
                 a = b;
                 b = c;
             }
 
-            ListNode p = cur.next;
-            cur.next.next = b;
+            ListNode d = cur.next;
+            d.next = b;
             cur.next = a;
-            cur = p;
+            cur = d;
         }
         return dummy.next;
     }

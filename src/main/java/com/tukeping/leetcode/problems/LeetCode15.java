@@ -36,8 +36,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -51,6 +53,76 @@ import java.util.Set;
  * @date 2019/12/23
  **/
 public class LeetCode15 {
+
+    public List<List<Integer>> threeSumV3(int[] nums) {
+        List<List<Integer>> ret = new ArrayList<>();
+        if (nums.length < 3) return ret;
+
+        Arrays.sort(nums);
+
+        int n = nums.length;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] > 0) break;
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            int l = i + 1;
+            int r = n - 1;
+            while (l < r) {
+                int num = nums[i] + nums[l] + nums[r];
+                if (num == 0) {
+                    ret.add(Arrays.asList(nums[i], nums[l], nums[r]));
+                    while (l < r && nums[l] == nums[l + 1]) {
+                        l++;
+                    }
+                    while (l < r && nums[r] == nums[r - 1]) {
+                        r--;
+                    }
+                    l++;
+                    r--;
+                } else if (num > 0) {
+                    r--;
+                } else { // num < 0
+                    l++;
+                }
+            }
+        }
+        return ret;
+    }
+
+    public List<List<Integer>> threeSumV2(int[] nums) {
+        int n = nums.length;
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            map.put(nums[i], i);
+        }
+
+        List<List<Integer>> ret = new ArrayList<>();
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < n; i++) {
+            for (int j = i + 1; j < n; j++) {
+                int num = -nums[i] - nums[j];
+                if (map.containsKey(num)) {
+                    int z = map.get(num);
+                    if (i == j || j == z || z == i) {
+                        continue;
+                    }
+
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[i]);
+                    list.add(nums[j]);
+                    list.add(num);
+                    list.sort((o1, o2) -> o1 - o2);
+
+                    String s = list.get(0) + "" + list.get(1) + "" + list.get(2);
+                    if (!set.contains(s)) {
+                        ret.add(list);
+                        set.add(s);
+                    }
+                }
+            }
+        }
+        return ret;
+    }
 
     public static List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> ret = new ArrayList<>();

@@ -57,10 +57,29 @@ import static org.junit.Assert.assertTrue;
  **/
 public class LeetCode101 {
 
-    /**
-     * 说明:
-     * 如果你可以运用递归和迭代两种方法解决这个问题，会很加分。
-     */
+    public boolean isSymmetricV2(TreeNode root) {
+        if (root == null) return true;
+        return dfs(root, root);
+    }
+
+    private boolean dfs(TreeNode p1, TreeNode p2) {
+        if (p1 == null && p2 == null) return true;
+        if (p1 == null && p2 != null) return false;
+        if (p1 != null && p2 == null) return false;
+        if (isLeaf(p1) && isLeaf(p2)) {
+            return p1.val == p2.val;
+        } else if (isLeaf(p1) && !isLeaf(p2)) {
+            return false;
+        } else if (!isLeaf(p1) && isLeaf(p2)) {
+            return false;
+        } else { // !isLeaf(p1) && !isLeaf(p2)
+            return p1.val == p2.val && dfs(p1.left, p2.right) && dfs(p1.right, p2.left);
+        }
+    }
+
+    private boolean isLeaf(TreeNode root) {
+        return root.left == null && root.right == null;
+    }
 
     public boolean isSymmetric(TreeNode root) {
         if (root == null) return true;
