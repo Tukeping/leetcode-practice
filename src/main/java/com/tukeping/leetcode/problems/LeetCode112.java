@@ -48,33 +48,44 @@ import static org.junit.Assert.assertTrue;
  **/
 public class LeetCode112 {
 
-    public boolean hasPathSum(TreeNode root, int sum) {
-        return hasPathSum(root, 0, sum);
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        return dfs(root, targetSum);
     }
 
-    private boolean hasPathSum(TreeNode root, int cur, int sum) {
+    private boolean dfs(TreeNode root, int target) {
         if (root == null) return false;
-        cur += root.val;
-        if (cur == sum && isLeaf(root)) return true;
-        else if (hasPathSum(root.left, cur, sum)) return true;
-        else return hasPathSum(root.right, cur, sum);
+
+        target -= root.val;
+        if (target == 0 && isLeaf(root)) {
+            return true;
+        }
+
+        if (dfs(root.left, target)) return true;
+        if (dfs(root.right, target)) return true;
+
+        return false;
     }
 
     private boolean isLeaf(TreeNode root) {
         return root.left == null && root.right == null;
     }
 
-    /**
-     * 给定如下二叉树，以及目标和 sum = 22
-     *               5
-     *              / \
-     *             4   8
-     *            /   / \
-     *           11  13  4
-     *          /  \      \
-     *         7    2      1
-     * 返回 true, 因为存在目标和为 22 的根节点到叶子节点的路径 5->4->11->2。
-     */
+    public boolean hasPathSumV2(TreeNode root, int sum) {
+        return hasPathSum(root, 0, sum);
+    }
+
+    private boolean hasPathSum(TreeNode root, int cur, int sum) {
+        if (root == null) return false;
+        cur += root.val;
+        if (cur == sum && isLeafV2(root)) return true;
+        else if (hasPathSum(root.left, cur, sum)) return true;
+        else return hasPathSum(root.right, cur, sum);
+    }
+
+    private boolean isLeafV2(TreeNode root) {
+        return root.left == null && root.right == null;
+    }
+
     @Test
     public void test1() {
         TreeNode root = TreeNodeHelper.build(5, 4, 8, 11, null, 13, 4, 7, 2, null, null, null, 1);
