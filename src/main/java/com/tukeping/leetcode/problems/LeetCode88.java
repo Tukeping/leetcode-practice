@@ -51,6 +51,31 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode88 {
 
+    public void mergeV3(int[] nums1, int m, int[] nums2, int n) {
+        int i = 0, j = 0, k = m;
+        while (i < m + n) {
+            if (i == k) {
+                for (int z = k; z < m + n; z++) {
+                    nums1[z] = nums2[j];
+                    i++;
+                    j++;
+                }
+            } else if (j == n) {
+                break;
+            } else if (nums1[i] <= nums2[j]) {
+                i++;
+            } else {
+                for (int z = k - 1; z >= i; z--) {
+                    nums1[z + 1] = nums1[z];
+                }
+                nums1[i] = nums2[j];
+                i++;
+                j++;
+                k++;
+            }
+        }
+    }
+
     public void merge(int[] nums1, int m, int[] nums2, int n) {
         int i = 0, j = 0, k = m;
         while (k < m + n) {

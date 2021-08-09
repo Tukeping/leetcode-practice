@@ -57,6 +57,19 @@ import static org.junit.Assert.assertTrue;
  **/
 public class LeetCode101 {
 
+    public boolean isSymmetricV3(TreeNode root) {
+        return dfsV2(root, root);
+    }
+
+    private boolean dfsV2(TreeNode t1, TreeNode t2) {
+        if (t1 == null && t2 == null) return true;
+        else if (t1 == null && t2 != null) return false;
+        else if (t1 != null && t2 == null) return false;
+        else { // if(t1 != null && t2 != null)
+            return t1.val == t2.val && dfsV2(t1.left, t2.right) && dfsV2(t1.right, t2.left);
+        }
+    }
+
     public boolean isSymmetricV2(TreeNode root) {
         if (root == null) return true;
         return dfs(root, root);

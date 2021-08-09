@@ -53,21 +53,17 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode69 {
 
-    /*
-     * base case:
-     *
-     * 0^(1/2) = 0
-     * 1^(1/2) = 1
-     * 2^(1/2) = 1.414
-     * 3^(1/2) = 1.732
-     * 4^(1/2) = 2
-     * 5^(1/2) = 2.236
-     * 6^(1/2) = 2.449
-     * 7^(1/2) = 2.656
-     * 8^(1/2) = 2.828
-     * 9^(1/2) = 3
-     * 10^(1/2) = 3.162
-     */
+    public int mySqrtV2(int x) {
+        long l = 1, r = x;
+        while (l < r) {
+            long mid = l + (r - l) / 2;
+            long pow = mid * mid;
+            if (pow == x) return (int) mid;
+            else if (pow > x) r = mid;
+            else l = mid + 1;
+        }
+        return (int) (l * l == x ? l : l - 1);
+    }
 
     /** time: O(log n) O(1) **/
     public int mySqrt(int x) {

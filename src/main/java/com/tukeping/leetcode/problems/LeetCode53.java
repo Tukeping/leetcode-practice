@@ -42,6 +42,16 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode53 {
 
+    public int maxSubArrayV5(int[] nums) {
+        int n = nums.length;
+        int preSum = nums[0], maxSum = nums[0];
+        for (int i = 1; i < n; i++) {
+            preSum = Math.max(0, preSum) + nums[i];
+            maxSum = Math.max(maxSum, preSum);
+        }
+        return maxSum;
+    }
+
     public int maxSubArrayV4(int[] nums) {
         int n = nums.length;
         int[] dp = new int[n];
