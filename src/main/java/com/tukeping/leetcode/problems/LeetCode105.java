@@ -48,6 +48,34 @@ import java.util.Map;
  **/
 public class LeetCode105 {
 
+    Map<Integer, Integer> map = new HashMap<>();
+
+    public TreeNode buildTreeV2(int[] preorder, int[] inorder) {
+        // 分治思想
+        // preorder: 根节点, [左子树], [右子树]
+        // inorder:  [左子树], 根节点, [右子树]
+        int n = inorder.length;
+        for (int i = 0; i < n; i++) {
+            map.put(inorder[i], i);
+        }
+        return buildTreeV2(preorder, inorder, 0, n - 1, 0, n - 1);
+    }
+
+    private TreeNode buildTreeV2(int[] preorder, int[] inorder, int pLeft, int pRight, int iLeft, int iRight) {
+        if (pLeft > pRight) {
+            return null;
+        }
+
+        int rootVal = preorder[pLeft];
+        int iRoot = map.get(rootVal);
+
+        TreeNode root = new TreeNode(rootVal);
+        int leftTreeSize = iRoot - iLeft;
+        root.left = buildTreeV2(preorder, inorder, pLeft + 1, pLeft + leftTreeSize, iLeft, iRoot - 1);
+        root.right = buildTreeV2(preorder, inorder, pLeft + 1 + leftTreeSize, pRight, iRoot + 1, iRight);
+        return root;
+    }
+
     private Map<Integer, Integer> inorderMap = new HashMap<>();
     private int[] preorder;
     private int preIdx;

@@ -49,6 +49,65 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode33 {
 
+    public int searchV2(int[] nums, int target) {
+        // 虽然 在某个点k上旋转了 但前后两部分数组还是有序性的
+        // 所以 要想到 二分查找算法
+        // 题目 说了 nums 没有重复数字，减少了 代码难度
+        // nums[0] 很关键, 因为 他是第一堆数组最小的那个数字，却是第二堆数组最大的那个数字
+        // [升序数组1][升序数组2]
+        if (nums[0] == target) return 0;
+        int n = nums.length;
+        int l = 0, r = n - 1;
+        // 如果 nums[0] < nums[n-1] 则表明 k = 0 直接二分搜索即可
+        if (nums[l] < nums[r]) {
+            return bsearch(nums, target);
+        } else {
+            // nums: [3, 1], target: 1
+            // l = 0, r = 1
+            // mid = 0
+            while (l < r) {
+                int mid = l + (r - l) / 2;
+                if (nums[mid] == target) return mid;
+                else if (nums[0] > target) { // 说明落在了 右边 那堆 小数组中
+                    if (nums[mid] >= nums[0]) { // 说明 mid 落在了 左边 大数组中, 需要调整搜索空间
+                        l = mid + 1;
+                    } else { // nums[mid] < nums[0] 说明 mid 落在了 右边 小数组中,
+                        if (nums[mid] > target) {
+                            r = mid - 1;
+                        } else { // nums[mid] < target
+                            l = mid + 1;
+                        }
+                    }
+                } else { // 说明落在了 左边 那堆 大数组中
+                    if (nums[mid] >= nums[0]) {
+                        if (nums[mid] > target) {
+                            r = mid - 1;
+                        } else {
+                            l = mid + 1;
+                        }
+                    } else {
+                        r = mid - 1;
+                    }
+                }
+            }
+            return nums[l] == target ? l : -1;
+        }
+    }
+
+    private int bsearch(int[] nums, int target) {
+        int l = 0, r = nums.length - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums[mid] == target) return mid;
+            else if (nums[mid] > target) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return nums[l] == target ? l : -1;
+    }
+
     public int search(int[] nums, int target) {
         int n = nums.length;
         if (n == 0) return -1;

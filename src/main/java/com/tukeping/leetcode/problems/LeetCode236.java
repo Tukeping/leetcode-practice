@@ -54,6 +54,28 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode236 {
 
+    TreeNode lcaV2;
+
+    public TreeNode lowestCommonAncestorV3(TreeNode root, TreeNode p, TreeNode q) {
+        dfs(root, p.val, q.val);
+        return lcaV2;
+    }
+
+    private boolean dfs(TreeNode root, int p, int q) {
+        if (root == null) return false;
+
+        int p1 = root.val == p || root.val == q ? 1 : 0;
+        int p2 = dfs(root.left, p, q) ? 1 : 0;
+        int p3 = dfs(root.right, p, q) ? 1 : 0;
+
+        if (p1 + p2 + p3 >= 2) {
+            lcaV2 = root;
+            return false;
+        }
+
+        return p1 == 1 || p2 == 1 || p3 == 1;
+    }
+
     private TreeNode lca;
 
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {

@@ -2,6 +2,7 @@ package com.tukeping.leetcode.problems;
 
 import org.junit.Test;
 
+import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,6 +12,30 @@ import java.util.Queue;
  * @date 2021/7/13
  **/
 public class LeetCode785 {
+
+    public boolean isBipartiteV2(int[][] graph) {
+        int n = graph.length;
+        int[] color = new int[n];
+        Queue<Integer> q = new ArrayDeque<>();
+        for (int i = 0; i < n; i++) {
+            if (color[i] == 0) {
+                color[i] = 1;
+                q.offer(i);
+            }
+            while (!q.isEmpty()) {
+                int node = q.poll();
+                for (int nei : graph[node]) {
+                    if (color[nei] == 0) {
+                        color[nei] = (color[node] == 1) ? 2 : 1;
+                        q.offer(nei);
+                    } else if (color[nei] == color[node]) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
 
     public boolean isBipartite(int[][] graph) {
         int n = graph.length;

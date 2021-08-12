@@ -54,6 +54,39 @@ import java.util.Set;
  **/
 public class LeetCode15 {
 
+    /**
+     * 排序 + 双指针 O(n^2)
+     * 哈希表 性能差一些
+     */
+    public List<List<Integer>> threeSumV4(int[] nums) {
+        int n = nums.length;
+        Arrays.sort(nums); // -4, -1, -1, 0, 1, 2
+        List<List<Integer>> ret = new ArrayList<>();
+        for (int i = 0; i < n; i++) { // a
+            if (i > 0 && nums[i] == nums[i - 1])
+                continue;
+
+            int k = n - 1;
+
+            for (int j = i + 1; j < n; j++) { // b
+                if (j > i + 1 && nums[j] == nums[j - 1])
+                    continue;
+
+                // a + b + c > 0 ? yes : move left for k
+                while (j < k && nums[i] + nums[j] + nums[k] > 0) {
+                    k--;
+                }
+
+                if (k == j) break;
+
+                if (nums[i] + nums[j] + nums[k] == 0) {
+                    ret.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                }
+            }
+        }
+        return ret;
+    }
+
     public List<List<Integer>> threeSumV3(int[] nums) {
         List<List<Integer>> ret = new ArrayList<>();
         if (nums.length < 3) return ret;

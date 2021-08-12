@@ -39,6 +39,9 @@ package com.tukeping.leetcode.problems;
 
 import org.junit.Test;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -48,11 +51,44 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode200 {
 
-    /**
-     * 47/47 cases passed (2 ms)
-     * Your runtime beats 91.58 % of java submissions
-     * Your memory usage beats 5.01 % of java submissions (42.5 MB)
-     */
+    int[] dir = new int[]{1, 0, -1, 0, 1};
+    int m, n;
+
+    public int numIslandsV2(char[][] grid) {
+        this.m = grid.length;
+        this.n = grid[0].length;
+        int ans = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == '1') {
+                    bfs(grid, i, j);
+                    ans++;
+                }
+            }
+        }
+        return ans;
+    }
+
+    private void bfs(char[][] grid, int i, int j) {
+        Queue<int[]> q = new LinkedList<>();
+        q.add(new int[]{i, j});
+        grid[i][j] = '0';
+        while (!q.isEmpty()) {
+            int[] node = q.poll();
+            int r = node[0], c = node[1];
+            for (int k = 0; k < 4; k++) {
+                int dx = r + dir[k], dy = c + dir[k + 1];
+                if (isValid(dx, dy) && grid[dx][dy] == '1') {
+                    q.offer(new int[]{dx, dy});
+                    grid[dx][dy] = '0';
+                }
+            }
+        }
+    }
+
+    private boolean isValid(int r, int c) {
+        return r >= 0 && r < m && c >= 0 && c < n;
+    }
 
     public int numIslands(char[][] grid) {
         if (grid == null || grid.length == 0) {
@@ -89,15 +125,6 @@ public class LeetCode200 {
         dfs(grid, r, c + 1, rowLen, columnLen);
     }
 
-    /**
-     * 输入:
-     * 11110
-     * 11010
-     * 11000
-     * 00000
-     *
-     * 输出: 1
-     */
     @Test
     public void test1() {
         char[][] island = {
@@ -110,15 +137,6 @@ public class LeetCode200 {
         assertThat(n, is(1));
     }
 
-    /**
-     * 输入:
-     * 11000
-     * 11000
-     * 00100
-     * 00011
-     *
-     * 输出: 3
-     */
     @Test
     public void test2() {
         char[][] island = {

@@ -89,6 +89,29 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode160 {
 
+    public ListNode getIntersectionNodeV2(ListNode headA, ListNode headB) {
+        if (headA == headB) return headA;
+        ListNode p1 = headA;
+        ListNode p2 = headB;
+        boolean p1Reset = false, p2Reset = false;
+        while (true) {
+            p1 = p1.next;
+            if (p1 == null) {
+                if (p1Reset) break;
+                p1 = headB;
+                p1Reset = true;
+            }
+            p2 = p2.next;
+            if (p2 == null) {
+                if (p2Reset) break;
+                p2 = headA;
+                p2Reset = true;
+            }
+            if (p1 == p2) return p1;
+        }
+        return null;
+    }
+
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) return null;
 

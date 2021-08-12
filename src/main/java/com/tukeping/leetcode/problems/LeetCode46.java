@@ -55,6 +55,27 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode46 {
 
+    List<List<Integer>> retV2 = new ArrayList<>();
+
+    public List<List<Integer>> permuteV3(int[] nums) {
+        permuteV3(nums, new ArrayList<>());
+        return retV2;
+    }
+
+    private void permuteV3(int[] nums, List<Integer> path) {
+        if (path.size() == nums.length) {
+            retV2.add(new ArrayList<>(path));
+            return;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (path.contains(nums[i])) continue;
+            path.add(nums[i]);
+            permuteV3(nums, path);
+            path.remove(path.size() - 1);
+        }
+    }
+
     List<List<Integer>> ret = new ArrayList<>();
 
     public List<List<Integer>> permuteV2(int[] nums) {

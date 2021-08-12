@@ -43,6 +43,43 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode31 {
 
+    public void nextPermutationV2(int[] nums) {
+        // 1. 从右找第一个 下降的点, 标记：a
+        // 2. 从右找第一个 比这个下降点 大的 数字 标记：b
+        // 3. swap(a, b)
+        // 4. 由于 a 之后的数字都是 上升趋势的，所以只需要 倒排这部分数字 就可以达到 从小到大排序效果
+
+        int n = nums.length;
+        int i = n - 2;
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+        if (i >= 0) {
+            int j = n - 1;
+            while (j >= 0 && nums[i] >= nums[j]) {
+                j--;
+            }
+            swapV2(nums, i, j);
+        }
+        reverseV2(nums, i + 1);
+    }
+
+    private void swapV2(int[] nums, int i, int j) {
+        if (i == j) return;
+        int t = nums[i];
+        nums[i] = nums[j];
+        nums[j] = t;
+    }
+
+    private void reverseV2(int[] nums, int start) {
+        int end = nums.length - 1;
+        while (start < end) {
+            swapV2(nums, start, end);
+            start++;
+            end--;
+        }
+    }
+
     public void nextPermutation(int[] nums) {
         // corner case
         if (nums == null || nums.length == 0) return;

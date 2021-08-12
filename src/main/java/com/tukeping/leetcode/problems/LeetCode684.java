@@ -1,13 +1,64 @@
 package com.tukeping.leetcode.problems;
 
-import com.tukeping.tools.Arrays;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 /**
  * @author tukeping
  * @date 2020/4/29
  **/
 public class LeetCode684 {
+
+    public int[] findRedundantConnectionV2(int[][] edges) {
+        int n = edges.length;
+        UF uf = new UF(n + 1);
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1];
+            if (uf.isConnected(u, v)) {
+                return edge;
+            } else {
+                uf.connect(u, v);
+            }
+        }
+        return new int[2];
+    }
+
+    class UF {
+        int[] id, size;
+
+        public UF(int n) {
+            this.id = new int[n];
+            for (int i = 0; i < n; i++) this.id[i] = i;
+            this.size = new int[n];
+            Arrays.fill(this.size, 1);
+        }
+
+        private int find(int p) {
+            while (p != id[p]) {
+                id[p] = id[id[p]];
+                p = id[p];
+            }
+            return p;
+        }
+
+        public void connect(int p, int q) {
+            int i = find(p), j = find(q);
+            if (i != j) {
+                if (size[i] < size[j]) {
+                    id[i] = j;
+                    size[j] += size[i];
+                } else {
+                    id[j] = i;
+                    size[i] += size[j];
+                }
+            }
+        }
+
+        public boolean isConnected(int p, int q) {
+            return find(p) == find(q);
+        }
+    }
 
     public int[] findRedundantConnection(int[][] edges) {
         int[] parent = new int[edges.length + 1];
@@ -83,7 +134,7 @@ public class LeetCode684 {
         };
         int[] actual = findRedundantConnection(edges);
         int[] expect = {2, 3};
-        Arrays.check(actual, expect);
+        com.tukeping.tools.Arrays.check(actual, expect);
     }
 
     /**
@@ -101,6 +152,6 @@ public class LeetCode684 {
         };
         int[] actual = findRedundantConnection(edges);
         int[] expect = {1, 4};
-        Arrays.check(actual, expect);
+        com.tukeping.tools.Arrays.check(actual, expect);
     }
 }

@@ -55,6 +55,37 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode124 {
 
+    int maxSum = Integer.MIN_VALUE;
+
+    public int maxPathSumV2(TreeNode root) {
+        dfs(root);
+        return maxSum;
+    }
+
+    //    a
+    //  b   c
+    // case1: b -> a -> c
+    // case2: b -> a -> a' up
+    // case3: c -> a -> a' up
+
+    // case2 & case3 : Math.max(sumLeft, sumRight) 左右节点 选一个 配合 root.val
+    // case1 : root + 贪心思想 是否值得 拿 sumLeft 或 sumRight
+    // 递归返回值 一定要是 case2 & case3 的return
+    // maxSum 是在 整个递归过程中 存在于 case1, case2, case3 其中一种情况下 所以每次都计算最大Sum值
+
+    private int dfs(TreeNode root) {
+        if (root == null) return 0;
+
+        int sumLeft = dfs(root.left);
+        int sumRight = dfs(root.right);
+
+        int lmr = root.val + Math.max(0, sumLeft) + Math.max(0, sumRight);
+        int ret = root.val + Math.max(0, Math.max(sumLeft, sumRight));
+        maxSum = Math.max(maxSum, Math.max(lmr, ret));
+
+        return ret;
+    }
+
     private int maxValue = Integer.MIN_VALUE;
 
     public int maxPathSum(TreeNode root) {

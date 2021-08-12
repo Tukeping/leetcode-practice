@@ -13,6 +13,56 @@ import java.util.PriorityQueue;
  **/
 public class LeetCode882 {
 
+    public int reachableNodesV2(int[][] edges, int M, int N) {
+        Map<Integer, Map<Integer, Integer>> graph = new HashMap<>();
+        for (int[] edge : edges) {
+            int u = edge[0], v = edge[1], w = edge[2];
+            graph.computeIfAbsent(u, x -> new HashMap<>()).put(v, w);
+            graph.computeIfAbsent(v, x -> new HashMap<>()).put(u, w);
+        }
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((o1, o2) -> o1[1] - o2[1]);
+        pq.offer(new int[]{0, 0});
+
+        Map<Integer, Integer> dist = new HashMap<>();
+        Map<Integer, Integer> used = new HashMap<>();
+        dist.put(0, 0);
+
+        int ans = 0;
+        while (!pq.isEmpty()) {
+            int[] anode = pq.poll();
+            int node = anode[0], d = anode[1];
+
+            if (d > dist.getOrDefault(node, 0)) continue;
+
+            ans++;
+
+            if (!graph.containsKey(node)) continue;
+
+            for (int nei : graph.get(node).keySet()) {
+                int weight = graph.get(node).get(nei);
+                int v = Math.min(weight, M - d);
+                used.put(N * node + nei, v);
+
+                int d2 = d + weight + 1;
+                if (d2 < dist.getOrDefault(nei, M + 1)) {
+                    pq.offer(new int[]{nei, d2});
+                    dist.put(nei, d2);
+                }
+            }
+        }
+
+        for (int[] edge : edges) {
+            ans += Math.min(
+                    edge[2],
+                    used.getOrDefault(edge[0] * N + edge[1], 0) +
+                            used.getOrDefault(edge[1] * N + edge[0], 0)
+            );
+        }
+
+        return ans;
+    }
+
     public int reachableNodes(int[][] edges, int m, int n) {
         Map<Integer, Map<Integer, Integer>> graph = new HashMap<>(n);
         for (int[] edge : edges) {

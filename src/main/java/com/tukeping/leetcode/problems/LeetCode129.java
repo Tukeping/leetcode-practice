@@ -66,7 +66,31 @@ import com.tukeping.leetcode.structures.TreeNode;
  **/
 public class LeetCode129 {
 
+    int sum = 0;
+
     public int sumNumbers(TreeNode root) {
-        return 0;
+        // dfs + 回溯
+        // 记录下所有路径？ 不需要，直接用sum变量做累加
+        dfs(root, new StringBuilder());
+        return sum;
+    }
+
+    // sum: 25
+    // root: 3
+    // path: [1, 3]
+    private void dfs(TreeNode root, StringBuilder path) {
+        if (root == null) return;
+        path.append(root.val);
+        if (isLeaf(root)) {
+            int val = Integer.parseInt(path.toString());
+            sum += val;
+        }
+        dfs(root.left, path);
+        dfs(root.right, path);
+        path.deleteCharAt(path.length() - 1);
+    }
+
+    private boolean isLeaf(TreeNode root) {
+        return root.left == null && root.right == null;
     }
 }

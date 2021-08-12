@@ -58,6 +58,29 @@ import static org.hamcrest.core.Is.is;
  **/
 public class LeetCode102 {
 
+    List<List<Integer>> retV2 = new ArrayList<>();
+
+    public List<List<Integer>> levelOrderV3(TreeNode root) {
+        dfsV2(root, 0);
+        return retV2;
+    }
+
+    private void dfsV2(TreeNode root, int level) {
+        if (root == null) return;
+
+        List<Integer> result;
+        if (retV2.size() == level) {
+            result = new ArrayList<>();
+            retV2.add(result);
+        } else {
+            result = retV2.get(level);
+        }
+        result.add(root.val);
+
+        dfsV2(root.left, level + 1);
+        dfsV2(root.right, level + 1);
+    }
+
     List<List<Integer>> ret = new ArrayList<>();
 
     public List<List<Integer>> levelOrderV2(TreeNode root) {

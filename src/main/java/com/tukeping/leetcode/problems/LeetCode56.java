@@ -52,6 +52,53 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode56 {
 
+    public int[][] mergeV2(int[][] intervals) {
+        // 贪心思想
+        Arrays.sort(intervals, (o1, o2) -> o1[0] - o2[0]); // 根据start升序
+
+        // [1,3],[2,6],[8,10],[15,18]
+        // 1 2 3
+        //   2 3 4 5 6
+        //             7 8 9 10
+        //                      11 12 13 14 15 16 17 18
+        List<int[]> ret = new ArrayList<>();
+
+        StringBuilder sb = new StringBuilder();
+        sb.deleteCharAt(sb.length() - 1);
+
+        // prevStart: 8
+        // prevEnd: 10
+
+        // curStart: 15
+        // curEnd: 18
+
+        // output: [1,6], [8,10]
+        // expect: [[1,6],[8,10],[15,18]]
+
+        int prevStart = intervals[0][0], prevEnd = intervals[0][1];
+        for (int[] interval : intervals) {
+            int curStart = interval[0], curEnd = interval[1];
+            if (prevEnd >= curStart) {
+                prevEnd = Math.max(curEnd, prevEnd);
+            } else { // prevEnd < curStart
+                ret.add(new int[]{prevStart, prevEnd});
+                prevStart = curStart;
+                prevEnd = curEnd;
+            }
+        }
+
+        // 不要忘记最后一个区间
+        ret.add(new int[]{prevStart, prevEnd});
+
+        int[][] ans = new int[ret.size()][2];
+        int i = 0;
+        for (int[] it : ret) {
+            ans[i++] = it;
+        }
+
+        return ans;
+    }
+
     public int[][] merge(int[][] intervals) {
         if (intervals.length == 0) return new int[0][0];
 

@@ -61,7 +61,62 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode54 {
 
+    int m, n;
+    int rowStart, rowEnd;
+    int colStart, colEnd;
+
     public List<Integer> spiralOrder(int[][] matrix) {
+        this.m = matrix.length;
+        this.n = matrix[0].length;
+        this.rowStart = 0;
+        this.rowEnd = m - 1;
+        this.colStart = 0;
+        this.colEnd = n - 1;
+
+        List<Integer> ret = new ArrayList<>();
+        int[][] dirs = new int[][]{
+                {0, 1}, {1, 0}, {0, -1}, {-1, 0}
+        };
+        int[] dir;
+
+        while (rowStart <= rowEnd && colStart <= colEnd) {
+            dir = dirs[0];
+            for (int i = rowStart, j = colStart; j <= colEnd; ) {
+                ret.add(matrix[i][j]);
+                i += dir[0];
+                j += dir[1];
+            }
+            dir = dirs[1];
+            for (int i = rowStart + 1, j = colEnd; i <= rowEnd; ) {
+                ret.add(matrix[i][j]);
+                i += dir[0];
+                j += dir[1];
+            }
+            if (rowStart != rowEnd) {
+                dir = dirs[2];
+                for (int i = rowEnd, j = colEnd - 1; j >= colStart; ) {
+                    ret.add(matrix[i][j]);
+                    i += dir[0];
+                    j += dir[1];
+                }
+            }
+            if (colStart != colEnd) {
+                dir = dirs[3];
+                for (int i = rowEnd - 1, j = colStart; i >= rowStart + 1; ) {
+                    ret.add(matrix[i][j]);
+                    i += dir[0];
+                    j += dir[1];
+                }
+            }
+            rowStart++;
+            rowEnd--;
+            colStart++;
+            colEnd--;
+        }
+        return ret;
+    }
+
+    public List<Integer> spiralOrderV2(int[][] matrix) {
         if (matrix.length == 0) return Collections.emptyList();
 
         int m = matrix.length, n = matrix[0].length;
@@ -93,7 +148,7 @@ public class LeetCode54 {
         return res;
     }
 
-    public List<Integer> spiralOrder2(int[][] matrix) {
+    public List<Integer> spiralOrderV3(int[][] matrix) {
         if (matrix.length == 0) return Collections.emptyList();
 
         List<Integer> ans = new ArrayList<>();
@@ -118,15 +173,6 @@ public class LeetCode54 {
         return ans;
     }
 
-    /**
-     * 输入:
-     * [
-     *  [ 1, 2, 3 ],
-     *  [ 4, 5, 6 ],
-     *  [ 7, 8, 9 ]
-     * ]
-     * 输出: [1,2,3,6,9,8,7,4,5]
-     */
     @Test
     public void test1() {
         int[][] matrix = {
@@ -138,15 +184,6 @@ public class LeetCode54 {
         assertThat(res, is(Arrays.asList(1, 2, 3, 6, 9, 8, 7, 4, 5)));
     }
 
-    /**
-     * 输入:
-     * [
-     *   [1, 2, 3, 4],
-     *   [5, 6, 7, 8],
-     *   [9,10,11,12]
-     * ]
-     * 输出: [1,2,3,4,8,12,11,10,9,5,6,7]
-     */
     @Test
     public void test2() {
         int[][] matrix = {
@@ -169,10 +206,7 @@ public class LeetCode54 {
 
     @Test
     public void test4() {
-        int[][] matrix = {
-                {3},
-                {2}
-        };
+        int[][] matrix = {{3}, {2}};
         List<Integer> res = spiralOrder(matrix);
         assertThat(res, is(Arrays.asList(3, 2)));
     }

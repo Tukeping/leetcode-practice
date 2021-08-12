@@ -63,6 +63,31 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode113 {
 
+    List<List<Integer>> ret = new ArrayList<>();
+
+    public List<List<Integer>> pathSumV2(TreeNode root, int targetSum) {
+        dfs(root, targetSum, new ArrayList<>());
+        return ret;
+    }
+
+    private void dfs(TreeNode root, int target, List<Integer> result) {
+        if (root == null) return;
+        target -= root.val;
+        result.add(root.val);
+        if (isLeafV2(root) && target == 0) {
+            ret.add(new ArrayList<>(result));
+        }
+        dfs(root.left, target, result);
+        dfs(root.right, target, result);
+        if (result.size() > 0) {
+            result.remove(result.size() - 1);
+        }
+    }
+
+    private boolean isLeafV2(TreeNode root) {
+        return root.left == null && root.right == null;
+    }
+
     public List<List<Integer>> pathSum(TreeNode root, int sum) {
         List<List<Integer>> res = new ArrayList<>();
         findPathSum(root, 0, sum, new LinkedList<>(), res);
