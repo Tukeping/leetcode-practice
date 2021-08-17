@@ -11,6 +11,21 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode650 {
 
+    public int minStepsV2(int n) {
+        int[] dp = new int[n + 1];
+        int h = (int) Math.sqrt(n);
+        for (int i = 2; i <= n; i++) {
+            dp[i] = i;
+            for (int j = 2; j <= h; j++) {
+                if (i % j == 0) {
+                    dp[i] = dp[j] + dp[i / j];
+                    break;
+                }
+            }
+        }
+        return dp[n];
+    }
+
     public int minSteps2(int n) {
         int ans = 0;
         int d = 2;

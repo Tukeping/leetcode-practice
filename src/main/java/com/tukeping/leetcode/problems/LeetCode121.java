@@ -50,6 +50,15 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode121 {
 
+    public int maxProfitV5(int[] prices) {
+        int profit = 0, buy = Integer.MIN_VALUE;
+        for (int i = 0; i < prices.length; i++) {
+            buy = Math.max(buy, -prices[i]);
+            profit = Math.max(profit, buy + prices[i]);
+        }
+        return profit;
+    }
+
     public int maxProfitV4(int[] prices) {
         int n = prices.length;
         int ans = 0, min = prices[0];

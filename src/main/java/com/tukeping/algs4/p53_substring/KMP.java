@@ -69,7 +69,7 @@ public class KMP {
                 dfa[c][j] = dfa[c][x];     // Copy mismatch cases. 
             dfa[pat.charAt(j)][j] = j+1;   // Set match case. 
             x = dfa[pat.charAt(j)][x];     // Update restart state. 
-        } 
+        }
     } 
 
     /**

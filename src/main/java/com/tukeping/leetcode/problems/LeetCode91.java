@@ -39,6 +39,8 @@ package com.tukeping.leetcode.problems;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -53,6 +55,33 @@ import static org.junit.Assert.assertThat;
  * @date 2020/2/16
  **/
 public class LeetCode91 {
+
+    public int numDecodingsV2(String s) {
+        int n = s.length();
+        if (n == 0) return 0;
+        int prev = s.charAt(0) - '0';
+        if (prev == 0) return 0;
+        if (n == 1) return 1;
+        int[] dp = new int[n + 1];
+        Arrays.fill(dp, 1);
+        for (int i = 2; i <= n; i++) {
+            int cur = s.charAt(i - 1) - '0';
+            if ((prev == 0 || prev > 2) && cur == 0) {
+                return 0;
+            }
+            if ((prev < 2 && prev > 0) || prev == 2 && cur < 7) {
+                if (cur != 0) {
+                    dp[i] = dp[i - 2] + dp[i - 1];
+                } else {
+                    dp[i] = dp[i - 2];
+                }
+            } else {
+                dp[i] = dp[i - 1];
+            }
+            prev = cur;
+        }
+        return dp[n];
+    }
 
     public int numDecodings(String s) {
         if (s.charAt(0) == '0') return 0;

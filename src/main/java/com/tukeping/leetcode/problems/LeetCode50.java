@@ -59,6 +59,26 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode50 {
 
+    public double myPowV2(double x, int n) {
+        long N = n;
+        if (N < 0) {
+            x = 1 / x;
+            N = -N;
+        }
+        return qpow(x, N);
+    }
+
+    private double qpow(double x, long n) {
+        double ans = 1;
+        for (; n > 0; n >>= 1) {
+            if (n % 2 == 1) {
+                ans = ans * x;
+            }
+            x = x * x;
+        }
+        return ans;
+    }
+
     public double myPow1(double x, int n) {
         long N = n;
         if (N < 0) {

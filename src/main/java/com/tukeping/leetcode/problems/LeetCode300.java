@@ -33,6 +33,9 @@ package com.tukeping.leetcode.problems;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -45,6 +48,37 @@ import static org.junit.Assert.assertThat;
  * @date 2020/2/15
  **/
 public class LeetCode300 {
+
+    public int lengthOfLISV2(int[] nums) {
+        int n = nums.length;
+        if (n <= 1) return n;
+
+        List<Integer> dp = new ArrayList<>();
+        dp.add(nums[0]);
+
+        for (int i = 1; i < n; i++) {
+            if (dp.get(dp.size() - 1) < nums[i]) {
+                dp.add(nums[i]);
+            } else {
+                int idx = bsearch(dp, nums[i]);
+                dp.set(idx, nums[i]);
+            }
+        }
+        return dp.size();
+    }
+
+    private int bsearch(List<Integer> nums, int target) {
+        int l = 0, r = nums.size() - 1;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (nums.get(mid) >= target) {
+                r = mid;
+            } else {
+                l = mid + 1;
+            }
+        }
+        return l;
+    }
 
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;

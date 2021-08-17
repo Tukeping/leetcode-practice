@@ -65,6 +65,20 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode455 {
 
+    public int findContentChildrenV2(int[] g, int[] s) {
+        Arrays.sort(g);
+        Arrays.sort(s);
+        int child = 0, cookie = 0;
+        int childSize = g.length, cookieSize = s.length;
+        while (child < childSize && cookie < cookieSize) {
+            if (s[cookie] >= g[child]) {
+                child++;
+            }
+            cookie++;
+        }
+        return child;
+    }
+
     public int findContentChildren(int[] g, int[] s) {
         if (g == null || s == null) return 0;
 

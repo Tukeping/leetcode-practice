@@ -52,6 +52,36 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode28 {
 
+    public int strStrBruteForce(String haystack, String needle) {
+        int m = needle.length(), n = haystack.length();
+        for (int i = 0; i + m <= n; i++) {
+            int j = 0;
+            for (; j < m; j++) {
+                if (needle.charAt(j) != haystack.charAt(i + j)) break;
+            }
+            if (j == m) return i;
+        }
+        return -1;
+    }
+
+    public int strStrKMP(String ss, String pp) {
+        if (pp.isEmpty()) return 0;
+        int m = pp.length(), n = ss.length();
+        char[] s = ss.toCharArray(), p = pp.toCharArray();
+        int[] next = new int[m];
+        for (int i = 1, j = 0; i < m; i++) {
+            while (j > 0 && p[i] != p[j]) j = next[j - 1];
+            if (p[i] == p[j]) j++;
+            next[i] = j;
+        }
+        for (int i = 0, j = 0; i < n; i++) {
+            while (j > 0 && s[i] != p[j]) j = next[j - 1];
+            if (s[i] == p[j]) j++;
+            if (j == m) return i - m + 1;
+        }
+        return -1;
+    }
+
     /*
      * 说明:
      * 当 needle 是空字符串时，我们应当返回什么值呢？这是一个在面试中很好的问题。

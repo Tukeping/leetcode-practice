@@ -50,25 +50,42 @@ import static org.junit.Assert.assertThat;
  **/
 public class LeetCode213 {
 
-    public int robV2(int[] nums) {
+    public int rob(int[] nums) {
         int n = nums.length;
         if (n == 1) return nums[0];
-        else if (n == 2) return Math.max(nums[0], nums[1]);
-        else return Math.max(rob(nums, 0, n - 2), rob(nums, 1, n - 1));
+        if (n == 2) return Math.max(nums[0], nums[1]);
+        return Math.max(rob(nums, 1, n - 1), rob(nums, 2, n));
     }
 
-    private int rob(int[] nums, int l, int r) {
-        int[][] dp = new int[r + 1][2];
-        dp[l][0] = 0;
-        dp[l][1] = nums[l];
-        for (int i = l + 1; i <= r; i++) {
-            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1]);
-            dp[i][1] = Math.max(dp[i - 1][0] + nums[i], dp[i - 1][1]);
+    private int rob(int[] nums, int lo, int hi) {
+        int n = nums.length;
+        int[] dp = new int[n + 1];
+        dp[lo] = nums[lo - 1];
+        for (int i = lo + 1; i <= hi; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i - 1]);
         }
-        return Math.max(dp[r][0], dp[r][1]);
+        return dp[hi];
     }
 
-    public int rob(int[] nums) {
+//    public int robV2(int[] nums) {
+//        int n = nums.length;
+//        if (n == 1) return nums[0];
+//        else if (n == 2) return Math.max(nums[0], nums[1]);
+//        else return Math.max(rob(nums, 0, n - 2), rob(nums, 1, n - 1));
+//    }
+//
+//    private int rob(int[] nums, int l, int r) {
+//        int[][] dp = new int[r + 1][2];
+//        dp[l][0] = 0;
+//        dp[l][1] = nums[l];
+//        for (int i = l + 1; i <= r; i++) {
+//            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1]);
+//            dp[i][1] = Math.max(dp[i - 1][0] + nums[i], dp[i - 1][1]);
+//        }
+//        return Math.max(dp[r][0], dp[r][1]);
+//    }
+
+    public int robV2(int[] nums) {
         if (nums == null || nums.length == 0) return 0;
 
         int n = nums.length;

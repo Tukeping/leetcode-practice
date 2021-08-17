@@ -58,40 +58,25 @@ import static org.junit.Assert.assertThat;
 public class LeetCode142 {
 
     public ListNode detectCycle(ListNode head) {
-        // no cycle should return null.
-
         if (head == null) return null;
         if (head.next == null) return null;
 
         ListNode slow = head.next;
         ListNode fast = head.next.next;
-
         while (fast != slow) {
-            if (fast == null || fast.next == null) { // no cycle
+            if (fast == null || fast.next == null) {
                 return null;
             }
-
             slow = slow.next;
             fast = fast.next.next;
         }
 
-        // slow and fast Meet in `M`
-
         ListNode p1 = head;
         ListNode p2 = slow;
-
-        // 2 * slow = fast
-        // slow = F + A
-        // fast = F + A + B + A
-        // 2(F+A) = F+A+B+A => F = B
-
         while (p1 != p2) {
             p1 = p1.next;
             p2 = p2.next;
         }
-
-        // because of F = B, p1 and p2 will Meet in Entry `E`
-
         return p1;
     }
 

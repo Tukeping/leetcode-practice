@@ -41,6 +41,8 @@ package com.tukeping.leetcode.problems;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
@@ -53,6 +55,36 @@ import static org.junit.Assert.assertThat;
  * @date 2020/2/15
  **/
 public class LeetCode188 {
+
+    public int maxProfitV2(int k, int[] prices) {
+        int days = prices.length;
+        if (days < 2) {
+            return 0;
+        }
+        if (k >= days) {
+            return maxProfitUnlimited(prices);
+        }
+        int[] buy = new int[k + 1];
+        Arrays.fill(buy, Integer.MIN_VALUE);
+        int[] sell = new int[k + 1];
+        for (int i = 0; i < days; i++) {
+            for (int j = 1; j <= k; j++) {
+                buy[j] = Math.max(buy[j], sell[j - 1] - prices[i]);
+                sell[j] = Math.max(sell[j], buy[j] + prices[i]);
+            }
+        }
+        return sell[k];
+    }
+
+    public int maxProfitUnlimited(int[] prices) {
+        int maxProfit = 0;
+        for (int i = 1; i < prices.length; i++) {
+            if (prices[i] > prices[i - 1]) {
+                maxProfit += prices[i] - prices[i - 1];
+            }
+        }
+        return maxProfit;
+    }
 
     /**
      * {@link LeetCode121}
